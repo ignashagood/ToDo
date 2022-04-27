@@ -27,6 +27,14 @@
         android:textSize="30sp"
         tools:ignore="MissingConstraints" />
 
+    <ImageButton
+        android:id="@+id/delete_but"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:layout_gravity="center"/>
+
+
 
 
 </LinearLayout>

@@ -1,23 +1,22 @@
 package com.example.todoexample.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoexample.R
-import com.example.todoexample.Task
+import com.example.todoexample.database.entity.TaskEntity
 import com.example.todoexample.databinding.TaskItemBinding
-import com.example.todoexample.fragments.TaskActionHandler
+import com.example.todoexample.fragments.ListFragment
 
-
-class TaskAdapter(private val actionHandler: TaskActionHandler) :
+class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
-    private var taskList: List<Task> = emptyList()
-
     class TaskHolder(private val binding: TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(task: Task) = with(binding) {
+        fun bind(task: TaskEntity) = with(binding) {
             taskName.text = task.name
             taskName.setTextColor(
                 ContextCompat.getColor(
@@ -29,30 +28,36 @@ class TaskAdapter(private val actionHandler: TaskActionHandler) :
         }
     }
 
+    private var tasks: List<TaskEntity> = emptyList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
         val holder = TaskHolder(binding)
+        binding.deleteBut.setOnClickListener {
+            actionHandler.onTaskDeleteClick(tasks[holder.bindingAdapterPosition])
+        }
         binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            actionHandler.onTaskCompleted(taskList[holder.bindingAdapterPosition])
+            val task = tasks[holder.bindingAdapterPosition]
+            if (task.isCompleted != isChecked) {
+                actionHandler.onTaskCompleted(TaskEntity(task.name, task.itemId, !task.isCompleted))
+            }
         }
         return holder
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(taskList[position])
+        holder.bind(tasks[position])
     }
 
     override fun getItemCount(): Int {
-        return taskList.size
+        return tasks.size
     }
 
-    fun updateList(tasks: List<Task>, diffResult: DiffUtil.DiffResult) {
-        taskList = tasks
-        diffResult.dispatchUpdatesTo(this)
+    fun updateList(newItems: Pair<List<TaskEntity>, DiffUtil.DiffResult>) {
+        Log.d("Look", "TaskAdapter - updateList, ${Thread.currentThread().name}")
+        tasks = newItems.first
+        newItems.second.dispatchUpdatesTo(this)
     }
 }
 
-sealed class State
-class Success(val taskList: List<Task>, val diffResult: DiffUtil.DiffResult) : State()
-class Loading : State()

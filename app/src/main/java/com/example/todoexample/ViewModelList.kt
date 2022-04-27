@@ -1,76 +1,68 @@
 package com.example.todoexample
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
-import com.example.todoexample.adapters.State
-import com.example.todoexample.adapters.Success
-import com.example.todoexample.fragments.TaskActionHandler
-import java.util.*
-import kotlin.random.Random
+import com.example.todoexample.database.MyDatabase
+import com.example.todoexample.database.entity.TaskEntity
+import com.example.todoexample.fragments.ListFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ViewModelList(application: Application) : ViewModel(), TaskActionHandler {
 
-    var state: MutableLiveData<State> = MutableLiveData()
+class ViewModelList(application: Application) : AndroidViewModel(application),
+    ListFragment.TaskActionHandler {
+
+    private val repository: TaskRepository
+    private var currentTasks: List<TaskEntity> = emptyList()
+    val allTasks: LiveData<Pair<List<TaskEntity>, DiffUtil.DiffResult>>
 
     init {
-        updateList()
-    }
+        val taskDao = MyDatabase.get(application).taskDAO()
+        repository = TaskRepository(taskDao)
+        allTasks = Transformations.map(repository.sortedTasks) { newTasks ->
+            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                override fun getOldListSize(): Int = currentTasks.size
 
-    private fun updateList() {
-        val newTaskList = emptyList<Task>()
-        updateList(newTaskList)
-    }
+                override fun getNewListSize(): Int = newTasks.size
 
-    fun addNewTask(string: String) {
-        state.value.let {
-            if (it is Success) {
-                val newTaskList = it.taskList + Task(string, Random.nextInt(), false)
-                updateList(newTaskList)
-            }
-        }
-    }
-
-    private fun updateList(newTaskList: List<Task>) {
-        val currentTaskList: List<Task> = (state.value as? Success)?.taskList ?: emptyList()
-        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-
-            override fun getOldListSize(): Int {
-                return currentTaskList.size
-            }
-
-            override fun getNewListSize(): Int {
-                return newTaskList.size
-            }
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldTask: Task = currentTaskList[oldItemPosition]
-                val newTask: Task = newTaskList[newItemPosition]
-                return oldTask.name == newTask.name
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldTask: Task = currentTaskList[oldItemPosition]
-                val newTask: Task = newTaskList[newItemPosition]
-                return oldTask == newTask
-            }
-
-        })
-        state.value = Success(newTaskList, diffResult)
-    }
-
-    override fun onTaskCompleted(task: Task) {
-        state.value.let { successState ->
-            if (successState is Success) {
-                val newTaskList = successState.taskList.toMutableList().apply {
-                    this.remove(task)
-                    add(Task(task.name, task.itemId, !task.isCompleted))
-                    sortBy { it.isCompleted }
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    return currentTasks[oldItemPosition].itemId == newTasks[newItemPosition].itemId
                 }
-                updateList(newTaskList)
-            }
+
+                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    return currentTasks[oldItemPosition] == newTasks[newItemPosition]
+                }
+            })
+            currentTasks = newTasks
+            newTasks to diffResult
         }
     }
+
+    fun addTask(task: TaskEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.add(task)
+        }
+    }
+
+    override fun onTaskDeleteClick(task: TaskEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(task)
+            Log.d("Look", "ViewModel - delete, ${Thread.currentThread().name}")
+        }
+    }
+
+    override fun onTaskCompleted(task: TaskEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.update(task)
+            Log.d("Look", "ViewModel - update, ${Thread.currentThread().name}")
+        }
+
+    }
+
 
 }

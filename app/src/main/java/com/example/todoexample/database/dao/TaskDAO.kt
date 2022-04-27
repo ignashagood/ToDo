@@ -1,12 +1,9 @@
 package com.example.todoexample.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import com.example.todoexample.Task
 import com.example.todoexample.database.entity.TaskEntity
+import androidx.room.*
+
 
 @Dao
 interface TaskDAO {
@@ -19,4 +16,10 @@ interface TaskDAO {
 
     @Delete
     suspend fun delete(task: TaskEntity)
+
+    @Update
+    suspend fun update(task: TaskEntity)
+
+    @Query("SELECT * from tasks ORDER BY isCompleted")
+    fun sort(): LiveData<List<TaskEntity>>
 }
