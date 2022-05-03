@@ -21,7 +21,9 @@ class TaskCardViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            if (taskCardMode is TaskCardMode.View) task.postValue(repository.getById(taskCardMode.taskId))
+            if (taskCardMode is TaskCardMode.View) {
+                task.postValue(repository.getById(taskCardMode.taskId))
+            }
         }
     }
 
@@ -46,7 +48,7 @@ class TaskCardViewModel(
             }
             is TaskCardMode.View -> {
                 val updatedTask =
-                    TaskEntity(taskName, task.value!!.itemId, task.value!!.isCompleted)
+                        TaskEntity(taskName, task.value!!.itemId, task.value!!.isCompleted)
                 updateTask(updatedTask)
             }
         }

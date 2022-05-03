@@ -1,5 +1,3 @@
-ktlint правила
-
-inspect code - ошибки исправить
-
-inspect code из терминала
+1. Изучить ktlint правила
+2. Исправить ошибки inspect code
+3. Выяснить, как запускать inspect code из терминала
