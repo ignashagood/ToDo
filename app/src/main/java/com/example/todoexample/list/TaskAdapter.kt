@@ -1,21 +1,30 @@
-package com.example.todoexample.adapters
+package com.example.todoexample.list
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoexample.R
-import com.example.todoexample.database.entity.TaskEntity
+import com.example.todoexample.base.database.entity.TaskEntity
 import com.example.todoexample.databinding.TaskItemBinding
-import com.example.todoexample.fragments.ListFragment
 
 class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
-    class TaskHolder(private val binding: TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(task: TaskEntity)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
+    class TaskHolder(private val binding: TaskItemBinding, clickHandler: (position: Int) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(task: TaskEntity) = with(binding) {
             taskName.text = task.name
             taskName.setTextColor(
@@ -26,6 +35,12 @@ class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
             )
             checkbox.isChecked = task.isCompleted
         }
+
+        init {
+            binding.root.setOnClickListener {
+                clickHandler(bindingAdapterPosition)
+            }
+        }
     }
 
     private var tasks: List<TaskEntity> = emptyList()
@@ -33,7 +48,8 @@ class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
-        val holder = TaskHolder(binding)
+        val holder =
+            TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
         binding.deleteBut.setOnClickListener {
             actionHandler.onTaskDeleteClick(tasks[holder.bindingAdapterPosition])
         }
@@ -60,4 +76,3 @@ class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
         newItems.second.dispatchUpdatesTo(this)
     }
 }
-

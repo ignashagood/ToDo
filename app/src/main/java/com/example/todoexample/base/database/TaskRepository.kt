@@ -1,8 +1,8 @@
-package com.example.todoexample
+package com.example.todoexample.base.database
 
 import androidx.lifecycle.LiveData
-import com.example.todoexample.database.dao.TaskDAO
-import com.example.todoexample.database.entity.TaskEntity
+import com.example.todoexample.base.database.dao.TaskDAO
+import com.example.todoexample.base.database.entity.TaskEntity
 
 class TaskRepository(private val taskDao: TaskDAO) {
     val allTasks: LiveData<List<TaskEntity>> = taskDao.getAll()
@@ -18,5 +18,9 @@ class TaskRepository(private val taskDao: TaskDAO) {
 
     suspend fun update(task: TaskEntity) {
         taskDao.update(task)
+    }
+
+    suspend fun getById(taskId: Int): TaskEntity {
+        return taskDao.getById(taskId)
     }
 }

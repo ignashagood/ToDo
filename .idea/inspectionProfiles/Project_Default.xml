@@ -1,0 +1,13 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="KotlinUnusedImport" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="RemoveForLoopIndices" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedDataClassCopyResult" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedEquals" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedLambdaExpressionBody" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedReceiverParameter" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedSymbol" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnusedUnaryOperator" enabled="true" level="ERROR" enabled_by_default="true" />
+  </profile>
+</component>

@@ -9,8 +9,8 @@
 
     <CheckBox
         android:id="@+id/checkbox"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center" />
 
     <TextView
@@ -24,8 +24,9 @@
         android:minHeight="60dp"
         android:text="Task"
         android:textColor="@color/black"
-        android:textSize="30sp"
-        tools:ignore="MissingConstraints" />
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        android:paddingLeft="5dp"/>
 
     <ImageButton
         android:id="@+id/delete_but"

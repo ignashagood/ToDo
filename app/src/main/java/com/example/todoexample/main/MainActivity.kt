@@ -1,8 +1,8 @@
-package com.example.todoexample
+package com.example.todoexample.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.todoexample.fragments.MainFragment
+import androidx.appcompat.app.AppCompatActivity
+import com.example.todoexample.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
