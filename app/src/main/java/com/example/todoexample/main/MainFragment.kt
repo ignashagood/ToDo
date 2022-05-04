@@ -12,12 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainFragment : Fragment() {
 
     private val myViewPager2: ViewPager2 by lazy { binding!!.pager }
-    private val myAdapter: ViewPagerFragmentAdapter by lazy {
-        ViewPagerFragmentAdapter(
-            childFragmentManager,
-            lifecycle
-        )
-    }
+    private val myAdapter: ViewPagerFragmentAdapter by lazy { ViewPagerFragmentAdapter(childFragmentManager, lifecycle) }
     private var binding: FragmentMainBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater,

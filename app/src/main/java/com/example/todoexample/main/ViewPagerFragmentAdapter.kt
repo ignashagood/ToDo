@@ -19,7 +19,7 @@ class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Life
             0 -> ListFragment()
             1 -> TodayFragment()
             2 -> ListFragment()
-            else -> Fragment()
+            else -> error("Unexpected position $position")
         }
     }
 }

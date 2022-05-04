@@ -11,7 +11,7 @@ import com.example.todoexample.card.TaskCardMode
 import com.example.todoexample.databinding.FragmentListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
     interface TaskActionHandler {
         fun onTaskDeleteClick(task: TaskEntity)
@@ -19,19 +19,8 @@ class ListFragment : Fragment() {
     }
 
     private val viewModel by viewModel<ViewModelList>()
-    private var adapter: TaskAdapter? = null
+    private val adapter: TaskAdapter by lazy { TaskAdapter(viewModel, this) }
     private var binding: FragmentListBinding? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val onItemClickListener = object : TaskAdapter.OnItemClickListener {
-            override fun onItemClick(task: TaskEntity) {
-                TaskCardFragment.newInstance(TaskCardMode.View(task.itemId))
-                    .show(childFragmentManager, "ChangeSheetDialog")
-            }
-        }
-        adapter = TaskAdapter(viewModel, onItemClickListener)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,5 +40,10 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.allTasks.observe(viewLifecycleOwner) { adapter?.updateList(it) }
+    }
+
+    override fun onItemClick(task: TaskEntity) {
+        TaskCardFragment.newInstance(TaskCardMode.View(task.itemId))
+            .show(childFragmentManager, "ChangeSheetDialog")
     }
 }
