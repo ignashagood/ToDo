@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import com.example.todoexample.R
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
+import com.example.todoexample.databinding.TaskCardFragmentBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -28,35 +28,46 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         parametersOf(requireArguments().getParcelable(TASK_CARD_MODE_KEY))
     }
 
-    private var checkButton: Button? = null
-    private var editText: EditText? = null
+    private var binding: TaskCardFragmentBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.action.observe(this) {
+            if (it != null) {
+                when (it) {
+                    TaskCardAction.DISMISS -> dismiss()
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val taskCardMode: TaskCardMode = requireArguments().getParcelable(TASK_CARD_MODE_KEY)!!
-        val view = inflater.inflate(R.layout.task_card_fragment, container, false)
-        checkButton = view.findViewById(R.id.checkButton)
-        editText = view.findViewById(R.id.editText)
-        when (taskCardMode) {
-            is TaskCardMode.Create -> checkButton?.text = "Add"
-            is TaskCardMode.View -> checkButton?.text = "Save"
+    ): View =
+        TaskCardFragmentBinding.inflate(inflater, container, false).run {
+            binding = this
+            checkButton.setOnClickListener { viewModel.onButtonClicked() }
+            editText.addTextChangedListener { viewModel.onTaskNameChanged(it?.toString().orEmpty()) }
+            root
         }
-        viewModel.taskCardAction.observe(this) {
-            when (it) {
-                TaskCardAction.DISMISS -> dismiss()
-            }
-        }
-        return view
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.task.observe(viewLifecycleOwner) { task ->
-            editText?.setText(task.name)
-            checkButton?.setOnClickListener {
-                val taskName: String = editText?.text.toString()
-                viewModel.onButtonClicked(taskName)
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                TaskCardState.InitialLoading -> binding?.run {
+                    checkButton.isVisible = false
+                    editText.isVisible = false
+                }
+                is TaskCardState.Content -> binding?.run {
+                    if (editText.text.toString() != state.name) {
+                        editText.setText(state.name)
+                    }
+                    editText.isVisible = true
+                    checkButton.text = state.actionName
+                    checkButton.isVisible = true
+                }
             }
         }
     }
