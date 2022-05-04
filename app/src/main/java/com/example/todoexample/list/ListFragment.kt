@@ -11,7 +11,7 @@ import com.example.todoexample.card.TaskCardMode
 import com.example.todoexample.databinding.FragmentListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
     interface TaskActionHandler {
         fun onTaskDeleteClick(task: TaskEntity)
@@ -19,13 +19,8 @@ class ListFragment : Fragment() {
     }
 
     private val viewModel by viewModel<ViewModelList>()
-    private lateinit var adapter: TaskAdapter
-    private lateinit var binding: FragmentListBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        adapter = TaskAdapter(viewModel)
-    }
+    private val adapter: TaskAdapter by lazy { TaskAdapter(viewModel, this) }
+    private var binding: FragmentListBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,22 +28,22 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentListBinding.inflate(inflater, container, false)
-        binding.recyclerView.adapter = adapter
-        adapter.setOnItemClickListener(object : TaskAdapter.OnItemClickListener {
-            override fun onItemClick(task: TaskEntity) {
-                TaskCardFragment.newInstance(TaskCardMode.View(task.itemId))
-                    .show(childFragmentManager, "ChangeSheetDialog")
+        binding?.apply {
+            recyclerView.adapter = adapter
+            addButton.setOnClickListener {
+                TaskCardFragment.newInstance(TaskCardMode.Create)
+                    .show(childFragmentManager, "CreateSheetDialog")
             }
-        })
-        binding.addButton.setOnClickListener {
-            TaskCardFragment.newInstance(TaskCardMode.Create)
-                .show(childFragmentManager, "CreateSheetDialog")
         }
-
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.allTasks.observe(viewLifecycleOwner) { adapter.updateList(it) }
+        viewModel.allTasks.observe(viewLifecycleOwner) { adapter?.updateList(it) }
+    }
+
+    override fun onItemClick(task: TaskEntity) {
+        TaskCardFragment.newInstance(TaskCardMode.View(task.itemId))
+            .show(childFragmentManager, "ChangeSheetDialog")
     }
 }

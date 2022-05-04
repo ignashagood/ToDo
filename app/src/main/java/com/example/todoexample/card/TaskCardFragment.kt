@@ -25,28 +25,23 @@ class TaskCardFragment : BottomSheetDialogFragment() {
     }
 
     private val viewModel: TaskCardViewModel by viewModel {
-        parametersOf(arguments!!.getParcelable(TASK_CARD_MODE_KEY))
+        parametersOf(requireArguments().getParcelable(TASK_CARD_MODE_KEY))
     }
 
-    private lateinit var checkButton: Button
-    private lateinit var editText: EditText
-
+    private var checkButton: Button? = null
+    private var editText: EditText? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val taskCardMode: TaskCardMode = arguments!!.getParcelable(TASK_CARD_MODE_KEY)!!
+        val taskCardMode: TaskCardMode = requireArguments().getParcelable(TASK_CARD_MODE_KEY)!!
         val view = inflater.inflate(R.layout.task_card_fragment, container, false)
         checkButton = view.findViewById(R.id.checkButton)
         editText = view.findViewById(R.id.editText)
         when (taskCardMode) {
-            is TaskCardMode.Create -> {
-                checkButton.text = "Add"
-            }
-            is TaskCardMode.View -> {
-                checkButton.text = "Save"
-            }
+            is TaskCardMode.Create -> checkButton?.text = "Add"
+            is TaskCardMode.View -> checkButton?.text = "Save"
         }
         viewModel.taskCardAction.observe(this) {
             when (it) {
@@ -58,9 +53,9 @@ class TaskCardFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.task.observe(viewLifecycleOwner) { task ->
-            editText.setText(task.name)
-            checkButton.setOnClickListener {
-                val taskName: String = editText.text.toString()
+            editText?.setText(task.name)
+            checkButton?.setOnClickListener {
+                val taskName: String = editText?.text.toString()
                 viewModel.onButtonClicked(taskName)
             }
         }

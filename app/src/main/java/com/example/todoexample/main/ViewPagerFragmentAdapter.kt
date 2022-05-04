@@ -16,18 +16,10 @@ class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> {
-                ListFragment()
-            }
-            1 -> {
-                TodayFragment()
-            }
-            2 -> {
-                ListFragment()
-            }
-            else -> {
-                Fragment()
-            }
+            0 -> ListFragment()
+            1 -> TodayFragment()
+            2 -> ListFragment()
+            else -> error("Unexpected position $position")
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.todoexample.list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,17 +9,13 @@ import com.example.todoexample.R
 import com.example.todoexample.base.database.entity.TaskEntity
 import com.example.todoexample.databinding.TaskItemBinding
 
-class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
+class TaskAdapter(
+    private val actionHandler: ListFragment.TaskActionHandler,
+    private val itemClickListener: OnItemClickListener
+) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
-
-    private lateinit var itemClickListener: OnItemClickListener
-
     interface OnItemClickListener {
         fun onItemClick(task: TaskEntity)
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        itemClickListener = listener
     }
 
     class TaskHolder(private val binding: TaskItemBinding, clickHandler: (position: Int) -> Unit) :
@@ -71,7 +66,6 @@ class TaskAdapter(private val actionHandler: ListFragment.TaskActionHandler) :
     }
 
     fun updateList(newItems: Pair<List<TaskEntity>, DiffUtil.DiffResult>) {
-        Log.d("Look", "TaskAdapter - updateList, ${Thread.currentThread().name}")
         tasks = newItems.first
         newItems.second.dispatchUpdatesTo(this)
     }
