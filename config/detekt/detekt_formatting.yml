@@ -1,0 +1,32 @@
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  AnnotationSpacing:
+    active: true
+  EnumEntryNameCase:
+    active: true
+  MaximumLineLength:
+    active: true
+    maxLineLength: 120
+  MultiLineIfElse:
+    active: true
+  NoEmptyFirstLineInMethodBlock:
+    active: true
+  PackageName:
+    active: true
+  SpacingAroundAngleBrackets:
+    active: true
+  SpacingAroundDoubleColon:
+    active: true
+  SpacingAroundUnaryOperator:
+    active: true
+  SpacingBetweenDeclarationsWithAnnotations:
+    active: true
+  SpacingBetweenDeclarationsWithComments:
+    active: true
+  NoUnusedImports:
+    active: true
+  ArgumentListWrapping:
+    active: true
+    maxLineLength: 120
