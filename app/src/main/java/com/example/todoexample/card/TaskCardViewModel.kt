@@ -43,9 +43,7 @@ class TaskCardViewModel(
 
     fun onButtonClicked(taskName: String) {
         when (taskCardMode) {
-            is TaskCardMode.Create -> {
-                addTask(TaskEntity(taskName, 0, false))
-            }
+            is TaskCardMode.Create -> addTask(TaskEntity(taskName, 0, false))
             is TaskCardMode.View -> {
                 val updatedTask = TaskEntity(taskName, task.value!!.itemId, task.value!!.isCompleted)
                 updateTask(updatedTask)
