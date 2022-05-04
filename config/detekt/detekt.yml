@@ -1,3 +1,35 @@
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  AnnotationSpacing:
+    active: true
+  EnumEntryNameCase:
+    active: true
+  MaximumLineLength:
+    active: false
+  MultiLineIfElse:
+    active: true
+  NoEmptyFirstLineInMethodBlock:
+    active: true
+  PackageName:
+    active: true
+  SpacingAroundAngleBrackets:
+    active: true
+  SpacingAroundDoubleColon:
+    active: true
+  SpacingAroundUnaryOperator:
+    active: true
+  SpacingBetweenDeclarationsWithAnnotations:
+    active: true
+  SpacingBetweenDeclarationsWithComments:
+    active: true
+  NoUnusedImports:
+    active: true
+  ArgumentListWrapping:
+    active: true
+    maxLineLength: 100
+
 build:
   maxIssues: 0
   excludeCorrectable: false
@@ -32,9 +64,20 @@ processors:
 
 console-reports:
   active: true
+  exclude:
+     - 'ProjectStatisticsReport'
+     - 'ComplexityReport'
+     - 'NotificationReport'
+     - 'FindingsReport'
+     - 'FileBasedFindingsReport'
+  #  - 'LiteFindingsReport'
 
 output-reports:
-  active: false
+  active: true
+  exclude:
+  # - 'TxtOutputReport'
+  # - 'XmlOutputReport'
+  # - 'HtmlOutputReport'
 
 comments:
   active: true
@@ -77,7 +120,7 @@ complexity:
     threshold: 4
   ComplexInterface:
     active: false
-    threshold: 6
+    threshold: 10
     includeStaticDeclarations: false
     includePrivateDeclarations: false
   ComplexMethod:
@@ -98,12 +141,13 @@ complexity:
       - 'with'
   LabeledExpression:
     active: false
+    ignoredLabels: []
   LargeClass:
     active: true
-    threshold: 500
+    threshold: 600
   LongMethod:
     active: true
-    threshold: 50
+    threshold: 60
   LongParameterList:
     active: true
     functionThreshold: 6
@@ -122,13 +166,13 @@ complexity:
     active: true
     threshold: 4
   ReplaceSafeCallChainWithRun:
-    active: true
+    active: false
   StringLiteralDuplication:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    threshold: 2
-    ignoreAnnotation: false
-    excludeStringsWithLessThan5Characters: false
+    threshold: 3
+    ignoreAnnotation: true
+    excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
@@ -270,7 +314,7 @@ exceptions:
 naming:
   active: true
   BooleanPropertyNaming:
-    active: true
+    active: false
     allowedPattern: '^(is|has|are)'
     ignoreOverridden: true
   ClassNaming:
@@ -284,15 +328,15 @@ naming:
     ignoreOverridden: true
   EnumNaming:
     active: true
-    enumEntryPattern: '[A-Z][_A-Z0-9]*'
+    enumEntryPattern: '[A-Z][_a-zA-Z0-9]*'
   ForbiddenClassName:
     active: false
     forbiddenName: []
   FunctionMaxLength:
-    active: true
+    active: false
     maximumFunctionNameLength: 30
   FunctionMinLength:
-    active: true
+    active: false
     minimumFunctionNameLength: 3
   FunctionNaming:
     active: true
@@ -306,7 +350,7 @@ naming:
     excludeClassPattern: '$^'
     ignoreOverridden: true
   InvalidPackageDeclaration:
-    active: true
+    active: false
     rootPackage: ''
     requireRootInDeclaration: false
   LambdaParameterNaming:
@@ -319,9 +363,9 @@ naming:
     active: true
     ignoreOverridden: true
   NoNameShadowing:
-    active: true
+    active: false
   NonBooleanPropertyPrefixedWithIs:
-    active: true
+    active: false
   ObjectPropertyNaming:
     active: true
     constantPattern: '[A-Za-z][_A-Za-z0-9]*'
@@ -336,8 +380,8 @@ naming:
     propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
     privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
   VariableMaxLength:
-    active: true
-    maximumVariableNameLength: 40
+    active: false
+    maximumVariableNameLength: 64
   VariableMinLength:
     active: false
     minimumVariableNameLength: 1
@@ -368,13 +412,13 @@ potential-bugs:
     forbiddenTypePatterns:
       - 'kotlin.String'
   CastToNullableType:
-    active: true
+    active: false
   Deprecation:
     active: false
   DontDowncastCollectionTypes:
-    active: true
+    active: false
   DoubleMutabilityForCollection:
-    active: true
+    active: false
     mutableTypes:
       - 'kotlin.collections.MutableList'
       - 'kotlin.collections.MutableMap'
@@ -387,7 +431,7 @@ potential-bugs:
   DuplicateCaseInWhenExpression:
     active: true
   ElseCaseInsteadOfExhaustiveWhen:
-    active: true
+    active: false
   EqualsAlwaysReturnsTrueOrFalse:
     active: true
   EqualsWithHashCodeExist:
@@ -397,7 +441,7 @@ potential-bugs:
   ExplicitGarbageCollectionCall:
     active: true
   HasPlatformType:
-    active: true
+    active: false
   IgnoredReturnValue:
     active: false
     restrictToAnnotatedMethods: true
@@ -410,7 +454,7 @@ potential-bugs:
   ImplicitDefaultLocale:
     active: true
   ImplicitUnitReturnType:
-    active: true
+    active: false
     allowExplicitReturnType: true
   InvalidRange:
     active: true
@@ -419,11 +463,11 @@ potential-bugs:
   IteratorNotThrowingNoSuchElementException:
     active: true
   LateinitUsage:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     ignoreOnClassesPattern: ''
   MapGetWithNotNullAssertionOperator:
-    active: true
+    active: false
   MissingPackageDeclaration:
     active: false
     excludes: ['**/*.kts']
@@ -431,19 +475,19 @@ potential-bugs:
     active: true
     allowElseExpression: true
   NullCheckOnMutableProperty:
-    active: true
+    active: false
   NullableToStringCall:
-    active: true
+    active: false
   RedundantElseInWhen:
     active: true
   UnconditionalJumpStatementInLoop:
-    active: true
+    active: false
   UnnecessaryNotNullOperator:
     active: true
   UnnecessarySafeCall:
     active: true
   UnreachableCatchBlock:
-    active: true
+    active: false
   UnreachableCode:
     active: true
   UnsafeCallOnNullableType:
@@ -452,7 +496,7 @@ potential-bugs:
   UnsafeCast:
     active: true
   UnusedUnaryOperator:
-    active: true
+    active: false
   UselessPostfixExpression:
     active: false
   WrongEqualsTypeParameter:
@@ -461,32 +505,32 @@ potential-bugs:
 style:
   active: true
   CanBeNonNullable:
-    active: true
+    active: false
   ClassOrdering:
     active: false
   CollapsibleIfStatements:
-    active: true
+    active: false
   DataClassContainsFunctions:
     active: false
     conversionFunctionPrefix: 'to'
   DataClassShouldBeImmutable:
-    active: true
+    active: false
   DestructuringDeclarationWithTooManyEntries:
-    active: true
+    active: false
     maxDestructuringEntries: 3
   EqualsNullCall:
     active: true
   EqualsOnSignatureLine:
-    active: true
+    active: false
   ExplicitCollectionElementAccessMethod:
-    active: true
+    active: false
   ExplicitItLambdaParameter:
     active: false
   ExpressionBodySyntax:
     active: false
     includeLineWrapping: false
   ForbiddenComment:
-    active: false
+    active: true
     values:
       - 'FIXME:'
       - 'STOPSHIP:'
@@ -547,7 +591,7 @@ style:
   MandatoryBracesIfStatements:
     active: false
   MandatoryBracesLoops:
-    active: true
+    active: false
   MaxLineLength:
     active: true
     maxLineLength: 120
@@ -573,7 +617,7 @@ style:
   OptionalUnit:
     active: false
   OptionalWhenBraces:
-    active: true
+    active: false
   PreferToOverPairSyntax:
     active: false
   ProtectedMemberInFinalClass:
@@ -581,9 +625,9 @@ style:
   RedundantExplicitType:
     active: false
   RedundantHigherOrderMapUsage:
-    active: true
+    active: false
   RedundantVisibilityModifierRule:
-    active: true
+    active: false
   ReturnCount:
     active: true
     max: 2
@@ -596,7 +640,7 @@ style:
   SerialVersionUIDInSerializableClass:
     active: true
   SpacingBetweenPackageAndImports:
-    active: true
+    active: false
   ThrowsCount:
     active: true
     max: 2
@@ -620,43 +664,43 @@ style:
   UnnecessaryInnerClass:
     active: false
   UnnecessaryLet:
-    active: true
+    active: false
   UnnecessaryParentheses:
-    active: true
+    active: false
   UntilInsteadOfRangeTo:
     active: false
   UnusedImports:
-    active: true
+    active: false
   UnusedPrivateClass:
     active: true
   UnusedPrivateMember:
     active: true
     allowedNames: '(_|ignored|expected|serialVersionUID)'
   UseAnyOrNoneInsteadOfFind:
-    active: true
+    active: false
   UseArrayLiteralsInAnnotations:
     active: false
   UseCheckNotNull:
-    active: true
+    active: false
   UseCheckOrError:
-    active: true
+    active: false
   UseDataClass:
     active: false
     allowVars: false
   UseEmptyCounterpart:
-    active: true
+    active: false
   UseIfEmptyOrIfBlank:
-    active: true
+    active: false
   UseIfInsteadOfWhen:
-    active: true
+    active: false
   UseIsNullOrEmpty:
-    active: true
+    active: false
   UseOrEmpty:
-    active: true
+    active: false
   UseRequire:
-    active: true
+    active: false
   UseRequireNotNull:
-    active: true
+    active: false
   UselessCallOnNotNull:
     active: true
   UtilityClassWithPublicConstructor:
