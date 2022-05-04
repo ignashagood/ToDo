@@ -24,7 +24,7 @@ allprojects {
     detekt {
         toolVersion = "1.20.0"
         autoCorrect = true
-        config = files("../config/detekt/detekt.yml")
+        config = files("../config/detekt/detekt.yml", "../config/detekt/detekt_formatting.yml")
     }
 }
 
