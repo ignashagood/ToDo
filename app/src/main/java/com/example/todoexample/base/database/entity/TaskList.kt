@@ -3,10 +3,10 @@ package com.example.todoexample.base.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "taskItems")
-data class TaskEntity(
-    val name: String,
+@Entity(tableName = "taskLists")
+data class TaskList(
     @PrimaryKey(autoGenerate = true)
-    val itemId: Int,
-    val isCompleted: Boolean
+    val taskListId: Int,
+    val taskListName: String,
+    val creationDate: Long
 )

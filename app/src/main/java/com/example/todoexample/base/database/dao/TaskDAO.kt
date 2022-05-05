@@ -10,10 +10,6 @@ import com.example.todoexample.base.database.entity.TaskEntity
 
 @Dao
 interface TaskDAO {
-
-    @Query("SELECT * FROM tasks")
-    fun getAll(): LiveData<List<TaskEntity>>
-
     @Insert
     suspend fun add(task: TaskEntity)
 
@@ -23,9 +19,9 @@ interface TaskDAO {
     @Update
     suspend fun update(task: TaskEntity)
 
-    @Query("SELECT * from tasks ORDER BY isCompleted")
+    @Query("SELECT * from taskItems ORDER BY isCompleted")
     fun sort(): LiveData<List<TaskEntity>>
 
-    @Query("SELECT * FROM tasks WHERE itemId = :taskId")
+    @Query("SELECT * FROM taskItems WHERE itemId = :taskId")
     fun getById(taskId: Int): TaskEntity
 }
