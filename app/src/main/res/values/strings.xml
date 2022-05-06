@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoExample</string>
+    <string name="app_name">NktnsToDo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task_card_add_btn">Add</string>
     <string name="task_card_save_btn">Save</string>
