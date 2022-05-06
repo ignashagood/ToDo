@@ -127,7 +127,7 @@ complexity:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     threshold: 2
-    ignoreAnnotation: false
+    ignoreAnnotation: true
     excludeStringsWithLessThan5Characters: false
     ignoreStringsRegex: '$^'
   TooManyFunctions:

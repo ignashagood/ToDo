@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.todoexample.base.database.dao.TaskDAO
+import com.example.todoexample.base.database.entity.Task
 import com.example.todoexample.base.database.entity.TaskEntity
+import com.example.todoexample.base.database.entity.TaskList
 
-@Database(entities = [TaskEntity::class], version = 1)
+@Database(entities = [TaskEntity::class, Task::class, TaskList::class], version = 1)
+@TypeConverters(DateConverters::class)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun taskDAO(): TaskDAO

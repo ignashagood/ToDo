@@ -3,7 +3,7 @@ package com.example.todoexample.base.database.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "tasks")
+@Entity(tableName = "taskItems")
 data class TaskEntity(
     val name: String,
     @PrimaryKey(autoGenerate = true)
