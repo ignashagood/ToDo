@@ -1,5 +1,6 @@
 package nktns.todo.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import nktns.todo.R
 import nktns.todo.base.database.entity.TaskEntity
 import nktns.todo.databinding.TaskItemBinding
+
+private val initialList = listOf<TaskEntity>()
 
 class TaskAdapter(
     private val actionHandler: ListFragment.TaskActionHandler,
@@ -38,13 +41,12 @@ class TaskAdapter(
         }
     }
 
-    private var tasks: List<TaskEntity> = emptyList()
+    private var tasks: List<TaskEntity> = initialList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
-        val holder =
-            TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
+        val holder = TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
         binding.deleteBut.setOnClickListener {
             actionHandler.onTaskDeleteClick(tasks[holder.bindingAdapterPosition])
         }
@@ -61,12 +63,16 @@ class TaskAdapter(
         holder.bind(tasks[position])
     }
 
-    override fun getItemCount(): Int {
-        return tasks.size
-    }
+    override fun getItemCount(): Int = tasks.size
 
-    fun updateList(newItems: Pair<List<TaskEntity>, DiffUtil.DiffResult>) {
-        tasks = newItems.first
-        newItems.second.dispatchUpdatesTo(this)
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newTaskList: List<TaskEntity>, diffResult: DiffUtil.DiffResult) {
+        if (tasks === initialList) {
+            tasks = newTaskList
+            notifyDataSetChanged()
+        } else {
+            tasks = newTaskList
+            diffResult.dispatchUpdatesTo(this)
+        }
     }
 }

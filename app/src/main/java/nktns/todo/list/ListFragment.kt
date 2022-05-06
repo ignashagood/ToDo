@@ -38,8 +38,17 @@ class ListFragment : Fragment(), TaskAdapter.OnItemClickListener {
         return binding!!.root
     }
 
+    private fun updateList(state: TaskListState.Content) {
+        adapter.updateList(state.taskList, state.diffResult)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.allTasks.observe(viewLifecycleOwner) { adapter.updateList(it) }
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is TaskListState.InitialLoading -> {}
+                is TaskListState.Content -> updateList(it)
+            }
+        }
     }
 
     override fun onItemClick(task: TaskEntity) {

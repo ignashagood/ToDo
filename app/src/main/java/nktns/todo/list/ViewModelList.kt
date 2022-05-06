@@ -3,46 +3,28 @@ package nktns.todo.list
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.base.database.TaskRepository
 import nktns.todo.base.database.entity.TaskEntity
 
-class ViewModelList(private val repository: TaskRepository, application: Application) :
+class ViewModelList(application: Application, private val repository: TaskRepository) :
     AndroidViewModel(application),
     ListFragment.TaskActionHandler {
-
-    private var currentTasks: List<TaskEntity> = emptyList()
-    val allTasks: LiveData<Pair<List<TaskEntity>, DiffUtil.DiffResult>>
+    private var _state: MutableLiveData<TaskListState> = MutableLiveData(TaskListState.InitialLoading)
+    val state: LiveData<TaskListState> by ::_state
 
     init {
-
-        allTasks = Transformations.map(repository.sortedTasks) { newTasks ->
-            val diffResult: DiffUtil.DiffResult =
-                DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-                    override fun getOldListSize(): Int = currentTasks.size
-
-                    override fun getNewListSize(): Int = newTasks.size
-
-                    override fun areItemsTheSame(
-                        oldPosition: Int,
-                        newPosition: Int
-                    ): Boolean {
-                        return currentTasks[oldPosition].itemId == newTasks[newPosition].itemId
-                    }
-
-                    override fun areContentsTheSame(
-                        oldItemPosition: Int,
-                        newItemPosition: Int
-                    ): Boolean {
-                        return currentTasks[oldItemPosition] == newTasks[newItemPosition]
-                    }
-                })
-            currentTasks = newTasks
-            newTasks to diffResult
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.sortedTasks.collect { newTasks ->
+                val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
+                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(TaskListDiffUtil(currentTaskList, newTasks))
+                _state.value = TaskListState.Content(newTasks, result)
+            }
         }
     }
 
