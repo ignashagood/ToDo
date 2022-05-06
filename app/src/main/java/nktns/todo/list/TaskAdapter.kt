@@ -10,10 +10,8 @@ import nktns.todo.R
 import nktns.todo.base.database.entity.TaskEntity
 import nktns.todo.databinding.TaskItemBinding
 
-private val initialList = listOf<TaskEntity>()
-
 class TaskAdapter(
-    private val actionHandler: ListFragment.TaskActionHandler,
+    private val actionHandler: TaskListFragment.TaskActionHandler,
     private val itemClickListener: OnItemClickListener
 ) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
@@ -41,7 +39,7 @@ class TaskAdapter(
         }
     }
 
-    private var tasks: List<TaskEntity> = initialList
+    private var tasks: List<TaskEntity> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
@@ -66,13 +64,13 @@ class TaskAdapter(
     override fun getItemCount(): Int = tasks.size
 
     @SuppressLint("NotifyDataSetChanged")
+    fun initList(newTaskList: List<TaskEntity>) {
+        tasks = newTaskList
+        notifyDataSetChanged()
+    }
+
     fun updateList(newTaskList: List<TaskEntity>, diffResult: DiffUtil.DiffResult) {
-        if (tasks === initialList) {
-            tasks = newTaskList
-            notifyDataSetChanged()
-        } else {
-            tasks = newTaskList
-            diffResult.dispatchUpdatesTo(this)
-        }
+        tasks = newTaskList
+        diffResult.dispatchUpdatesTo(this)
     }
 }

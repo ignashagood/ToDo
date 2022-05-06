@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import nktns.todo.base.database.TaskRepository
 import nktns.todo.base.database.entity.TaskEntity
 
-class ViewModelList(application: Application, private val repository: TaskRepository) :
+class TaskListVM(application: Application, private val repository: TaskRepository) :
     AndroidViewModel(application),
-    ListFragment.TaskActionHandler {
+    TaskListFragment.TaskActionHandler {
     private var _state: MutableLiveData<TaskListState> = MutableLiveData(TaskListState.InitialLoading)
     val state: LiveData<TaskListState> by ::_state
 

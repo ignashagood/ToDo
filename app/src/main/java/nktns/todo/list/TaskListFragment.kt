@@ -11,16 +11,17 @@ import nktns.todo.card.TaskCardMode
 import nktns.todo.databinding.FragmentListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ListFragment : Fragment(), TaskAdapter.OnItemClickListener {
+class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
     interface TaskActionHandler {
         fun onTaskDeleteClick(task: TaskEntity)
         fun onTaskCompleted(task: TaskEntity)
     }
 
-    private val viewModel by viewModel<ViewModelList>()
+    private val viewModel by viewModel<TaskListVM>()
     private val adapter: TaskAdapter by lazy { TaskAdapter(viewModel, this) }
     private var binding: FragmentListBinding? = null
+    private var contentStateApplied: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,28 +32,32 @@ class ListFragment : Fragment(), TaskAdapter.OnItemClickListener {
         binding?.apply {
             recyclerView.adapter = adapter
             addButton.setOnClickListener {
-                TaskCardFragment.newInstance(TaskCardMode.Create)
-                    .show(childFragmentManager, "CreateSheetDialog")
+                TaskCardFragment.newInstance(TaskCardMode.Create).show(childFragmentManager, "CreateSheetDialog")
             }
         }
         return binding!!.root
-    }
-
-    private fun updateList(state: TaskListState.Content) {
-        adapter.updateList(state.taskList, state.diffResult)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is TaskListState.InitialLoading -> {}
-                is TaskListState.Content -> updateList(it)
+                is TaskListState.Content -> applyState(it)
             }
         }
     }
 
     override fun onItemClick(task: TaskEntity) {
-        TaskCardFragment.newInstance(TaskCardMode.View(task.itemId))
-            .show(childFragmentManager, "ChangeSheetDialog")
+        TaskCardFragment.newInstance(TaskCardMode.View(task.itemId)).show(childFragmentManager, "ChangeSheetDialog")
+    }
+
+    private fun applyState(state: TaskListState.Content) {
+        if (contentStateApplied) {
+            adapter.updateList(state.taskList, state.diffResult)
+        } else {
+            // Если состояние ещё ни разу не было применено, значит список мы просто резко отображаем, без анимаций
+            adapter.initList(state.taskList)
+            contentStateApplied = true
+        }
     }
 }

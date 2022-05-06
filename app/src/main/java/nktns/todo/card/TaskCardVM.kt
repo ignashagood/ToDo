@@ -10,7 +10,7 @@ import nktns.todo.R
 import nktns.todo.base.database.TaskRepository
 import nktns.todo.base.database.entity.TaskEntity
 
-class TaskCardViewModel(
+class TaskCardVM(
     // Хорошо соблюдать порядок свойств конструктора по их характеру
     // Сначала идут общие компоненты
     private val resourceProvider: nktns.todo.base.ResourceProvider,
