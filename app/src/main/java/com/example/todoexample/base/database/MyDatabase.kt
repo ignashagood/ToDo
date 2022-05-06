@@ -11,7 +11,7 @@ import com.example.todoexample.base.database.entity.TaskEntity
 import com.example.todoexample.base.database.entity.TaskList
 
 @Database(entities = [TaskEntity::class, Task::class, TaskList::class], version = 1)
-@TypeConverters(Converters::class)
+@TypeConverters(DateConverters::class)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun taskDAO(): TaskDAO

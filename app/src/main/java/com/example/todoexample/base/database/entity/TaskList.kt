@@ -11,6 +11,6 @@ const val TASK_LIST_NAME = "taskListName"
 data class TaskList(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = TASK_LIST_ID) val id: Int,
-    @ColumnInfo(name = TASK_LIST_NAME)val name: String,
+    @ColumnInfo(name = TASK_LIST_NAME) val name: String,
     val creationDate: Long
 )

@@ -6,7 +6,7 @@ import com.example.todoexample.base.database.entity.TASK_LIST_NAME
 
 data class TaskListWithCounts(
     @ColumnInfo(name = TASK_LIST_ID) val id: Int,
-    @ColumnInfo(name = TASK_LIST_NAME) val taskListName: String,
+    @ColumnInfo(name = TASK_LIST_NAME) val name: String,
     val taskCount: Int,
     val outdatedTaskCount: Int
 )

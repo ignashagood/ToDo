@@ -1,12 +1,12 @@
 package com.example.todoexample.base.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.todoexample.base.database.entity.Task
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDAONew {
@@ -23,9 +23,9 @@ interface TaskDAONew {
     @Query("SELECT * FROM tasks WHERE taskId = :id")
     fun get(id: Int): Task
 
-    @Query("SELECT * FROM tasks WHERE taskCompletionDate = :todayDate ORDER BY isCompleted")
-    fun getTodayTasks(todayDate: Long): LiveData<List<Task>>
+    @Query("SELECT * FROM tasks WHERE taskCompletionDate = :todayDate ORDER BY isCompleted, creationDate")
+    fun getTodayTasks(todayDate: Long): Flow<List<Task>>
 
     @Query("SELECT * from tasks ORDER BY isCompleted, creationDate")
-    fun getTasks(): LiveData<List<Task>>
+    fun getTasks(): Flow<List<Task>>
 }
