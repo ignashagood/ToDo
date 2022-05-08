@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import nktns.todo.R
-import nktns.todo.base.database.entity.TaskEntity
+import nktns.todo.data.database.entity.TaskEntity
 import nktns.todo.databinding.TaskItemBinding
 
 class TaskAdapter(

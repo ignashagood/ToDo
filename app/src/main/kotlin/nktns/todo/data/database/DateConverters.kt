@@ -1,4 +1,4 @@
-package nktns.todo.base.database
+package nktns.todo.data.database
 
 import androidx.room.TypeConverter
 import java.util.Date

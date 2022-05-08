@@ -1,10 +1,11 @@
-package nktns.todo.base
+package nktns.todo
 
 import androidx.room.Room
-import nktns.todo.base.database.TasksDatabase
-import nktns.todo.base.database.TaskRepository
+import nktns.todo.base.ResourceProvider
 import nktns.todo.card.TaskCardMode
 import nktns.todo.card.TaskCardViewModel
+import nktns.todo.data.TaskRepository
+import nktns.todo.data.database.TasksDatabase
 import nktns.todo.list.ViewModelList
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel

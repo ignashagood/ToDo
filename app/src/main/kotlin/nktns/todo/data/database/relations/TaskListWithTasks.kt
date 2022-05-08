@@ -1,9 +1,9 @@
-package nktns.todo.base.database.relations
+package nktns.todo.data.database.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import nktns.todo.base.database.entity.Task
-import nktns.todo.base.database.entity.TaskList
+import nktns.todo.data.database.entity.Task
+import nktns.todo.data.database.entity.TaskList
 
 data class TaskListWithTasks(
     @Embedded

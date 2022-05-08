@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import nktns.todo.base.database.TaskRepository
-import nktns.todo.base.database.entity.TaskEntity
+import nktns.todo.data.TaskRepository
+import nktns.todo.data.database.entity.TaskEntity
 
 class ViewModelList(private val repository: TaskRepository, application: Application) :
     AndroidViewModel(application),

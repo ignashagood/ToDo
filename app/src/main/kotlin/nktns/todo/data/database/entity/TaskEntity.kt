@@ -1,4 +1,4 @@
-package nktns.todo.base.database.entity
+package nktns.todo.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

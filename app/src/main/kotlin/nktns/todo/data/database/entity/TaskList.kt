@@ -1,4 +1,4 @@
-package nktns.todo.base.database.entity
+package nktns.todo.data.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -290,6 +290,7 @@ naming:
     forbiddenName: []
   FunctionMaxLength:
     active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     maximumFunctionNameLength: 30
   FunctionMinLength:
     active: true
@@ -307,7 +308,7 @@ naming:
     ignoreOverridden: true
   InvalidPackageDeclaration:
     active: true
-    rootPackage: ''
+    rootPackage: 'nktns.todo'
     requireRootInDeclaration: false
   LambdaParameterNaming:
     active: false
@@ -379,11 +380,11 @@ potential-bugs:
       - 'kotlin.collections.MutableList'
       - 'kotlin.collections.MutableMap'
       - 'kotlin.collections.MutableSet'
-      - 'java.util.ArrayList'
-      - 'java.util.LinkedHashSet'
-      - 'java.util.HashSet'
-      - 'java.util.LinkedHashMap'
-      - 'java.util.HashMap'
+      - 'kotlin.util.ArrayList'
+      - 'kotlin.util.LinkedHashSet'
+      - 'kotlin.util.HashSet'
+      - 'kotlin.util.LinkedHashMap'
+      - 'kotlin.util.HashMap'
   DuplicateCaseInWhenExpression:
     active: true
   ElseCaseInsteadOfExhaustiveWhen:
@@ -667,4 +668,4 @@ style:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     excludeImports:
-      - 'java.util.*'
+      - 'kotlin.util.*'

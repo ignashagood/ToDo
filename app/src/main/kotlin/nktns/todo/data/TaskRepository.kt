@@ -1,8 +1,8 @@
-package nktns.todo.base.database
+package nktns.todo.data
 
 import androidx.lifecycle.LiveData
-import nktns.todo.base.database.dao.TaskDAO
-import nktns.todo.base.database.entity.TaskEntity
+import nktns.todo.data.database.dao.TaskDAO
+import nktns.todo.data.database.entity.TaskEntity
 
 class TaskRepository(private val taskDao: TaskDAO) {
     val sortedTasks: LiveData<List<TaskEntity>> = taskDao.sort()

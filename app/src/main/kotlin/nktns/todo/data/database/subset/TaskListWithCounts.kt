@@ -1,8 +1,8 @@
-package nktns.todo.base.database.subset
+package nktns.todo.data.database.subset
 
 import androidx.room.ColumnInfo
-import nktns.todo.base.database.entity.TASK_LIST_ID
-import nktns.todo.base.database.entity.TASK_LIST_NAME
+import nktns.todo.data.database.entity.TASK_LIST_ID
+import nktns.todo.data.database.entity.TASK_LIST_NAME
 
 data class TaskListWithCounts(
     @ColumnInfo(name = TASK_LIST_ID) val id: Int,

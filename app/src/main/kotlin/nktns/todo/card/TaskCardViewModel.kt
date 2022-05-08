@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nktns.todo.R
-import nktns.todo.base.database.TaskRepository
-import nktns.todo.base.database.entity.TaskEntity
+import nktns.todo.data.TaskRepository
+import nktns.todo.data.database.entity.TaskEntity
 
 class TaskCardViewModel(
     //Хорошо соблюдать порядок свойств конструктора по их характеру
