@@ -14,4 +14,6 @@ jobs:
         with:
           args: --config config/detekt/detekt.yml
       - name: tests
-        run: ./gradlew testDebugUnitTest
+        run: |
+          chmod +x ./gradlew
+          ./gradlew testDebugUnitTest
