@@ -10,13 +10,13 @@ if [ $DETEKT_EXIT_CODE -ne 0 ]; then
 fi
 rm $DETEKT_OUTPUT
 
-#echo "Running tests..."
-#TESTS_OUTPUT="/tmp/tests-$(date +%s)"
-#./gradlew test > $TESTS_OUTPUT
-#TESTS_EXIT_CODE=$?
-#if [ $TESTS_EXIT_CODE -ne 0 ]; then
-#  cat $TESTS_OUTPUT
-#  rm $TESTS_OUTPUT
-#  exit $TESTS_EXIT_CODE
-#fi
-#rm $TESTS_OUTPUT
+echo "Running tests..."
+TESTS_OUTPUT="/tmp/tests-$(date +%s)"
+./gradlew test > $TESTS_OUTPUT
+TESTS_EXIT_CODE=$?
+if [ $TESTS_EXIT_CODE -ne 0 ]; then
+  cat $TESTS_OUTPUT
+  rm $TESTS_OUTPUT
+  exit $TESTS_EXIT_CODE
+fi
+rm $TESTS_OUTPUT
