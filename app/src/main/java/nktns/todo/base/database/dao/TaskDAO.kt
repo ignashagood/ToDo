@@ -1,11 +1,11 @@
 package nktns.todo.base.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import nktns.todo.base.database.entity.TaskEntity
 
 @Dao
@@ -20,7 +20,7 @@ interface TaskDAO {
     suspend fun update(task: TaskEntity)
 
     @Query("SELECT * from taskItems ORDER BY isCompleted")
-    fun sort(): LiveData<List<TaskEntity>>
+    fun sort(): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM taskItems WHERE itemId = :taskId")
     fun getById(taskId: Int): TaskEntity
