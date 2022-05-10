@@ -10,13 +10,13 @@ import nktns.todo.R
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
 
-class TaskCardViewModel(
-    //Хорошо соблюдать порядок свойств конструктора по их характеру
-    //Сначала идут общие компоненты
+class TaskCardVM(
+    // Хорошо соблюдать порядок свойств конструктора по их характеру
+    // Сначала идут общие компоненты
     private val resourceProvider: nktns.todo.base.ResourceProvider,
-    //Затем идут компоненты, решающие сценарии
+    // Затем идут компоненты, решающие сценарии
     private val repository: TaskRepository,
-    //Затем идут параметры сценариев
+    // Затем идут параметры сценариев
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
@@ -57,9 +57,10 @@ class TaskCardViewModel(
         }
     }
 
-    //Так правильней, чем прокидывать новое имя в onButtonClicked
-    //Т.к. кнопку пользователь нажимает позже, а модель данных нужно зафиксировать сразу после изменения
-    //Самая очевидная нужда в этом - при повороте экрана последнее значение будет у нас на руках, а не только в EditText
+    // Так правильней, чем прокидывать новое имя в onButtonClicked
+    // Т.к. кнопку пользователь нажимает позже, а модель данных нужно зафиксировать сразу после изменения
+    // Самая очевидная нужда в этом - при повороте экрана последнее
+    // значение будет у нас на руках, а не только в EditText
     fun onTaskNameChanged(newName: String) {
         runOnContentState { _state.value = copy(name = newName) }
     }
@@ -82,7 +83,7 @@ class TaskCardViewModel(
 
     private val TaskCardMode.actionName: String
         get() =
-            //Любые строки достаём из strings с помощью ResourceProvider
+            // Любые строки достаём из strings с помощью ResourceProvider
             resourceProvider.getString(
                 when (this) {
                     is TaskCardMode.Create -> R.string.task_card_add_btn

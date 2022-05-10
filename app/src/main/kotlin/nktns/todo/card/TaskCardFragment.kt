@@ -24,7 +24,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private val viewModel: TaskCardViewModel by viewModel {
+    private val viewModel: TaskCardVM by viewModel {
         parametersOf(requireArguments().getParcelable(TASK_CARD_MODE_KEY))
     }
 

@@ -1,5 +1,6 @@
 package nktns.todo.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,7 +11,7 @@ import nktns.todo.data.database.entity.TaskEntity
 import nktns.todo.databinding.TaskItemBinding
 
 class TaskAdapter(
-    private val actionHandler: ListFragment.TaskActionHandler,
+    private val actionHandler: TaskListFragment.TaskActionHandler,
     private val itemClickListener: OnItemClickListener
 ) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
@@ -43,8 +44,7 @@ class TaskAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
-        val holder =
-            TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
+        val holder = TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
         binding.deleteBut.setOnClickListener {
             actionHandler.onTaskDeleteClick(tasks[holder.bindingAdapterPosition])
         }
@@ -61,12 +61,16 @@ class TaskAdapter(
         holder.bind(tasks[position])
     }
 
-    override fun getItemCount(): Int {
-        return tasks.size
+    override fun getItemCount(): Int = tasks.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initList(newTaskList: List<TaskEntity>) {
+        tasks = newTaskList
+        notifyDataSetChanged()
     }
 
-    fun updateList(newItems: Pair<List<TaskEntity>, DiffUtil.DiffResult>) {
-        tasks = newItems.first
-        newItems.second.dispatchUpdatesTo(this)
+    fun updateList(newTaskList: List<TaskEntity>, diffResult: DiffUtil.DiffResult) {
+        tasks = newTaskList
+        diffResult.dispatchUpdatesTo(this)
     }
 }

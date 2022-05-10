@@ -1,11 +1,11 @@
 package nktns.todo.data
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import nktns.todo.data.database.dao.TaskDAO
 import nktns.todo.data.database.entity.TaskEntity
 
 class TaskRepository(private val taskDao: TaskDAO) {
-    val sortedTasks: LiveData<List<TaskEntity>> = taskDao.sort()
+    val sortedTasks: Flow<List<TaskEntity>> = taskDao.sort()
 
     suspend fun add(task: TaskEntity) {
         taskDao.add(task)
