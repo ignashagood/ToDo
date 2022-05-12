@@ -2,26 +2,26 @@ package nktns.todo.data
 
 import kotlinx.coroutines.flow.Flow
 import nktns.todo.data.database.dao.TaskDAONew
-import nktns.todo.data.database.entity.Task
+import nktns.todo.data.database.entity.TaskEntityNew
 import java.util.Date
 
 class TaskRepositoryNew(private val taskDAO: TaskDAONew) {
 
-    fun get(id: Int): Task? = taskDAO.get(id)
+    fun get(id: Int): TaskEntityNew? = taskDAO.get(id)
 
-    fun getTasks(): Flow<List<Task>> = taskDAO.getAll()
+    fun getTasks(): Flow<List<TaskEntityNew>> = taskDAO.getAll()
 
-    fun getTodayTasks(): Flow<List<Task>> = taskDAO.getAllByCompletionDate(Date())
+    fun getTodayTasks(): Flow<List<TaskEntityNew>> = taskDAO.getAllByCompletionDate(Date())
 
-    suspend fun add(task: Task) {
+    suspend fun add(task: TaskEntityNew) {
         taskDAO.add(task)
     }
 
-    suspend fun update(task: Task) {
+    suspend fun update(task: TaskEntityNew) {
         taskDAO.update(task)
     }
 
-    suspend fun delete(task: Task) {
+    suspend fun delete(task: TaskEntityNew) {
         taskDAO.delete(task)
     }
 }

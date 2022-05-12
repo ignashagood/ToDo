@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import nktns.todo.base.withoutTime
 import nktns.todo.data.database.dao.TaskDAONew
-import nktns.todo.data.database.entity.Task
+import nktns.todo.data.database.entity.TaskEntityNew
 import java.util.Calendar
 import java.util.Date
 
@@ -22,12 +22,12 @@ class TaskDAOStub : TaskDAONew {
             add(Calendar.DAY_OF_YEAR, 1)
             time
         }
-    private val initialTasks: List<Task> = listOf(
+    private val initialTasks: List<TaskEntityNew> = listOf(
         createTask(id = FIRST_TASK_ID),
         createTask(id = 2, completionDate = tomorrowDate),
     )
-    private val tasks: MutableList<Task> = initialTasks.toMutableList()
-    private val tasksFlow: MutableStateFlow<List<Task>> = MutableStateFlow(tasks.toList())
+    private val tasks: MutableList<TaskEntityNew> = initialTasks.toMutableList()
+    private val tasksFlow: MutableStateFlow<List<TaskEntityNew>> = MutableStateFlow(tasks.toList())
 
     suspend fun reset() {
         tasks.clear()
@@ -35,33 +35,33 @@ class TaskDAOStub : TaskDAONew {
         emitTasks()
     }
 
-    override suspend fun add(task: Task) {
+    override fun get(id: Int): TaskEntityNew? = tasks.find { it.id == id }
+
+    override fun getAll(): Flow<List<TaskEntityNew>> = tasksFlow
+
+    override fun getAllByCompletionDate(date: Date): Flow<List<TaskEntityNew>> {
+        return flowOf(tasks.filter { task -> date.withoutTime() == task.completionDate.withoutTime() })
+    }
+
+    override suspend fun add(task: TaskEntityNew) {
         if (tasks.contains(task).not()) {
             tasks.add(task)
             tasksFlow.emit(tasks.toList())
         }
     }
 
-    override suspend fun delete(task: Task) {
+    override suspend fun delete(task: TaskEntityNew) {
         if (tasks.remove(task)) {
             emitTasks()
         }
     }
 
-    override suspend fun update(task: Task) {
+    override suspend fun update(task: TaskEntityNew) {
         val index: Int = tasks.indexOfFirst { it.id == task.id }
         if (index >= 0) {
             tasks[index] = task
             emitTasks()
         }
-    }
-
-    override fun get(id: Int): Task? = tasks.find { it.id == id }
-
-    override fun getAll(): Flow<List<Task>> = tasksFlow
-
-    override fun getAllByCompletionDate(date: Date): Flow<List<Task>> {
-        return flowOf(tasks.filter { task -> date.withoutTime() == task.completionDate.withoutTime() })
     }
 
     private suspend fun emitTasks() {

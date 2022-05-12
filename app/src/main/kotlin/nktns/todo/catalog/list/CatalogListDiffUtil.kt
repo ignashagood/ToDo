@@ -1,15 +1,15 @@
 package nktns.todo.catalog.list
 
 import androidx.recyclerview.widget.DiffUtil
-import nktns.todo.data.database.entity.Catalog
+import nktns.todo.data.database.entity.CatalogEntity
 
 class CatalogListDiffUtil(
-    private val oldList: List<Catalog>,
-    private val newList: List<Catalog>
+    private val oldList: List<CatalogEntity>,
+    private val newList: List<CatalogEntity>
 ) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldTask: Catalog = oldList[oldItemPosition]
-        val newTask: Catalog = newList[newItemPosition]
+        val oldTask: CatalogEntity = oldList[oldItemPosition]
+        val newTask: CatalogEntity = newList[newItemPosition]
         return oldTask.id == newTask.id
     }
 
@@ -22,8 +22,8 @@ class CatalogListDiffUtil(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldTask: Catalog = oldList[oldItemPosition]
-        val newTask: Catalog = newList[newItemPosition]
+        val oldTask: CatalogEntity = oldList[oldItemPosition]
+        val newTask: CatalogEntity = newList[newItemPosition]
         return oldTask == newTask
     }
 }
