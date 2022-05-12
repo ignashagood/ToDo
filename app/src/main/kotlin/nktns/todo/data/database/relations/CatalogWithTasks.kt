@@ -5,9 +5,9 @@ import androidx.room.Relation
 import nktns.todo.data.database.entity.Catalog
 import nktns.todo.data.database.entity.Task
 
-data class TaskListWithTasks(
+data class CatalogWithTasks(
     @Embedded
-    val taskList: Catalog,
-    @Relation(parentColumn = "taskListId", entityColumn = "taskParentId")
+    val catalog: Catalog,
+    @Relation(parentColumn = "catalogId", entityColumn = "taskParentId")
     val tasks: List<Task>
 )

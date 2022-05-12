@@ -14,11 +14,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val diModule = module {
+    single { ResourceProvider(application = get()) }
+
     single { Room.databaseBuilder(androidApplication(), TasksDatabase::class.java, "database").build() }
     single { get<TasksDatabase>().taskDAO() }
+    single { get<TasksDatabase>().catalogDAO() }
+
     single { TaskRepository(taskDao = get()) }
-    single { ResourceProvider(application = get()) }
-    single { get<TasksDatabase>().taskListDAONew() }
     single { CatalogRepository(catalogDAO = get()) }
 
     viewModel { TaskListVM(application = get(), repository = get()) }

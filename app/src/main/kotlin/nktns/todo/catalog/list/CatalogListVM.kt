@@ -14,12 +14,12 @@ import nktns.todo.data.database.entity.Catalog
 
 class CatalogListVM(application: Application, private val repository: CatalogRepository) :
     AndroidViewModel(application) {
-    private var _state: MutableLiveData<CatalogListState> = MutableLiveData(CatalogListState.InitialLoading)
+    private val _state: MutableLiveData<CatalogListState> = MutableLiveData(CatalogListState.InitialLoading)
     val state: LiveData<CatalogListState> by ::_state
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.allCatalogs.collect { newCatalogs ->
+            repository.getAll().collect { newCatalogs ->
                 val currentCatalogList: List<Catalog> =
                     (state.value as? CatalogListState.Content)?.catalogList ?: emptyList()
                 val result: DiffUtil.DiffResult =

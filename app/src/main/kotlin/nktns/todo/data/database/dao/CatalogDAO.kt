@@ -8,38 +8,38 @@ import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import nktns.todo.data.database.entity.Catalog
-import nktns.todo.data.database.relations.TaskListWithTasks
-import nktns.todo.data.database.subset.TaskListWithCounts
+import nktns.todo.data.database.relations.CatalogWithTasks
+import nktns.todo.data.database.subset.CatalogWithCounts
 
 @Dao
 interface CatalogDAO {
     @Insert
     suspend fun add(catalog: Catalog)
 
-    @Delete
-    suspend fun delete(catalog: Catalog)
-
     @Update
     suspend fun update(catalog: Catalog)
 
-    @Query("SELECT * FROM taskLists WHERE taskListId = :id")
+    @Delete
+    suspend fun delete(catalog: Catalog)
+
+    @Query("SELECT * FROM catalogs WHERE catalogId = :id")
     fun get(id: Int): Catalog
 
-    @Query("SELECT * from taskLists ORDER BY creationDate")
-    fun getTaskLists(): Flow<List<Catalog>>
+    @Query("SELECT * from catalogs ORDER BY creationDate")
+    fun getAll(): Flow<List<Catalog>>
 
     @Transaction
-    @Query("SELECT * FROM taskLists WHERE taskListId = :id")
-    fun getTaskListWithTasks(id: Int): TaskListWithTasks
+    @Query("SELECT * FROM catalogs WHERE catalogId = :id")
+    fun getCatalogWithTasks(id: Int): CatalogWithTasks
 
     @Query(
-        "SELECT taskListId, taskListName, " +
-                "COUNT(taskId) AS taskCount," +
-                "COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount " +
-                "FROM taskLists " +
-                "LEFT OUTER JOIN tasks ON taskParentId = taskListId " +
-                "GROUP BY taskParentId " +
-                "ORDER BY taskListId DESC"
+        "SELECT *, " +
+            "COUNT(taskId) AS taskCount," +
+            "COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount " +
+            "FROM catalogs " +
+            "LEFT OUTER JOIN tasks ON taskParentId = catalogId " +
+            "GROUP BY taskParentId " +
+            "ORDER BY catalogId DESC"
     )
-    fun getTaskListWithCounts(): List<TaskListWithCounts>
+    fun getAllWithCounts(): List<CatalogWithCounts>
 }

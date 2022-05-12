@@ -19,13 +19,12 @@ class CatalogListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCatalogListBinding.inflate(inflater, container, false)
-        binding?.apply {
+    ): View =
+        FragmentCatalogListBinding.inflate(inflater, container, false).run {
+            binding = this
             recyclerViewCatalogs.adapter = adapter
+            root
         }
-        return binding!!.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.state.observe(viewLifecycleOwner) {

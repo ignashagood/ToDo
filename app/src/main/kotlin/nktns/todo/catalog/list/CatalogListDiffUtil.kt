@@ -10,7 +10,7 @@ class CatalogListDiffUtil(
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldTask: Catalog = oldList[oldItemPosition]
         val newTask: Catalog = newList[newItemPosition]
-        return oldTask.name == newTask.name
+        return oldTask.id == newTask.id
     }
 
     override fun getOldListSize(): Int {
