@@ -25,12 +25,12 @@ interface CatalogDAO {
     @Query("SELECT * FROM catalogs WHERE catalogId = :id")
     fun get(id: Int): Catalog
 
-    @Query("SELECT * from catalogs ORDER BY creationDate")
-    fun getAll(): Flow<List<Catalog>>
-
     @Transaction
     @Query("SELECT * FROM catalogs WHERE catalogId = :id")
-    fun getCatalogWithTasks(id: Int): CatalogWithTasks
+    fun getWithTasks(id: Int): CatalogWithTasks
+
+    @Query("SELECT * from catalogs ORDER BY creationDate")
+    fun getAll(): Flow<List<Catalog>>
 
     @Query(
         "SELECT *, " +
@@ -41,5 +41,5 @@ interface CatalogDAO {
             "GROUP BY taskParentId " +
             "ORDER BY catalogId DESC"
     )
-    fun getAllWithCounts(): List<CatalogWithCounts>
+    fun getWithCounts(): List<CatalogWithCounts>
 }

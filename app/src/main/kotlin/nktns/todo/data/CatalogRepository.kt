@@ -8,15 +8,13 @@ import nktns.todo.data.database.subset.CatalogWithCounts
 
 class CatalogRepository(private val catalogDAO: CatalogDAO) {
 
-    fun get(catalogId: Int): Catalog {
-        return catalogDAO.get(catalogId)
-    }
+    fun get(id: Int): Catalog = catalogDAO.get(id)
+
+    fun getWithTasks(id: Int): CatalogWithTasks = catalogDAO.getWithTasks(id)
 
     fun getAll(): Flow<List<Catalog>> = catalogDAO.getAll()
 
-    fun getWithTasks(id: Int): CatalogWithTasks = catalogDAO.getCatalogWithTasks(id)
-
-    fun getAllWithCounts(): List<CatalogWithCounts> = catalogDAO.getAllWithCounts()
+    fun getAllWithCounts(): List<CatalogWithCounts> = catalogDAO.getWithCounts()
 
     suspend fun add(catalog: Catalog) {
         catalogDAO.add(catalog)
