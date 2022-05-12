@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "tasks")
-data class Task(
+data class TaskEntityNew(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "taskId") val id: Int,
-    @ColumnInfo(name = "taskParentId") val parentId: Int,
     @ColumnInfo(name = "taskName") val name: String,
-    val description: String,
-    val creationDate: Date,
+    @ColumnInfo(name = "taskDescription") val description: String,
+    @ColumnInfo(name = "taskCreationDate") val creationDate: Date,
     @ColumnInfo(name = "taskCompletionDate") val completionDate: Date,
-    val isCompleted: Boolean
+    @ColumnInfo(name = "taskIsCompleted") val isCompleted: Boolean,
+    @ColumnInfo(name = "taskCatalogId") val catalogId: Int
 )

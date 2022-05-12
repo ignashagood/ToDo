@@ -5,13 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-const val CATALOG_ID = "catalogId"
-const val CATALOG_NAME = "catalogName"
-
 @Entity(tableName = "catalogs")
-data class Catalog(
+data class CatalogEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = CATALOG_ID) val id: Int,
-    @ColumnInfo(name = CATALOG_NAME) val name: String,
-    val creationDate: Date
+    @ColumnInfo(name = "catalogId") val id: Int,
+    @ColumnInfo(name = "catalogName") val name: String,
+    @ColumnInfo(name = "catalogCreationDate") val creationDate: Date
 )
