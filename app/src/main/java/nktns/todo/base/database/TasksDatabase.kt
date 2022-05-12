@@ -15,5 +15,5 @@ import nktns.todo.base.database.entity.TaskEntity
 abstract class TasksDatabase : RoomDatabase() {
     abstract fun taskDAO(): TaskDAO
     abstract fun taskDAONew(): TaskDAONew
-    abstract fun taskListDAONew(): CatalogDAO
+    abstract fun catalogDAO(): CatalogDAO
 }

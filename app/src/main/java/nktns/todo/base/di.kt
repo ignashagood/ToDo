@@ -4,9 +4,9 @@ import androidx.room.Room
 import nktns.todo.base.database.CatalogRepository
 import nktns.todo.base.database.TaskRepository
 import nktns.todo.base.database.TasksDatabase
+import nktns.todo.catalog.list.CatalogListVM
 import nktns.todo.task.card.TaskCardMode
 import nktns.todo.task.card.TaskCardVM
-import nktns.todo.catalog.list.CatalogListVM
 import nktns.todo.task.list.TaskListVM
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,8 +17,8 @@ val diModule = module {
     single { get<TasksDatabase>().taskDAO() }
     single { TaskRepository(taskDao = get()) }
     single { ResourceProvider(application = get()) }
-    single { get<TasksDatabase>().taskListDAONew() }
-    single { CatalogRepository(taskListDAONew = get()) }
+    single { get<TasksDatabase>().CatalogDAO() }
+    single { CatalogRepository(catalogDAO = get()) }
 
     viewModel { TaskListVM(application = get(), repository = get()) }
     viewModel { (taskCardMode: TaskCardMode) ->
