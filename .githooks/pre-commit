@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
 echo "Running detekt check..."
-OUTPUT="/tmp/detekt-$(date +%s)"
-./gradlew detekt > $OUTPUT
-EXIT_CODE=$?
-if [ $EXIT_CODE -ne 0 ]; then
-  cat $OUTPUT
-  rm $OUTPUT
-  exit $EXIT_CODE
+DETEKT_OUTPUT="/tmp/detekt-$(date +%s)"
+./gradlew detekt > $DETEKT_OUTPUT
+DETEKT_EXIT_CODE=$?
+if [ $DETEKT_EXIT_CODE -ne 0 ]; then
+  cat $DETEKT_OUTPUT
+  rm $DETEKT_OUTPUT
+  exit $DETEKT_EXIT_CODE
 fi
-rm $OUTPUT
+rm $DETEKT_OUTPUT
+
+echo "Running tests..."
+TESTS_OUTPUT="/tmp/tests-$(date +%s)"
+./gradlew test > $TESTS_OUTPUT
+TESTS_EXIT_CODE=$?
+if [ $TESTS_EXIT_CODE -ne 0 ]; then
+  cat $TESTS_OUTPUT
+  rm $TESTS_OUTPUT
+  exit $TESTS_EXIT_CODE
+fi
+rm $TESTS_OUTPUT
