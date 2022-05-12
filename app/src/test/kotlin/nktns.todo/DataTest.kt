@@ -7,10 +7,13 @@ import nktns.todo.base.withoutTime
 import nktns.todo.data.TaskRepositoryNew
 import nktns.todo.data.database.entity.Task
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import java.util.Date
 
 class DataTest {
@@ -50,8 +53,6 @@ class DataTest {
             taskRepository.add(newTask)
 
             assertTrue(getLastTaskList().contains(newTask))
-
-            taskDAO.reset()
         }
 
     //TODO Лишний тест
@@ -63,7 +64,7 @@ class DataTest {
             taskRepository.add(newTask)
             taskRepository.add(newTask)
 
-            assertTrue(getLastTaskList().count { it.id == newTask.id } == 1)
+            assertEquals(getLastTaskList().count { it.id == newTask.id }, 1)
         }
 
     @Test
@@ -74,19 +75,21 @@ class DataTest {
             taskRepository.delete(preDeleteTasks.first())
             val postDeleteTasks: List<Task> = getLastTaskList()
 
-            assertFalse(postDeleteTasks.contains(preDeleteTasks.first()))
-            assertTrue(postDeleteTasks.containsAll(preDeleteTasks.subList(1, preDeleteTasks.size)))
+            assertAll(
+                { assertFalse(postDeleteTasks.contains(preDeleteTasks.first())) },
+                { assertTrue(postDeleteTasks.containsAll(preDeleteTasks.subList(1, preDeleteTasks.size))) },
+            )
         }
 
     @Test
-    fun `when delete non-existent task, list of tasks must be unchanged`() =
+    fun `when delete non-existent task, list of tasks must be same`() =
         runBlocking {
             val preDeleteTasks: List<Task> = getLastTaskList()
             val taskForDelete = createTask(id = TaskDAOStub.INITIAL_TASKS_COUNT + 1)
 
             taskRepository.delete(taskForDelete)
 
-            assertTrue(preDeleteTasks === getLastTaskList())
+            assertSame(preDeleteTasks, getLastTaskList())
         }
 
     @Test
@@ -99,7 +102,7 @@ class DataTest {
             val postUpdateTasks: List<Task> = getLastTaskList()
             val updatedTask: Task? = postUpdateTasks.find { it.id == taskForUpdate.id }
 
-            assertTrue(updatedTask != null && updatedTask == taskForUpdate)
+            assertEquals(updatedTask, taskForUpdate)
         }
 
     @Test
