@@ -1,4 +1,4 @@
-package nktns.todo.card
+package nktns.todo.task.card
 
 sealed class TaskCardState {
     object InitialLoading : TaskCardState()

@@ -1,4 +1,4 @@
-package nktns.todo.list
+package nktns.todo.task.list
 
 import androidx.recyclerview.widget.DiffUtil
 import nktns.todo.data.database.entity.TaskEntity
@@ -10,7 +10,7 @@ class TaskListDiffUtil(
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldTask: TaskEntity = oldList[oldItemPosition]
         val newTask: TaskEntity = newList[newItemPosition]
-        return oldTask.name == newTask.name
+        return oldTask.itemId == newTask.itemId
     }
 
     override fun getOldListSize(): Int {

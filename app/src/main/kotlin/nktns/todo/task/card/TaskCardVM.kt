@@ -1,4 +1,4 @@
-package nktns.todo.card
+package nktns.todo.task.card
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

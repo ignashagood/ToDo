@@ -1,4 +1,4 @@
-package nktns.todo.list
+package nktns.todo.task.list
 
 import android.os.Bundle
 import android.view.LayoutInflater

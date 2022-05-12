@@ -25,8 +25,8 @@ interface TaskDAONew {
     fun get(id: Int): Task?
 
     @Query("SELECT * from tasks ORDER BY isCompleted, creationDate")
-    fun getTasks(): Flow<List<Task>>
+    fun getAll(): Flow<List<Task>>
 
     @Query("SELECT * FROM tasks WHERE taskCompletionDate = :date ORDER BY isCompleted, creationDate")
-    fun getTasksByCompletionDate(date: Date): Flow<List<Task>>
+    fun getAllByCompletionDate(date: Date): Flow<List<Task>>
 }

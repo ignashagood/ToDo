@@ -1,4 +1,4 @@
-package nktns.todo.list
+package nktns.todo.task.list
 
 import androidx.recyclerview.widget.DiffUtil
 import nktns.todo.data.database.entity.TaskEntity
