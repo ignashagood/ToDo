@@ -1,4 +1,4 @@
-package nktns.todo.list
+package nktns.todo.task.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import nktns.todo.base.database.entity.TaskEntity
-import nktns.todo.card.TaskCardFragment
-import nktns.todo.card.TaskCardMode
 import nktns.todo.databinding.FragmentListBinding
+import nktns.todo.task.card.TaskCardFragment
+import nktns.todo.task.card.TaskCardMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
@@ -30,7 +30,7 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
     ): View {
         binding = FragmentListBinding.inflate(inflater, container, false)
         binding?.apply {
-            recyclerView.adapter = adapter
+            recyclerViewTasks.adapter = adapter
             addButton.setOnClickListener {
                 TaskCardFragment.newInstance(TaskCardMode.Create).show(childFragmentManager, "CreateSheetDialog")
             }

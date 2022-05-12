@@ -1,4 +1,4 @@
-package nktns.todo.card
+package nktns.todo.task.card
 
 import android.os.Bundle
 import android.view.LayoutInflater

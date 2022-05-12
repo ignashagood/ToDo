@@ -7,26 +7,26 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import nktns.todo.base.database.entity.TaskList
+import nktns.todo.base.database.entity.Catalog
 import nktns.todo.base.database.relations.TaskListWithTasks
 import nktns.todo.base.database.subset.TaskListWithCounts
 
 @Dao
-interface TaskListDAONew {
+interface CatalogDAO {
     @Insert
-    suspend fun add(taskList: TaskList)
+    suspend fun add(catalog: Catalog)
 
     @Delete
-    suspend fun delete(taskList: TaskList)
+    suspend fun delete(catalog: Catalog)
 
     @Update
-    suspend fun update(taskList: TaskList)
+    suspend fun update(catalog: Catalog)
 
     @Query("SELECT * FROM taskLists WHERE taskListId = :id")
-    fun get(id: Int): TaskList
+    fun get(id: Int): Catalog
 
     @Query("SELECT * from taskLists ORDER BY creationDate")
-    fun getTaskLists(): Flow<List<TaskList>>
+    fun getTaskLists(): Flow<List<Catalog>>
 
     @Transaction
     @Query("SELECT * FROM taskLists WHERE taskListId = :id")
@@ -34,12 +34,12 @@ interface TaskListDAONew {
 
     @Query(
         "SELECT taskListId, taskListName, " +
-                "COUNT(taskId) AS taskCount," +
-                "COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount " +
-                "FROM taskLists " +
-                "LEFT OUTER JOIN tasks ON taskParentId = taskListId " +
-                "GROUP BY taskParentId " +
-                "ORDER BY taskListId DESC"
+            "COUNT(taskId) AS taskCount," +
+            "COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount " +
+            "FROM taskLists " +
+            "LEFT OUTER JOIN tasks ON taskParentId = taskListId " +
+            "GROUP BY taskParentId " +
+            "ORDER BY taskListId DESC"
     )
     fun getTaskListWithCounts(): List<TaskListWithCounts>
 }
