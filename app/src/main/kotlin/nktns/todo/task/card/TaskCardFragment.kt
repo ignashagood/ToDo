@@ -65,7 +65,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                         editText.setText(state.name)
                     }
                     editText.isVisible = true
-                    checkButton.text = state.actionName
+                    checkText.text = state.actionName
                     checkButton.isVisible = true
                 }
             }

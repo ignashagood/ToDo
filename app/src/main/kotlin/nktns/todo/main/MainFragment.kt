@@ -31,9 +31,9 @@ class MainFragment : Fragment() {
         val tabLayout = binding!!.tab
         TabLayoutMediator(tabLayout, myViewPager2) { tab, position ->
             when (position) {
-                0 -> tab.text = "TaskList"
-                1 -> tab.text = "Today"
-                2 -> tab.text = "List Of Lists"
+                0 -> tab.text = "все"
+                1 -> tab.text = "сегодня"
+                2 -> tab.text = "списки дел"
             }
         }.attach()
     }
