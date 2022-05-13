@@ -14,8 +14,8 @@
         <!-- Customize your theme here. -->
     </style>
     
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:background">@style/BottomSheetStyle</item>
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:background">@drawable/bottom_sheet_background</item>
     </style>
 
 
