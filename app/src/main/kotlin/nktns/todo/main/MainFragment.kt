@@ -57,8 +57,8 @@ class MainFragment : Fragment() {
     }
 
     private fun TabLayout.Tab.setTextStyle(style: Int) {
-        this.view.children.find { it is TextView }?.let { tv ->
-            (tv as TextView).setTypeface(null, style)
+        this.view.children.find { it is TextView }?.let { it ->
+            (it as TextView).setTypeface(null, style)
         }
     }
 }
