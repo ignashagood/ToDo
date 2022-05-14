@@ -15,8 +15,4 @@
         <item name="android:textColor">@color/black</item>
         <item name="textAllCaps">false</item>
     </style>
-    
-    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
 </resources>

@@ -4,6 +4,6 @@
 
     <solid android:color="@android:color/white" />
 
-    <corners android:radius="6dp" />
+    <corners android:radius="@dimen/default_list_bg_corner_radius" />
 
 </shape>
