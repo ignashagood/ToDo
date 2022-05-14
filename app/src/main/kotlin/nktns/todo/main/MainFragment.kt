@@ -41,28 +41,24 @@ class MainFragment : Fragment() {
                 2 -> tab.text = getString(R.string.tab_item_3)
             }
         }.attach()
-        tabLayout.setStyleForTab(tabLayout.getTabAt(tabLayout.selectedTabPosition)!!, Typeface.BOLD)
+        tabLayout.getTabAt(tabLayout.selectedTabPosition)?.setTextStyle(Typeface.BOLD)
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tabLayout.setStyleForTab(tab, Typeface.BOLD)
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                tab.setTextStyle(Typeface.BOLD)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tabLayout.setStyleForTab(tab, Typeface.NORMAL)
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                tab.setTextStyle(Typeface.NORMAL)
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                tabLayout.setStyleForTab(tab, Typeface.BOLD)
-            }
+            override fun onTabReselected(tab: TabLayout.Tab) = Unit
         })
     }
 
-    fun TabLayout.setStyleForTab(tab: TabLayout.Tab?, style: Int) {
-        tab?.view?.children?.find { it is TextView }?.let { tv ->
-            (tv as TextView).run {
-                this.setTypeface(null, style)
-            }
+    private fun TabLayout.Tab.setTextStyle(style: Int) {
+        this.view.children.find { it is TextView }?.let { tv ->
+            (tv as TextView).setTypeface(null, style)
         }
     }
 }
