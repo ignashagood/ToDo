@@ -6,4 +6,11 @@
     <string name="tab_item_1">все</string>
     <string name="tab_item_2">сегодня</string>
     <string name="tab_item_3">списки дел</string>
+    <string name="create_task_string">Новая задача</string>
+    <string name="create_task_description">Описание</string>
+    <string name="date_string_bottom_sheet">15 мая</string>
+    <string name="time_string_bottom_sheet">10:30</string>
+    <string name="catalog_name_string_bottom_sheet">Учеба</string>
+    <string name="delete_string_bottom_sheet">удалить</string>
+    <string name="save_string_bottom_sheet">сохранить</string>
 </resources>

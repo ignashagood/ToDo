@@ -6,59 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:paddingStart="16dp"
-    android:paddingTop="26dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="16dp">
+    android:paddingStart="@dimen/create_edit_task_padding_horiz"
+    android:paddingTop="@dimen/create_edit_task_padding_vert"
+    android:paddingEnd="@dimen/create_edit_task_padding_horiz"
+    android:paddingBottom="@dimen/create_edit_task_padding_vert">
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_anchorGravity="center">
 
         <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:id="@+id/name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:background="@null"
-            android:ems="13"
-            android:hint="Новая задача"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:hint="@string/create_task_string"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="14dp"
             android:background="@null"
-            android:ems="13"
-            android:hint="Описание"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/linear"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:hint="@string/create_task_description"
+            android:textSize="14sp" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linear"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints">
+            tools:layout_editor_absoluteY="61dp">
 
             <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginEnd="28dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -70,15 +63,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15 мая" />
+                    android:text="@string/date_string_bottom_sheet"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="29dp"
                 android:orientation="vertical"
-                android:paddingStart="30dp">
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -90,15 +89,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10:30" />
+                    android:text="@string/time_string_bottom_sheet"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
                 android:orientation="vertical"
-                android:paddingStart="30dp">
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -110,15 +115,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Учеба" />
+                    android:text="@string/catalog_name_string_bottom_sheet"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="29dp"
                 android:orientation="vertical"
-                android:paddingStart="30dp">
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -130,22 +141,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10:30" />
+                    android:text="@string/delete_string_bottom_sheet"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="45dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:id="@+id/checkButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:background="@null"
                     android:src="@drawable/ic_baseline_check_circle_24" />
 
@@ -153,12 +168,13 @@
                     android:id="@+id/checkText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="сохранить"
-                    android:textColor="@color/green" />
+                    android:text="@string/save_string_bottom_sheet"
+                    android:textColor="@color/green"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
