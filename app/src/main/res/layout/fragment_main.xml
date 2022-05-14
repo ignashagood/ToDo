@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".main.MainFragment"
-    app:divider="@drawable/divider"
-    app:showDividers="middle">
+    android:divider="@drawable/divider"
+    android:showDividers="middle">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -1,11 +1,15 @@
 package nktns.todo.main
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nktns.todo.R
 import nktns.todo.databinding.FragmentMainBinding
@@ -37,5 +41,28 @@ class MainFragment : Fragment() {
                 2 -> tab.text = getString(R.string.tab_item_3)
             }
         }.attach()
+        tabLayout.setStyleForTab(tabLayout.getTabAt(tabLayout.selectedTabPosition)!!, Typeface.BOLD)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tabLayout.setStyleForTab(tab, Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tabLayout.setStyleForTab(tab, Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                tabLayout.setStyleForTab(tab, Typeface.BOLD)
+            }
+        })
+    }
+
+    fun TabLayout.setStyleForTab(tab: TabLayout.Tab?, style: Int) {
+        tab?.view?.children?.find { it is TextView }?.let { tv ->
+            (tv as TextView).run {
+                this.setTypeface(null, style)
+            }
+        }
     }
 }
