@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/light_grey">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_container"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_tasks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".task.list.TaskListFragment">
+        android:layout_height="wrap_content"
+        android:background="@drawable/task_lists_background"
+        android:layout_marginStart="@dimen/list_default_margin_horiz"
+        android:layout_marginEnd="@dimen/list_default_margin_horiz"
+        android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_tasks"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ImageButton
         android:id="@+id/addButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/button_background"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="35dp"
-        android:src="@drawable/ic_baseline_add_24" />
+        android:background="@drawable/button_background"
+        android:src="@drawable/ic_vector_add" />
 
 </RelativeLayout>

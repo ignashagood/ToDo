@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_list_bg_corner_radius">6dp</dimen>
+    <dimen name="list_default_margin_horiz">16dp</dimen>
+    <dimen name="create_edit_task_padding_horiz">16dp</dimen>
+    <dimen name="create_edit_task_padding_vert">26dp</dimen>
+    <dimen name="bottom_icons_margin_start">36dp</dimen>
+</resources>

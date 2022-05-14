@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import nktns.todo.R
 import nktns.todo.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
@@ -31,9 +32,9 @@ class MainFragment : Fragment() {
         val tabLayout = binding!!.tab
         TabLayoutMediator(tabLayout, myViewPager2) { tab, position ->
             when (position) {
-                0 -> tab.text = "TaskList"
-                1 -> tab.text = "Today"
-                2 -> tab.text = "List Of Lists"
+                0 -> tab.text = getString(R.string.tab_item_1)
+                1 -> tab.text = getString(R.string.tab_item_2)
+                2 -> tab.text = getString(R.string.tab_item_3)
             }
         }.attach()
     }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nktns.todo.R
 import nktns.todo.databinding.TaskCardFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -30,6 +31,8 @@ class TaskCardFragment : BottomSheetDialogFragment() {
 
     private var binding: TaskCardFragmentBinding? = null
 
+    override fun getTheme(): Int = R.style.BottomSheetDialogTheme
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.action.observe(this) {
@@ -49,7 +52,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         TaskCardFragmentBinding.inflate(inflater, container, false).run {
             binding = this
             checkButton.setOnClickListener { viewModel.onButtonClicked() }
-            editText.addTextChangedListener { viewModel.onTaskNameChanged(it?.toString().orEmpty()) }
+            name.addTextChangedListener { viewModel.onTaskNameChanged(it?.toString().orEmpty()) }
             root
         }
 
@@ -58,14 +61,14 @@ class TaskCardFragment : BottomSheetDialogFragment() {
             when (state) {
                 TaskCardState.InitialLoading -> binding?.run {
                     checkButton.isVisible = false
-                    editText.isVisible = false
+                    name.isVisible = false
                 }
                 is TaskCardState.Content -> binding?.run {
-                    if (editText.text.toString() != state.name) {
-                        editText.setText(state.name)
+                    if (name.text.toString() != state.name) {
+                        name.setText(state.name)
                     }
-                    editText.isVisible = true
-                    checkButton.text = state.actionName
+                    name.isVisible = true
+                    checkText.text = state.actionName
                     checkButton.isVisible = true
                 }
             }
