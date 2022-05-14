@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import nktns.todo.base.diff.calculateDiff
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
 
@@ -20,10 +21,10 @@ class TaskListVM(application: Application, private val repository: TaskRepositor
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.sortedTasks.collect { newTasks ->
+            repository.sortedTasks.collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
-                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(TaskListDiffUtil(currentTaskList, newTasks))
-                _state.value = TaskListState.Content(newTasks, result)
+                val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::itemId)
+                _state.value = TaskListState.Content(newTaskList, result)
             }
         }
     }
