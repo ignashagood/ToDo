@@ -45,10 +45,20 @@ class TaskAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
         val holder = TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
-        binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             val task = tasks[holder.bindingAdapterPosition]
             if (task.isCompleted != isChecked) {
-                actionHandler.onTaskCompleted(TaskEntity(task.name, task.itemId, !task.isCompleted))
+                actionHandler.onTaskCompleted(
+                    TaskEntity(
+                        task.id,
+                        task.name,
+                        task.description,
+                        task.creationDate,
+                        task.completionDate,
+                        !task.isCompleted,
+                        task.catalogId
+                    )
+                )
             }
         }
         return holder

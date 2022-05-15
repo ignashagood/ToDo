@@ -1,5 +1,7 @@
 package nktns.todo.task.card
 
+import java.util.Date
+
 sealed class TaskCardState {
     object InitialLoading : TaskCardState()
 
@@ -7,6 +9,7 @@ sealed class TaskCardState {
         val name: String,
         val isCompleted: Boolean,
         val actionName: String,
-        val canDelete: Boolean
+        val canDelete: Boolean,
+        val completionDate: Date,
     ) : TaskCardState()
 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nktns.todo.R
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
+import java.util.Date
 
 class TaskCardVM(
     // Хорошо соблюдать порядок свойств конструктора по их характеру
@@ -34,12 +35,21 @@ class TaskCardVM(
     }
 
     private fun onCreateMode() {
-        _state.value = TaskCardState.Content(name = "", isCompleted = false, taskCardMode.actionName, canDelete = false)
+        _state.value = TaskCardState.Content(
+            name = "",
+            isCompleted = false,
+            taskCardMode.actionName,
+            canDelete = false,
+            // TODO - для получения текущей даты,
+            Date()
+        )
     }
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.postValue(repository.getById(taskId).toContentState())
+            if (repository.get(taskId) != null) {
+                _state.postValue(repository.get(taskId)!!.toContentState())
+            } else TODO()
         }
     }
 
@@ -106,7 +116,21 @@ class TaskCardVM(
                 }
             )
 
-    private fun TaskEntity.toContentState() = TaskCardState.Content(name, isCompleted, taskCardMode.actionName, true)
+    private fun TaskEntity.toContentState() = TaskCardState.Content(
+        name,
+        isCompleted,
+        taskCardMode.actionName,
+        true,
+        completionDate,
+    )
 
-    private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(name, id, isCompleted)
+    private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(
+        id,
+        name,
+        "",
+        Date(),
+        Date(),
+        isCompleted,
+        id
+    )
 }

@@ -21,9 +21,9 @@ class TaskListVM(application: Application, private val repository: TaskRepositor
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.sortedTasks.collect { newTaskList ->
+            repository.getTasks().collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
-                val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::itemId)
+                val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
                 _state.value = TaskListState.Content(newTaskList, result)
             }
         }
