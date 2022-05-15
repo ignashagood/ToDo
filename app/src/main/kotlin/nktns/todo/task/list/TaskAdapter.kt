@@ -45,9 +45,6 @@ class TaskAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)
         val holder = TaskHolder(binding) { position -> itemClickListener.onItemClick(tasks[position]) }
-        binding.deleteBut.setOnClickListener {
-            actionHandler.onTaskDeleteClick(tasks[holder.bindingAdapterPosition])
-        }
         binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
             val task = tasks[holder.bindingAdapterPosition]
             if (task.isCompleted != isChecked) {
