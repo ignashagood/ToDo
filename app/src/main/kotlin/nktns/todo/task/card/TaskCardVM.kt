@@ -47,7 +47,9 @@ class TaskCardVM(
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.postValue(repository.get(taskId)!!.toContentState())
+            if (repository.get(taskId) != null) {
+                _state.postValue(repository.get(taskId)!!.toContentState())
+            } else TODO()
         }
     }
 
