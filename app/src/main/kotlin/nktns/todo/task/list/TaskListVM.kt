@@ -29,12 +29,6 @@ class TaskListVM(application: Application, private val repository: TaskRepositor
         }
     }
 
-    override fun onTaskDeleteClick(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.delete(task)
-        }
-    }
-
     override fun onTaskCompleted(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.update(task)

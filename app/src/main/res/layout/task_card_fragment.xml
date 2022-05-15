@@ -12,7 +12,7 @@
     android:paddingBottom="@dimen/create_edit_task_padding_vert">
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/main_bottom_sheet_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -37,46 +37,59 @@
             android:textSize="14sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linear"
+            android:id="@+id/buttons_bottom_sheet_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteY="61dp">
 
             <LinearLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/date_pick_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="28dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintEnd_toStartOf="@+id/time_pick_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints">
-
+                tools:ignore="MissingConstraints"
+                android:background="?attr/selectableItemBackground">
+                <!--background clickable
+передать событие клика в vm
+положить completDate в taskCardState.content
+вытащить текущие данные из
+android date picker - android time picker
+taskcardaction -> sealed class
+    ShowDatePicker(date) как action
+    ShowDatePicker(time) как action
+получить результат от пикеров и передать в vm
+в vm обновить контент
+-->
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_calendar_today_24" />
+                    android:src="@drawable/ic_baseline_calendar_today_24"
+                    android:clickable="false"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/date_string_bottom_sheet"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/time_pick_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="29dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toStartOf="@+id/catalog_pick_button"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+                app:layout_constraintStart_toEndOf="@+id/date_pick_button"
                 tools:ignore="MissingConstraints">
 
                 <ImageButton
@@ -84,25 +97,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_access_time_24" />
+                    android:src="@drawable/ic_baseline_access_time_24"
+                    android:clickable="false"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_string_bottom_sheet"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout5"
+                android:id="@+id/catalog_pick_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="28dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+                app:layout_constraintEnd_toStartOf="@+id/delete_button"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout"
+                app:layout_constraintStart_toEndOf="@+id/time_pick_button"
                 tools:ignore="MissingConstraints">
 
                 <ImageButton
@@ -110,50 +125,55 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_view_headline_24" />
+                    android:src="@drawable/ic_baseline_view_headline_24"
+                    android:clickable="false"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/catalog_name_string_bottom_sheet"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout4"
+                android:id="@+id/delete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="29dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+                app:layout_constraintEnd_toStartOf="@+id/save_add_button"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-                tools:ignore="MissingConstraints">
+                app:layout_constraintStart_toEndOf="@+id/catalog_pick_button"
+                tools:ignore="MissingConstraints"
+                android:visibility="gone">
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_delete_24" />
+                    android:src="@drawable/ic_baseline_delete_24"
+                    android:clickable="false"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/delete_string_bottom_sheet"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/save_add_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+                app:layout_constraintStart_toEndOf="@+id/delete_button"
                 tools:ignore="MissingConstraints">
 
                 <ImageButton
@@ -162,7 +182,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_check_circle_24" />
+                    android:src="@drawable/ic_baseline_check_circle_24"
+                    android:clickable="false"/>
 
                 <TextView
                     android:id="@+id/checkText"
@@ -170,7 +191,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/save_string_bottom_sheet"
                     android:textColor="@color/green"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
 
             </LinearLayout>
 

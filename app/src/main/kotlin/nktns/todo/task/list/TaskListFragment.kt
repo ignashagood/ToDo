@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
     interface TaskActionHandler {
-        fun onTaskDeleteClick(task: TaskEntity)
         fun onTaskCompleted(task: TaskEntity)
     }
 

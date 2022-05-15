@@ -34,7 +34,7 @@ class TaskCardVM(
     }
 
     private fun onCreateMode() {
-        _state.value = TaskCardState.Content(name = "", isCompleted = false, taskCardMode.actionName)
+        _state.value = TaskCardState.Content(name = "", isCompleted = false, taskCardMode.actionName, canDelete = false)
     }
 
     private fun onViewMode(taskId: Int) {
@@ -46,14 +46,21 @@ class TaskCardVM(
     private fun addTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.add(task)
-            _action.postValue(TaskCardAction.DISMISS)
+            _action.postValue(TaskCardAction.Dismiss)
         }
     }
 
     private fun updateTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.update(task)
-            _action.postValue(TaskCardAction.DISMISS)
+            _action.postValue(TaskCardAction.Dismiss)
+        }
+    }
+
+    private fun deleteTask(task: TaskEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(task)
+            _action.postValue(TaskCardAction.Dismiss)
         }
     }
 
@@ -65,11 +72,19 @@ class TaskCardVM(
         runOnContentState { _state.value = copy(name = newName) }
     }
 
-    fun onButtonClicked() {
+    fun onSaveAddButtonClicked() {
         runOnContentState {
             when (taskCardMode) {
                 is TaskCardMode.Create -> addTask(toEntity())
                 is TaskCardMode.View -> updateTask(toEntity(taskCardMode.taskId))
+            }
+        }
+    }
+
+    fun onDeleteButtonClicked() {
+        runOnContentState {
+            when (taskCardMode) {
+                is TaskCardMode.View -> deleteTask(toEntity(taskCardMode.taskId))
             }
         }
     }
@@ -91,7 +106,7 @@ class TaskCardVM(
                 }
             )
 
-    private fun TaskEntity.toContentState() = TaskCardState.Content(name, isCompleted, taskCardMode.actionName)
+    private fun TaskEntity.toContentState() = TaskCardState.Content(name, isCompleted, taskCardMode.actionName, true)
 
     private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(name, id, isCompleted)
 }

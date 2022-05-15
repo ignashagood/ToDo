@@ -38,7 +38,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         viewModel.action.observe(this) {
             if (it != null) {
                 when (it) {
-                    TaskCardAction.DISMISS -> dismiss()
+                    TaskCardAction.Dismiss -> dismiss()
                 }
             }
         }
@@ -51,7 +51,8 @@ class TaskCardFragment : BottomSheetDialogFragment() {
     ): View =
         TaskCardFragmentBinding.inflate(inflater, container, false).run {
             binding = this
-            checkButton.setOnClickListener { viewModel.onButtonClicked() }
+            saveAddButton.setOnClickListener { viewModel.onSaveAddButtonClicked() }
+            deleteButton.setOnClickListener { viewModel.onDeleteButtonClicked() }
             name.addTextChangedListener { viewModel.onTaskNameChanged(it?.toString().orEmpty()) }
             root
         }
@@ -67,6 +68,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                     if (name.text.toString() != state.name) {
                         name.setText(state.name)
                     }
+                    deleteButton.isVisible = state.canDelete
                     name.isVisible = true
                     checkText.text = state.actionName
                     checkButton.isVisible = true
