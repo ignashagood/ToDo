@@ -1,10 +1,10 @@
 package nktns.todo
 
-import nktns.todo.data.database.entity.TaskEntityNew
+import nktns.todo.data.database.entity.TaskEntity
 import java.util.Date
 
 fun createTask(id: Int, completionDate: Date = Date()) =
-    TaskEntityNew(
+    TaskEntity(
         id = id,
         name = "Task $id",
         description = "Task $id desc",

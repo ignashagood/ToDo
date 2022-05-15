@@ -7,9 +7,20 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import nktns.todo.data.database.entity.TaskEntity
+import java.util.Date
 
 @Dao
 interface TaskDAO {
+
+    @Query("SELECT * FROM tasks WHERE taskId = :id")
+    fun get(id: Int): TaskEntity?
+
+    @Query("SELECT * from tasks ORDER BY taskIsCompleted, taskCreationDate")
+    fun getAll(): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM tasks WHERE taskCompletionDate = :date ORDER BY taskIsCompleted, taskCreationDate")
+    fun getAllByCompletionDate(date: Date): Flow<List<TaskEntity>>
+
     @Insert
     suspend fun add(task: TaskEntity)
 
@@ -18,10 +29,4 @@ interface TaskDAO {
 
     @Update
     suspend fun update(task: TaskEntity)
-
-    @Query("SELECT * from taskItems ORDER BY isCompleted")
-    fun sort(): Flow<List<TaskEntity>>
-
-    @Query("SELECT * FROM taskItems WHERE itemId = :taskId")
-    fun getById(taskId: Int): TaskEntity
 }

@@ -1,12 +1,18 @@
 package nktns.todo.data.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
-@Entity(tableName = "taskItems")
+@Entity(tableName = "tasks")
 data class TaskEntity(
-    val name: String,
     @PrimaryKey(autoGenerate = true)
-    val itemId: Int,
-    val isCompleted: Boolean
+    @ColumnInfo(name = "taskId") val id: Int,
+    @ColumnInfo(name = "taskName") val name: String,
+    @ColumnInfo(name = "taskDescription") val description: String,
+    @ColumnInfo(name = "taskCreationDate") val creationDate: Date,
+    @ColumnInfo(name = "taskCompletionDate") val completionDate: Date,
+    @ColumnInfo(name = "taskIsCompleted") val isCompleted: Boolean,
+    @ColumnInfo(name = "taskCatalogId") val catalogId: Int
 )

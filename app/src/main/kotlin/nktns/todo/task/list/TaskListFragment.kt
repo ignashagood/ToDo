@@ -47,7 +47,7 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(task: TaskEntity) {
-        TaskCardFragment.newInstance(TaskCardMode.View(task.itemId)).show(childFragmentManager, "ChangeSheetDialog")
+        TaskCardFragment.newInstance(TaskCardMode.View(task.id)).show(childFragmentManager, "ChangeSheetDialog")
     }
 
     private fun applyState(state: TaskListState.Content) {

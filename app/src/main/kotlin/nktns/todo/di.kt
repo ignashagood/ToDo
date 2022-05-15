@@ -20,7 +20,7 @@ val diModule = module {
     single { get<TasksDatabase>().taskDAO() }
     single { get<TasksDatabase>().catalogDAO() }
 
-    single { TaskRepository(taskDao = get()) }
+    single { TaskRepository(taskDAO = get()) }
     single { CatalogRepository(catalogDAO = get()) }
 
     viewModel { TaskListVM(application = get(), repository = get()) }
