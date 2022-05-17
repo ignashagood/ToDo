@@ -18,4 +18,14 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="PickerTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorAccent">@color/green</item>
+        <item name="colorControlActivated">@color/green</item>
+        <item name="colorPrimary">@color/green</item>
+    </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/green</item>
+    </style>
+
 </resources>

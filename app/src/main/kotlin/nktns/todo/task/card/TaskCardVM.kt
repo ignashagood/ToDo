@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nktns.todo.R
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
+import java.util.Calendar
 import java.util.Date
 
 class TaskCardVM(
@@ -35,21 +36,21 @@ class TaskCardVM(
     }
 
     private fun onCreateMode() {
+        val cal = Calendar.getInstance()
         _state.value = TaskCardState.Content(
             name = "",
             isCompleted = false,
             taskCardMode.actionName,
             canDelete = false,
-            // TODO - для получения текущей даты,
-            Date()
+            cal.time
         )
     }
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (repository.get(taskId) != null) {
-                _state.postValue(repository.get(taskId)!!.toContentState())
-            } else TODO()
+            repository.get(taskId)?.let {
+                _state.postValue(it.toContentState())
+            } // TODO()
         }
     }
 
@@ -95,7 +96,45 @@ class TaskCardVM(
         runOnContentState {
             when (taskCardMode) {
                 is TaskCardMode.View -> deleteTask(toEntity(taskCardMode.taskId))
+                is TaskCardMode.Create -> Unit // TODO
             }
+        }
+    }
+
+    fun onDateButtonClicked() {
+        runOnContentState {
+            _action.value = TaskCardAction.ShowDatePicker(this.completionDate)
+        }
+    }
+
+    fun onDatePicked(date: Calendar) {
+        runOnContentState {
+            val newCompletionDate = Calendar.getInstance().run {
+                time = completionDate
+                set(Calendar.YEAR, date.get(Calendar.YEAR))
+                set(Calendar.MONTH, date.get(Calendar.MONTH))
+                set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH))
+                time
+            }
+            _state.value = copy(completionDate = newCompletionDate)
+        }
+    }
+
+    fun onTimeButtonClicked() {
+        runOnContentState {
+            _action.value = TaskCardAction.ShowTimePicker(this.completionDate)
+        }
+    }
+
+    fun onTimePicked(time: Calendar) {
+        runOnContentState {
+            val newCompletionDate = Calendar.getInstance().run {
+                this.time = completionDate
+                set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY))
+                set(Calendar.MINUTE, time.get(Calendar.MINUTE))
+                this.time
+            }
+            _state.value = copy(completionDate = newCompletionDate)
         }
     }
 
@@ -129,7 +168,7 @@ class TaskCardVM(
         name,
         "",
         Date(),
-        Date(),
+        completionDate,
         isCompleted,
         id
     )

@@ -10,10 +10,11 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginStart="15dp"
-        android:button="@drawable/ic_rectangle_12"
+        android:button="@drawable/check_box_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/MyCheckBox"/>
 
     <TextView
         android:id="@+id/taskName"
