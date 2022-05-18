@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
+import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
 import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,6 +25,10 @@ class CatalogListFragment : Fragment() {
         FragmentCatalogListBinding.inflate(inflater, container, false).run {
             binding = this
             recyclerViewCatalogs.adapter = adapter
+            addButton.setOnClickListener {
+                CatalogCardBottomFragment.newInstance(CatalogCardBottomMode.Create)
+                    .show(childFragmentManager, "ShowBottomSheet")
+            }
             root
         }
 

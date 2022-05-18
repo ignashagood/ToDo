@@ -13,4 +13,10 @@
     <string name="catalog_name_string_bottom_sheet">список</string>
     <string name="delete_string_bottom_sheet">удалить</string>
     <string name="save_string_bottom_sheet">сохранить</string>
+    <string name="catalog_card_bottom_title_add">Создать список</string>
+    <string name="catalog_card_bottom_title_change">Изменить список</string>
+    <string name="input_name_catalog">Название списка</string>
+    <string name="hide_function_name">Скрыть выполненные задачи</string>
+    <string name="highlight_function_name">Выделить просроченные задачи</string>
+    <string name="save_button">Сохранить список</string>
 </resources>

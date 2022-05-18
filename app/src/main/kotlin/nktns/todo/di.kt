@@ -2,6 +2,8 @@ package nktns.todo
 
 import androidx.room.Room
 import nktns.todo.base.ResourceProvider
+import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
+import nktns.todo.catalog.card.bottom.CatalogCardBottomVM
 import nktns.todo.catalog.list.CatalogListVM
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
@@ -26,6 +28,9 @@ val diModule = module {
     viewModel { TaskListVM(application = get(), repository = get()) }
     viewModel { (taskCardMode: TaskCardMode) ->
         TaskCardVM(resourceProvider = get(), repository = get(), taskCardMode = taskCardMode)
+    }
+    viewModel { (catalogCardBottomMode: CatalogCardBottomMode) ->
+        CatalogCardBottomVM(resourceProvider = get(), repository = get(), mode = catalogCardBottomMode)
     }
     viewModel { CatalogListVM(application = get(), repository = get()) }
 }
