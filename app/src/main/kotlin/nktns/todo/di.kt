@@ -30,7 +30,7 @@ val diModule = module {
         TaskCardVM(resourceProvider = get(), repository = get(), taskCardMode = taskCardMode)
     }
     viewModel { (catalogCardBottomMode: CatalogCardBottomMode) ->
-        CatalogCardBottomVM(resourceProvider = get(), repository = get(), catalogCardBottomMode = catalogCardBottomMode)
+        CatalogCardBottomVM(resourceProvider = get(), repository = get(), mode = catalogCardBottomMode)
     }
     viewModel { CatalogListVM(application = get(), repository = get()) }
 }

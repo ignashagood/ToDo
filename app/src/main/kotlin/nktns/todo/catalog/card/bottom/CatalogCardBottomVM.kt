@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nktns.todo.R
+import nktns.todo.base.ResourceProvider
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.database.entity.CatalogEntity
 import java.util.Date
 
 class CatalogCardBottomVM(
-    private val resourceProvider: nktns.todo.base.ResourceProvider,
+    private val resourceProvider: ResourceProvider,
     private val repository: CatalogRepository,
-    private val catalogCardBottomMode: CatalogCardBottomMode,
+    private val mode: CatalogCardBottomMode,
 ) : ViewModel() {
 
     private var _action: MutableLiveData<CatalogCardBottomAction> = MutableLiveData()
@@ -24,18 +25,17 @@ class CatalogCardBottomVM(
     val state: LiveData<CatalogCardBottomState> by ::_state
 
     init {
-        when (catalogCardBottomMode) {
+        when (mode) {
             is CatalogCardBottomMode.Create -> onCreateMode()
-            is CatalogCardBottomMode.View -> onViewMode(catalogCardBottomMode.catalogId)
+            is CatalogCardBottomMode.View -> onViewMode(mode.catalogId)
         }
     }
 
     private fun onCreateMode() {
         _state.value = CatalogCardBottomState.Content(
             name = "",
-            hideFunctionActive = false,
-            highlightFunctionActive = false,
-            catalogCardBottomMode.actionName
+            hideCompletedTasks = false,
+            mode.actionName
         )
     }
 
@@ -56,7 +56,7 @@ class CatalogCardBottomVM(
 
     fun onSaveButtonClicked() {
         runOnContentState {
-            when (catalogCardBottomMode) {
+            when (mode) {
                 is CatalogCardBottomMode.Create -> addCatalog(toEntity())
             }
         }
@@ -90,8 +90,7 @@ class CatalogCardBottomVM(
 
     private fun CatalogEntity.toContentState() = CatalogCardBottomState.Content(
         name,
-        hideFunctionActive = true,
-        highlightFunctionActive = true,
-        actionName = catalogCardBottomMode.actionName,
+        hideCompletedTasks = true,
+        actionName = mode.actionName,
     )
 }

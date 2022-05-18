@@ -5,8 +5,7 @@ sealed class CatalogCardBottomState {
 
     data class Content(
         val name: String,
-        val hideFunctionActive: Boolean,
-        val highlightFunctionActive: Boolean,
+        val hideCompletedTasks: Boolean,
         val actionName: String
     ) : CatalogCardBottomState()
 }
