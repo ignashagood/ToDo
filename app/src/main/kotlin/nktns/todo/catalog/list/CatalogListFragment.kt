@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import nktns.todo.R
 import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
 import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
+import nktns.todo.catalog.card.content.CatalogCardContentFragment
+import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CatalogListFragment : Fragment() {
+class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
 
     private val viewModel by viewModel<CatalogListVM>()
-    private val adapter: CatalogListAdapter by lazy { CatalogListAdapter() }
+    private val adapter: CatalogListAdapter by lazy { CatalogListAdapter(this) }
     private var binding: FragmentCatalogListBinding? = null
     private var contentStateApplied: Boolean = false
 
@@ -41,11 +44,17 @@ class CatalogListFragment : Fragment() {
         }
     }
 
+    override fun onItemClick(catalog: CatalogEntity) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, CatalogCardContentFragment.newInstance(catalog.id))
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun applyState(state: CatalogListState.Content) {
         if (contentStateApplied) {
             adapter.updateList(state.catalogList, state.diffResult)
         } else {
-            // Если состояние ещё ни разу не было применено, значит список мы просто резко отображаем, без анимаций
             adapter.initList(state.catalogList)
             contentStateApplied = true
         }

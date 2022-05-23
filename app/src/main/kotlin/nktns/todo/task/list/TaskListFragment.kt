@@ -10,6 +10,7 @@ import nktns.todo.databinding.FragmentListBinding
 import nktns.todo.task.card.TaskCardFragment
 import nktns.todo.task.card.TaskCardMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
@@ -17,24 +18,53 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
         fun onTaskCompleted(task: TaskEntity)
     }
 
-    private val viewModel by viewModel<TaskListVM>()
+    companion object {
+        private const val TASK_LIST_MODE_KEY = "task_list_mode_key"
+        fun newInstance(taskListMode: TaskListMode): TaskListFragment {
+            return TaskListFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(TASK_LIST_MODE_KEY, taskListMode)
+                }
+            }
+        }
+    }
+
+    private val viewModel: TaskListVM by viewModel {
+        parametersOf(
+            requireArguments().getParcelable(TASK_LIST_MODE_KEY)
+        )
+    }
     private val adapter: TaskAdapter by lazy { TaskAdapter(viewModel, this) }
     private var binding: FragmentListBinding? = null
     private var contentStateApplied: Boolean = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.action.observe(this) {
+            if (it != null) {
+                when (it) {
+                    is TaskListAction.ShowCreateBottomSheet ->
+                        TaskCardFragment.newInstance(TaskCardMode.Create(it.catalogId))
+                            .show(childFragmentManager, "ChangeSheetDialog")
+                    is TaskListAction.ShowViewBottomSheet ->
+                        TaskCardFragment.newInstance(TaskCardMode.View(it.taskId))
+                            .show(childFragmentManager, "ChangeSheetDialog")
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentListBinding.inflate(inflater, container, false)
-        binding?.apply {
-            recyclerViewTasks.adapter = adapter
-            addButton.setOnClickListener {
-                TaskCardFragment.newInstance(TaskCardMode.Create).show(childFragmentManager, "CreateSheetDialog")
-            }
+    ): View = FragmentListBinding.inflate(inflater, container, false).run {
+        binding = this
+        recyclerViewTasks.adapter = adapter
+        addButton.setOnClickListener {
+            viewModel.onAddButtonClicked()
         }
-        return binding!!.root
+        root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +77,7 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(task: TaskEntity) {
-        TaskCardFragment.newInstance(TaskCardMode.View(task.id)).show(childFragmentManager, "ChangeSheetDialog")
+        viewModel.onItemClicked(task)
     }
 
     private fun applyState(state: TaskListState.Content) {

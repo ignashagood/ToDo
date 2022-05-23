@@ -58,6 +58,7 @@ class CatalogCardBottomVM(
         runOnContentState {
             when (mode) {
                 is CatalogCardBottomMode.Create -> addCatalog(toEntity())
+                is CatalogCardBottomMode.View -> TODO()
             }
         }
     }

@@ -11,5 +11,6 @@ sealed class TaskCardState {
         val actionName: String,
         val canDelete: Boolean,
         val completionDate: Date,
+        val catalogName: String?
     ) : TaskCardState()
 }

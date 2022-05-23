@@ -10,7 +10,7 @@ class CatalogRepository(private val catalogDAO: CatalogDAO) {
 
     fun get(id: Int): CatalogEntity? = catalogDAO.get(id)
 
-    fun getWithTasks(id: Int): CatalogWithTasks? = catalogDAO.getWithTasks(id)
+    suspend fun getWithTasks(id: Int): CatalogWithTasks? = catalogDAO.getWithTasks(id)
 
     fun getAll(): Flow<List<CatalogEntity>> = catalogDAO.getAll()
 

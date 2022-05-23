@@ -59,6 +59,7 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
                         inputNameCatalog.setText(state.name)
                     }
                 }
+                is CatalogCardBottomState.InitialLoading -> Unit
             }
         }
     }
