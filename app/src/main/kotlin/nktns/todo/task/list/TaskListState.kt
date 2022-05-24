@@ -6,5 +6,8 @@ import nktns.todo.data.database.entity.TaskEntity
 sealed class TaskListState {
     object InitialLoading : TaskListState()
 
-    data class Content(val taskList: List<TaskEntity>, val diffResult: DiffUtil.DiffResult) : TaskListState()
+    data class Content(
+        val taskList: List<TaskEntity>,
+        val diffResult: DiffUtil.DiffResult
+    ) : TaskListState()
 }

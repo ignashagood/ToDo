@@ -19,7 +19,7 @@ interface CatalogDAO {
 
     @Transaction
     @Query("SELECT * FROM catalogs WHERE catalogId = :id")
-    fun getWithTasks(id: Int): CatalogWithTasks?
+    suspend fun getWithTasks(id: Int): CatalogWithTasks?
 
     @Query("SELECT * from catalogs ORDER BY catalogCreationDate")
     fun getAll(): Flow<List<CatalogEntity>>

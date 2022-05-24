@@ -6,7 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import nktns.todo.catalog.list.CatalogListFragment
 import nktns.todo.task.list.TaskListFragment
-import nktns.todo.task.list.TodayFragment
+import nktns.todo.task.list.TaskListMode
+import nktns.todo.task.list.today.TodayFragment
 
 class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -17,7 +18,7 @@ class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TaskListFragment()
+            0 -> TaskListFragment.newInstance(TaskListMode.All)
             1 -> TodayFragment()
             2 -> CatalogListFragment()
             else -> error("Unexpected position $position")

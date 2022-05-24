@@ -7,22 +7,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nktns.todo.R
+import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
 import java.util.Calendar
 import java.util.Date
 
 class TaskCardVM(
-    // Хорошо соблюдать порядок свойств конструктора по их характеру
-    // Сначала идут общие компоненты
     private val resourceProvider: nktns.todo.base.ResourceProvider,
-    // Затем идут компоненты, решающие сценарии
-    private val repository: TaskRepository,
-    // Затем идут параметры сценариев
+    private val taskRepository: TaskRepository,
+    private val catalogRepository: CatalogRepository,
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
-    private val _action: MutableLiveData<TaskCardAction> = MutableLiveData()
+    private var _action: MutableLiveData<TaskCardAction> = MutableLiveData()
     private var _state: MutableLiveData<TaskCardState> = MutableLiveData(TaskCardState.InitialLoading)
 
     val action: LiveData<TaskCardAction> by ::_action
@@ -30,25 +28,31 @@ class TaskCardVM(
 
     init {
         when (taskCardMode) {
-            is TaskCardMode.Create -> onCreateMode()
+            is TaskCardMode.Create -> onCreateMode(taskCardMode.catalogId)
             is TaskCardMode.View -> onViewMode(taskCardMode.taskId)
         }
     }
 
-    private fun onCreateMode() {
-        val cal = Calendar.getInstance()
-        _state.value = TaskCardState.Content(
-            name = "",
-            isCompleted = false,
-            taskCardMode.actionName,
-            canDelete = false,
-            cal.time
-        )
+    private fun onCreateMode(catalogId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val catalogName = catalogRepository.get(catalogId)?.name
+            val cal = Calendar.getInstance()
+            _state.postValue(
+                TaskCardState.Content(
+                    name = "",
+                    isCompleted = false,
+                    taskCardMode.actionName,
+                    canDelete = false,
+                    cal.time,
+                    catalogName
+                )
+            )
+        }
     }
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.get(taskId)?.let {
+            taskRepository.get(taskId)?.let {
                 _state.postValue(it.toContentState())
             } // TODO()
         }
@@ -56,21 +60,21 @@ class TaskCardVM(
 
     private fun addTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.add(task)
+            taskRepository.add(task)
             _action.postValue(TaskCardAction.Dismiss)
         }
     }
 
     private fun updateTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.update(task)
+            taskRepository.update(task)
             _action.postValue(TaskCardAction.Dismiss)
         }
     }
 
     private fun deleteTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.delete(task)
+            taskRepository.delete(task)
             _action.postValue(TaskCardAction.Dismiss)
         }
     }
@@ -147,7 +151,6 @@ class TaskCardVM(
 
     private val TaskCardMode.actionName: String
         get() =
-            // Любые строки достаём из strings с помощью ResourceProvider
             resourceProvider.getString(
                 when (this) {
                     is TaskCardMode.Create -> R.string.task_card_add_btn
@@ -161,6 +164,7 @@ class TaskCardVM(
         taskCardMode.actionName,
         true,
         completionDate,
+        ""
     )
 
     private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(

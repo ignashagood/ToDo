@@ -88,6 +88,12 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                         DateFormat.getTimeInstance(DateFormat.SHORT, Locale(LOCALE)).format(state.completionDate)
                     checkText.text = state.actionName
                     checkButton.isVisible = true
+                    val catalogName = state.catalogName
+                    if (catalogName == "") {
+                        catalogText.text = getString(R.string.catalog_name_string_bottom_sheet)
+                    } else {
+                        catalogText.text = state.catalogName
+                    }
                 }
             }
         }
