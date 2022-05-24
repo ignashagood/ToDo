@@ -42,7 +42,7 @@ class CatalogCardContentFragment : Fragment() {
                 .replace(R.id.fragment_container_view, MainFragment())
                 .addToBackStack(null)
                 .commit()
-        }
+        } // TODO - правильно обработать back
         root
     }
 
