@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import nktns.todo.R
+import nktns.todo.base.illegalState
+import nktns.todo.base.toPickedTime
+import java.util.Date
 
 class TimePickerFragment : DialogFragment() {
 
@@ -27,7 +30,11 @@ class TimePickerFragment : DialogFragment() {
             val pickedTime = PickedTime(hourOfDay, minute)
             setFragmentResult(RESULT_KEY, Bundle().apply { putParcelable(PICKED_TIME_KEY, pickedTime) })
         }
-        val time: PickedTime = requireArguments().getParcelable(PICKED_TIME_KEY)!!
+        val time: PickedTime = requireArguments().getParcelable(PICKED_TIME_KEY)
+            ?: kotlin.run {
+                illegalState("Unexpected input picked time")
+                Date().toPickedTime()
+            }
         return TimePickerDialog(
             requireContext(),
             R.style.PickerTheme,

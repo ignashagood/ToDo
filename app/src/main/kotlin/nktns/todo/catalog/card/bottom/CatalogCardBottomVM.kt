@@ -44,13 +44,13 @@ class CatalogCardBottomVM(
 
     private fun onViewMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (repository.get(catalogId) != null) {
-                _state.emit(
-                    repository.get(catalogId).let {
-                        it?.toContentState() ?: CatalogCardBottomState.InitialLoading
-                    }
-                )
-            } else illegalState("Unexpected catalog id")
+            val catalog: CatalogEntity? = repository.get(catalogId)
+            if (catalog != null) {
+                _state.emit(catalog.toContentState())
+            } else {
+                illegalState("Unexpected catalog id")
+                _action.emit(CatalogCardBottomAction.DISMISS)
+            }
         }
     }
 

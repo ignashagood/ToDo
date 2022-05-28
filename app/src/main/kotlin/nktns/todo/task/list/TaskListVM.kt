@@ -48,7 +48,7 @@ class TaskListVM(
     private fun onCatalogMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.Main) {
             val newTaskList = catalogRepository.getWithTasks(catalogId).let {
-                it?.tasks ?: emptyList()
+                it?.tasks ?: emptyList() // TODO
             }
             val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
             val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)

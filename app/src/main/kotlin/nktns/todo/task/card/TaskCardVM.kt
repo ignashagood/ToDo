@@ -121,9 +121,9 @@ class TaskCardVM(
         }
     }
 
-    fun onDatePicked(date: PickedDate?) {
+    fun onDatePicked(date: PickedDate) {
         runOnContentState {
-            val newCompletionDate = date!!.toDate(completionDate)
+            val newCompletionDate = date.toDate(completionDate)
             _state.value = copy(completionDate = newCompletionDate)
         }
     }

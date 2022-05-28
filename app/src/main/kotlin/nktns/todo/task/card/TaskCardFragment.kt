@@ -60,14 +60,14 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         childFragmentManager.setFragmentResultListener(
             DatePickerFragment.RESULT_KEY,
             this
-        ) { _, bundle -> bundle.getParcelable<PickedDate>(DatePickerFragment.PICKED_DATE_KEY).let {
-            if (it != null) {
-                viewModel.onDatePicked(it)
-            } else {
-                illegalState("Unexpected null picked time")
+        ) { _, bundle ->
+            bundle.getParcelable<PickedDate>(DatePickerFragment.PICKED_DATE_KEY).let {
+                if (it != null) {
+                    viewModel.onDatePicked(it)
+                } else {
+                    illegalState("Unexpected input picked date")
+                }
             }
-        }
-
         }
         childFragmentManager.setFragmentResultListener(
             TimePickerFragment.RESULT_KEY,
@@ -77,7 +77,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                 if (it != null) {
                     viewModel.onTimePicked(it)
                 } else {
-                    illegalState("Unexpected null picked time")
+                    illegalState("Unexpected input picked time")
                 }
             }
         }

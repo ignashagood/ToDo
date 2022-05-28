@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import nktns.todo.R
+import nktns.todo.base.illegalState
+import nktns.todo.base.toPickedDate
+import java.util.Date
 
 class DatePickerFragment : DialogFragment() {
 
@@ -27,7 +30,11 @@ class DatePickerFragment : DialogFragment() {
             val pickedDate = PickedDate(year, month, dayOfMonth)
             setFragmentResult(RESULT_KEY, Bundle().apply { putParcelable(PICKED_DATE_KEY, pickedDate) })
         }
-        val date: PickedDate = requireArguments().getParcelable<PickedDate>(PICKED_DATE_KEY)!!
+        val date: PickedDate = requireArguments().getParcelable(PICKED_DATE_KEY)
+            ?: kotlin.run {
+                illegalState("Unexpected input picked date")
+                Date().toPickedDate()
+            }
         return DatePickerDialog(
             requireContext(),
             R.style.PickerTheme,
