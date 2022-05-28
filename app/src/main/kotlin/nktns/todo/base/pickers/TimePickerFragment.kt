@@ -6,38 +6,41 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import nktns.todo.R
-import java.util.Calendar
+import nktns.todo.base.illegalState
+import nktns.todo.base.toPickedTime
 import java.util.Date
 
 class TimePickerFragment : DialogFragment() {
 
     companion object {
-        private const val TIME = "time_key"
-        fun newInstance(time: Date): TimePickerFragment {
+        const val PICKED_TIME_KEY = "picked_time_key"
+        const val RESULT_KEY = "time_picker_result_key"
+
+        fun newInstance(time: PickedTime): TimePickerFragment {
             return TimePickerFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(TIME, time)
+                    putParcelable(PICKED_TIME_KEY, time)
                 }
             }
         }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val pickedTime = Calendar.getInstance()
         val timePickerListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-            pickedTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-            pickedTime.set(Calendar.MINUTE, minute)
-            setFragmentResult(REQUEST_KEY, Bundle().apply { putSerializable("PICKED_TIME", pickedTime) })
+            val pickedTime = PickedTime(hourOfDay, minute)
+            setFragmentResult(RESULT_KEY, Bundle().apply { putParcelable(PICKED_TIME_KEY, pickedTime) })
         }
-        val time: Date = requireArguments().getSerializable(TIME) as Date
-        val calendar = Calendar.getInstance()
-        calendar.time = time
+        val time: PickedTime = requireArguments().getParcelable(PICKED_TIME_KEY)
+            ?: kotlin.run {
+                illegalState("Unexpected input picked time")
+                Date().toPickedTime()
+            }
         return TimePickerDialog(
             requireContext(),
             R.style.PickerTheme,
             timePickerListener,
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
+            time.hour,
+            time.minute,
             true
         )
     }

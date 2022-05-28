@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import nktns.todo.data.database.entity.TaskEntity
 import nktns.todo.databinding.FragmentListBinding
 import nktns.todo.task.card.TaskCardFragment
@@ -40,8 +42,8 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.action.observe(this) {
-            if (it != null) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.action.collect {
                 when (it) {
                     is TaskListAction.ShowCreateBottomSheet ->
                         TaskCardFragment.newInstance(TaskCardMode.Create(it.catalogId))
@@ -68,10 +70,12 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is TaskListState.InitialLoading -> {}
-                is TaskListState.Content -> applyState(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect {
+                when (it) {
+                    is TaskListState.InitialLoading -> {}
+                    is TaskListState.Content -> applyState(it)
+                }
             }
         }
     }

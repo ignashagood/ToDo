@@ -1,22 +1,22 @@
 package nktns.todo
 
-import kotlinx.coroutines.flow.last
+/* import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
-import nktns.todo.base.withoutTime
-import nktns.todo.data.TaskRepository
-import nktns.todo.data.database.entity.TaskEntity
+import nuns.todo.base.withoutTime
+import nuns.todo.data.TaskRepository
+import nuns.todo.data.database.entity.TaskEntity
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.Date
+import java.util.Date */
 
 class DataTest {
 
-    private val taskDAO: TaskDAOStub = TaskDAOStub()
-    private val taskRepository: TaskRepository = TaskRepository(taskDAO)
+    /* private val taskDAO: TaskDAOStub = TaskDAOStub()
+    private val taskRepository: TaskRepository = TaskRepository(taskDAO, TODO())
 
     @BeforeEach
     fun resetDAO() {
@@ -39,7 +39,7 @@ class DataTest {
             assertTrue(task == null)
         }
 
-    //TODO Лишний тест
+    // TODO Лишний тест
     @Test
     fun `when tasks requested there must be no exceptions`() =
         Assertions.assertDoesNotThrow { runBlocking { getLastTaskList() } }
@@ -132,4 +132,5 @@ class DataTest {
     private suspend fun getLastTaskList(): List<TaskEntity> = taskRepository.getTasks().take(1).last()
 
     private suspend fun getLastTodayTaskList(): List<TaskEntity> = taskRepository.getTodayTasks().take(1).last()
+     */
 }

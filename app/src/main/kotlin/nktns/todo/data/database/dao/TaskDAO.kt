@@ -18,6 +18,9 @@ interface TaskDAO {
     @Query("SELECT * from tasks ORDER BY taskIsCompleted, taskCreationDate")
     fun getAll(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * from tasks WHERE taskCatalogId = :catalogId ORDER BY taskIsCompleted, taskCreationDate")
+    fun getAllWithCatalogId(catalogId: Int): Flow<List<TaskEntity>>
+
     @Query("SELECT * FROM tasks WHERE taskCompletionDate = :date ORDER BY taskIsCompleted, taskCreationDate")
     fun getAllByCompletionDate(date: Date): Flow<List<TaskEntity>>
 

@@ -38,6 +38,9 @@ class TaskDAOStub : TaskDAO {
     override fun get(id: Int): TaskEntity? = tasks.find { it.id == id }
 
     override fun getAll(): Flow<List<TaskEntity>> = tasksFlow
+    override fun getAllWithCatalogId(catalogId: Int): Flow<List<TaskEntity>> {
+        TODO("Not yet implemented")
+    }
 
     override fun getAllByCompletionDate(date: Date): Flow<List<TaskEntity>> {
         return flowOf(tasks.filter { task -> date.withoutTime() == task.completionDate.withoutTime() })

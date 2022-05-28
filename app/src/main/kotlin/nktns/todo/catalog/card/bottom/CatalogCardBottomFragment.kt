@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.flow.collect
 import nktns.todo.databinding.CatalogCardBottomFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -31,8 +33,8 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.action.observe(this) {
-            if (it != null) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.action.collect {
                 when (it) {
                     CatalogCardBottomAction.DISMISS -> dismiss()
                 }
@@ -52,14 +54,16 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is CatalogCardBottomState.Content -> binding?.run {
-                    if (inputNameCatalog.text.toString() != state.name) {
-                        inputNameCatalog.setText(state.name)
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is CatalogCardBottomState.Content -> binding?.run {
+                        if (inputNameCatalog.text.toString() != state.name) {
+                            inputNameCatalog.setText(state.name)
+                        }
                     }
+                    is CatalogCardBottomState.InitialLoading -> Unit // TODO
                 }
-                is CatalogCardBottomState.InitialLoading -> Unit // TODO
             }
         }
     }

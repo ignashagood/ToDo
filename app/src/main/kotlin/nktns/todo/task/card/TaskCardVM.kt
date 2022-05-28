@@ -1,16 +1,24 @@
 package nktns.todo.task.card
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nktns.todo.R
+import nktns.todo.base.applyPickedDate
+import nktns.todo.base.applyPickedTime
+import nktns.todo.base.illegalState
+import nktns.todo.base.pickers.PickedDate
+import nktns.todo.base.pickers.PickedTime
+import nktns.todo.base.toPickedDate
+import nktns.todo.base.toPickedTime
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
-import java.util.Calendar
 import java.util.Date
 
 class TaskCardVM(
@@ -20,11 +28,11 @@ class TaskCardVM(
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
-    private var _action: MutableLiveData<TaskCardAction> = MutableLiveData()
-    private var _state: MutableLiveData<TaskCardState> = MutableLiveData(TaskCardState.InitialLoading)
+    private val _action = MutableSharedFlow<TaskCardAction>(extraBufferCapacity = 1)
+    private var _state = MutableStateFlow<TaskCardState>(TaskCardState.InitialLoading)
 
-    val action: LiveData<TaskCardAction> by ::_action
-    val state: LiveData<TaskCardState> by ::_state
+    val action: Flow<TaskCardAction> by ::_action
+    val state: StateFlow<TaskCardState> by ::_state
 
     init {
         when (taskCardMode) {
@@ -36,14 +44,13 @@ class TaskCardVM(
     private fun onCreateMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val catalogName = catalogRepository.get(catalogId)?.name
-            val cal = Calendar.getInstance()
-            _state.postValue(
+            _state.emit(
                 TaskCardState.Content(
                     name = "",
                     isCompleted = false,
                     taskCardMode.actionName,
                     canDelete = false,
-                    cal.time,
+                    Date(),
                     catalogName
                 )
             )
@@ -52,30 +59,34 @@ class TaskCardVM(
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            taskRepository.get(taskId)?.let {
-                _state.postValue(it.toContentState())
-            } // TODO()
+            taskRepository.get(taskId).let {
+                if (it != null) {
+                    _state.emit(it.toContentState())
+                } else {
+                    illegalState("Unexpected task id")
+                }
+            }
         }
     }
 
     private fun addTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             taskRepository.add(task)
-            _action.postValue(TaskCardAction.Dismiss)
+            _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun updateTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             taskRepository.update(task)
-            _action.postValue(TaskCardAction.Dismiss)
+            _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun deleteTask(task: TaskEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             taskRepository.delete(task)
-            _action.postValue(TaskCardAction.Dismiss)
+            _action.emit(TaskCardAction.Dismiss)
         }
     }
 
@@ -100,44 +111,33 @@ class TaskCardVM(
         runOnContentState {
             when (taskCardMode) {
                 is TaskCardMode.View -> deleteTask(toEntity(taskCardMode.taskId))
-                is TaskCardMode.Create -> Unit // TODO
+                is TaskCardMode.Create -> illegalState("Delete button is visible")
             }
         }
     }
 
     fun onDateButtonClicked() {
         runOnContentState {
-            _action.value = TaskCardAction.ShowDatePicker(this.completionDate)
+            _action.tryEmit(TaskCardAction.ShowDatePicker(completionDate.toPickedDate()))
         }
     }
 
-    fun onDatePicked(date: Calendar) {
+    fun onDatePicked(date: PickedDate) {
         runOnContentState {
-            val newCompletionDate = Calendar.getInstance().run {
-                time = completionDate
-                set(Calendar.YEAR, date.get(Calendar.YEAR))
-                set(Calendar.MONTH, date.get(Calendar.MONTH))
-                set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH))
-                time
-            }
+            val newCompletionDate = completionDate.applyPickedDate(date)
             _state.value = copy(completionDate = newCompletionDate)
         }
     }
 
     fun onTimeButtonClicked() {
         runOnContentState {
-            _action.value = TaskCardAction.ShowTimePicker(this.completionDate)
+            _action.tryEmit(TaskCardAction.ShowTimePicker(completionDate.toPickedTime()))
         }
     }
 
-    fun onTimePicked(time: Calendar) {
+    fun onTimePicked(time: PickedTime) {
         runOnContentState {
-            val newCompletionDate = Calendar.getInstance().run {
-                this.time = completionDate
-                set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY))
-                set(Calendar.MINUTE, time.get(Calendar.MINUTE))
-                this.time
-            }
+            val newCompletionDate = completionDate.applyPickedTime(time)
             _state.value = copy(completionDate = newCompletionDate)
         }
     }

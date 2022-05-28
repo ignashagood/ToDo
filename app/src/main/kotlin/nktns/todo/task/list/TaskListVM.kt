@@ -2,11 +2,13 @@ package nktns.todo.task.list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.base.diff.calculateDiff
@@ -20,10 +22,10 @@ class TaskListVM(
     private val catalogRepository: CatalogRepository,
     private val taskListMode: TaskListMode,
 ) : AndroidViewModel(application), TaskListFragment.TaskActionHandler {
-    private var _action: MutableLiveData<TaskListAction> = MutableLiveData()
-    private var _state: MutableLiveData<TaskListState> = MutableLiveData(TaskListState.InitialLoading)
-    val action: LiveData<TaskListAction> by ::_action
-    val state: LiveData<TaskListState> by ::_state
+    private var _action = MutableSharedFlow<TaskListAction>(extraBufferCapacity = 1)
+    private var _state = MutableStateFlow<TaskListState>(TaskListState.InitialLoading)
+    val action: Flow<TaskListAction> by ::_action
+    val state: StateFlow<TaskListState> by ::_state
 
     init {
         when (taskListMode) {
@@ -45,7 +47,9 @@ class TaskListVM(
 
     private fun onCatalogMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            val newTaskList = catalogRepository.getWithTasks(catalogId)!!.tasks
+            val newTaskList = catalogRepository.getWithTasks(catalogId).let {
+                it?.tasks ?: emptyList() // TODO
+            }
             val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
             val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
             _state.value = TaskListState.Content(newTaskList, result)
@@ -69,14 +73,14 @@ class TaskListVM(
     }
 
     fun onAddButtonClicked() {
-        if (taskListMode is TaskListMode.Catalog) {
-            _action.postValue(TaskListAction.ShowCreateBottomSheet(taskListMode.catalogId))
-        } else {
-            _action.value = TaskListAction.ShowCreateBottomSheet(0)
+        when (taskListMode) {
+            is TaskListMode.Catalog -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(taskListMode.catalogId))
+            is TaskListMode.All -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(0))
+            is TaskListMode.Today -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(0))
         }
     }
 
     fun onItemClicked(task: TaskEntity) {
-        _action.value = TaskListAction.ShowViewBottomSheet(task.id)
+        _action.tryEmit(TaskListAction.ShowViewBottomSheet(task.id))
     }
 }
