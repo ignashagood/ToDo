@@ -6,20 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.flow.collect
 import nktns.todo.R
+import nktns.todo.base.illegalState
 import nktns.todo.base.pickers.DatePickerFragment
-import nktns.todo.base.pickers.REQUEST_KEY
+import nktns.todo.base.pickers.PickedDate
+import nktns.todo.base.pickers.PickedTime
 import nktns.todo.base.pickers.TimePickerFragment
 import nktns.todo.databinding.TaskCardFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.DateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 const val LOCALE = "ru"
+const val DATE_PICKER_FRAGMENT_TAG = "date_picker_fragment_tag"
 
 class TaskCardFragment : BottomSheetDialogFragment() {
 
@@ -44,12 +48,36 @@ class TaskCardFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.action.observe(this) {
-            if (it != null) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.action.collect {
                 when (it) {
                     is TaskCardAction.Dismiss -> dismiss()
                     is TaskCardAction.ShowDatePicker -> showDatePicker(it.date)
                     is TaskCardAction.ShowTimePicker -> showTimePicker(it.time)
+                }
+            }
+        }
+        childFragmentManager.setFragmentResultListener(
+            DatePickerFragment.RESULT_KEY,
+            this
+        ) { _, bundle -> bundle.getParcelable<PickedDate>(DatePickerFragment.PICKED_DATE_KEY).let {
+            if (it != null) {
+                viewModel.onDatePicked(it)
+            } else {
+                illegalState("Unexpected null picked time")
+            }
+        }
+
+        }
+        childFragmentManager.setFragmentResultListener(
+            TimePickerFragment.RESULT_KEY,
+            this
+        ) { _, bundle ->
+            bundle.getParcelable<PickedTime>(TimePickerFragment.PICKED_TIME_KEY).let {
+                if (it != null) {
+                    viewModel.onTimePicked(it)
+                } else {
+                    illegalState("Unexpected null picked time")
                 }
             }
         }
@@ -71,28 +99,30 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                TaskCardState.InitialLoading -> binding?.run {
-                    checkButton.isVisible = false
-                    name.isVisible = false
-                }
-                is TaskCardState.Content -> binding?.run {
-                    if (name.text.toString() != state.name) {
-                        name.setText(state.name)
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    TaskCardState.InitialLoading -> binding?.run {
+                        checkButton.isVisible = false
+                        name.isVisible = false
                     }
-                    deleteButton.isVisible = state.canDelete
-                    name.isVisible = true
-                    dateText.text = formatDate(state.completionDate)
-                    timeText.text =
-                        DateFormat.getTimeInstance(DateFormat.SHORT, Locale(LOCALE)).format(state.completionDate)
-                    checkText.text = state.actionName
-                    checkButton.isVisible = true
-                    val catalogName = state.catalogName
-                    if (catalogName == "") {
-                        catalogText.text = getString(R.string.catalog_name_string_bottom_sheet)
-                    } else {
-                        catalogText.text = state.catalogName
+                    is TaskCardState.Content -> binding?.run {
+                        if (name.text.toString() != state.name) {
+                            name.setText(state.name)
+                        }
+                        deleteButton.isVisible = state.canDelete
+                        name.isVisible = true
+                        dateText.text = formatDate(state.completionDate)
+                        timeText.text =
+                            DateFormat.getTimeInstance(DateFormat.SHORT, Locale(LOCALE)).format(state.completionDate)
+                        checkText.text = state.actionName
+                        checkButton.isVisible = true
+                        val catalogName = state.catalogName
+                        if (catalogName == "") {
+                            catalogText.text = getString(R.string.catalog_name_string_bottom_sheet)
+                        } else {
+                            catalogText.text = state.catalogName
+                        }
                     }
                 }
             }
@@ -105,19 +135,11 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         return "${splitDate[0]} ${splitDate[1]}"
     }
 
-    private fun showDatePicker(date: Date) {
-        DatePickerFragment.newInstance(date).show(childFragmentManager, "DATE_PICKER")
-        childFragmentManager.setFragmentResultListener(
-            REQUEST_KEY,
-            this
-        ) { _, bundle -> viewModel.onDatePicked(bundle.getSerializable("PICKED_DATE") as Calendar) }
+    private fun showDatePicker(date: PickedDate) {
+        DatePickerFragment.newInstance(date).show(childFragmentManager, DATE_PICKER_FRAGMENT_TAG)
     }
 
-    private fun showTimePicker(time: Date) {
+    private fun showTimePicker(time: PickedTime) {
         TimePickerFragment.newInstance(time).show(childFragmentManager, "TIME_PICKER")
-        childFragmentManager.setFragmentResultListener(
-            REQUEST_KEY,
-            this
-        ) { _, bundle -> viewModel.onTimePicked(bundle.getSerializable("PICKED_TIME") as Calendar) }
     }
 }

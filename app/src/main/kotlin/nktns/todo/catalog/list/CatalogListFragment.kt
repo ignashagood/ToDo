@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import nktns.todo.R
 import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
 import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
@@ -36,10 +38,12 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is CatalogListState.InitialLoading -> {}
-                is CatalogListState.Content -> applyState(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect {
+                when (it) {
+                    is CatalogListState.InitialLoading -> {}
+                    is CatalogListState.Content -> applyState(it)
+                }
             }
         }
     }

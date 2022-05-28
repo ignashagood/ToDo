@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import nktns.todo.R
 import nktns.todo.databinding.CatalogCardContentFragmentBinding
 import nktns.todo.main.MainFragment
@@ -56,8 +58,10 @@ class CatalogCardContentFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-        viewModel.catalogName.observe(viewLifecycleOwner) { catalogName ->
-            binding?.catalogName?.text = catalogName
+        lifecycleScope.launchWhenStarted {
+            viewModel.catalogName.collect { catalogName ->
+                binding?.catalogName?.text = catalogName
+            }
         }
 // TODO
     }

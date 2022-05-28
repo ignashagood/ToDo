@@ -1,13 +1,16 @@
 package nktns.todo.catalog.card.bottom
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nktns.todo.R
 import nktns.todo.base.ResourceProvider
+import nktns.todo.base.illegalState
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.database.entity.CatalogEntity
 import java.util.Date
@@ -18,11 +21,11 @@ class CatalogCardBottomVM(
     private val mode: CatalogCardBottomMode,
 ) : ViewModel() {
 
-    private var _action: MutableLiveData<CatalogCardBottomAction> = MutableLiveData()
-    private var _state: MutableLiveData<CatalogCardBottomState> = MutableLiveData(CatalogCardBottomState.InitialLoading)
+    private var _action = MutableSharedFlow<CatalogCardBottomAction>()
+    private var _state = MutableStateFlow<CatalogCardBottomState>(CatalogCardBottomState.InitialLoading)
 
-    val action: LiveData<CatalogCardBottomAction> by ::_action
-    val state: LiveData<CatalogCardBottomState> by ::_state
+    val action: Flow<CatalogCardBottomAction> by ::_action
+    val state: StateFlow<CatalogCardBottomState> by ::_state
 
     init {
         when (mode) {
@@ -42,15 +45,19 @@ class CatalogCardBottomVM(
     private fun onViewMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             if (repository.get(catalogId) != null) {
-                _state.postValue(repository.get(catalogId)!!.toContentState())
-            } else TODO()
+                _state.emit(
+                    repository.get(catalogId).let {
+                        it?.toContentState() ?: CatalogCardBottomState.InitialLoading
+                    }
+                )
+            } else illegalState("Unexpected catalog id")
         }
     }
 
     private fun addCatalog(catalog: CatalogEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.add(catalog)
-            _action.postValue(CatalogCardBottomAction.DISMISS)
+            _action.emit(CatalogCardBottomAction.DISMISS)
         }
     }
 

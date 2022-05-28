@@ -25,11 +25,11 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+    ): View = FragmentMainBinding.inflate(inflater, container, false).run {
+        binding = this
         myViewPager2.adapter = myAdapter
         myViewPager2.isUserInputEnabled = false
-        return binding!!.root
+        root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
