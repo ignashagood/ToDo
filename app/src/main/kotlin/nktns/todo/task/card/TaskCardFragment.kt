@@ -24,6 +24,7 @@ import java.util.Locale
 
 const val LOCALE = "ru"
 const val DATE_PICKER_FRAGMENT_TAG = "date_picker_fragment_tag"
+const val TIME_PICKER_FRAGMENT_TAG = "time_picker_fragment_tag"
 
 class TaskCardFragment : BottomSheetDialogFragment() {
 
@@ -140,6 +141,6 @@ class TaskCardFragment : BottomSheetDialogFragment() {
     }
 
     private fun showTimePicker(time: PickedTime) {
-        TimePickerFragment.newInstance(time).show(childFragmentManager, "TIME_PICKER")
+        TimePickerFragment.newInstance(time).show(childFragmentManager, TIME_PICKER_FRAGMENT_TAG)
     }
 }

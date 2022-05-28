@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nktns.todo.R
+import nktns.todo.base.applyPickedDate
+import nktns.todo.base.applyPickedTime
 import nktns.todo.base.illegalState
 import nktns.todo.base.pickers.PickedDate
 import nktns.todo.base.pickers.PickedTime
-import nktns.todo.base.toDate
 import nktns.todo.base.toPickedDate
 import nktns.todo.base.toPickedTime
 import nktns.todo.data.CatalogRepository
@@ -62,7 +63,7 @@ class TaskCardVM(
                 if (it != null) {
                     _state.emit(it.toContentState())
                 } else {
-                    _action.tryEmit(TaskCardAction.Dismiss)
+                    illegalState("Unexpected task id")
                 }
             }
         }
@@ -123,7 +124,7 @@ class TaskCardVM(
 
     fun onDatePicked(date: PickedDate) {
         runOnContentState {
-            val newCompletionDate = date.toDate(completionDate)
+            val newCompletionDate = completionDate.applyPickedDate(date)
             _state.value = copy(completionDate = newCompletionDate)
         }
     }
@@ -136,7 +137,7 @@ class TaskCardVM(
 
     fun onTimePicked(time: PickedTime) {
         runOnContentState {
-            val newCompletionDate = time.toDate(completionDate)
+            val newCompletionDate = completionDate.applyPickedTime(time)
             _state.value = copy(completionDate = newCompletionDate)
         }
     }

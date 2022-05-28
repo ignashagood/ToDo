@@ -16,39 +16,41 @@ fun Date.withoutTime(): Date =
     }
 
 fun Date.toPickedDate(): PickedDate {
-    val cal = Calendar.getInstance()
-    cal.time = this
-    return PickedDate(
-        cal.get(Calendar.YEAR),
-        cal.get(Calendar.MONTH),
-        cal.get(Calendar.DAY_OF_MONTH)
-    )
+    return Calendar.getInstance().run {
+        time = this@toPickedDate
+        PickedDate(
+            get(Calendar.YEAR),
+            get(Calendar.MONTH),
+            get(Calendar.DAY_OF_MONTH)
+        )
+    }
 }
 
 fun Date.toPickedTime(): PickedTime {
-    val cal = Calendar.getInstance()
-    cal.time = this
-    return PickedTime(
-        cal.get(Calendar.HOUR_OF_DAY),
-        cal.get(Calendar.MINUTE)
-    )
+    return Calendar.getInstance().run {
+        time = this@toPickedTime
+        PickedTime(
+            get(Calendar.HOUR_OF_DAY),
+            get(Calendar.MINUTE)
+        )
+    }
 }
 
-fun PickedDate.toDate(date: Date): Date {
+fun Date.applyPickedDate(pickedDate: PickedDate): Date {
     return Calendar.getInstance().run {
-        time = date
-        set(Calendar.YEAR, this@toDate.year)
-        set(Calendar.MONTH, this@toDate.month)
-        set(Calendar.DAY_OF_MONTH, this@toDate.day)
+        time = this@applyPickedDate
+        set(Calendar.YEAR, pickedDate.year)
+        set(Calendar.MONTH, pickedDate.month)
+        set(Calendar.DAY_OF_MONTH, pickedDate.day)
         time
     }
 }
 
-fun PickedTime.toDate(time: Date): Date {
+fun Date.applyPickedTime(pickedTime: PickedTime): Date {
     return Calendar.getInstance().run {
-        this.time = time
-        set(Calendar.HOUR_OF_DAY, this@toDate.hour)
-        set(Calendar.MINUTE, this@toDate.minute)
+        this.time = this@applyPickedTime
+        set(Calendar.HOUR_OF_DAY, pickedTime.hour)
+        set(Calendar.MINUTE, pickedTime.minute)
         this.time
     }
 }
