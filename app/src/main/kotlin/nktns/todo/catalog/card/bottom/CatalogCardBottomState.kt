@@ -6,6 +6,7 @@ sealed class CatalogCardBottomState {
     data class Content(
         val name: String,
         val hideCompletedTasks: Boolean,
-        val actionName: String
+        val actionName: String,
+        val canDelete: Boolean
     ) : CatalogCardBottomState()
 }

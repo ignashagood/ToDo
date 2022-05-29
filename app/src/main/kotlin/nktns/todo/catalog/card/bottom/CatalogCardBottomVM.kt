@@ -38,7 +38,8 @@ class CatalogCardBottomVM(
         _state.value = CatalogCardBottomState.Content(
             name = "",
             hideCompletedTasks = false,
-            mode.actionName
+            mode.actionName,
+            false
         )
     }
 
@@ -100,5 +101,6 @@ class CatalogCardBottomVM(
         name,
         hideCompletedTasks = true,
         actionName = mode.actionName,
+        canDelete = true
     )
 }

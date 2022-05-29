@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
+import nktns.todo.catalog.card.options.CatalogOptionsFragment
 import nktns.todo.databinding.CatalogCardContentFragmentBinding
 import nktns.todo.main.MainFragment
 import nktns.todo.task.list.TaskListFragment
 import nktns.todo.task.list.TaskListMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+
+private const val SHOW_OPTIONS_TAG = "show_options_tag"
 
 class CatalogCardContentFragment : Fragment() {
 
@@ -45,6 +48,10 @@ class CatalogCardContentFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         } // TODO - правильно обработать back
+        optionsBtn.setOnClickListener {
+            CatalogOptionsFragment.newInstance(requireArguments().getInt(CATALOG_ID))
+                .show(childFragmentManager, SHOW_OPTIONS_TAG)
+        }
         root
     }
 
