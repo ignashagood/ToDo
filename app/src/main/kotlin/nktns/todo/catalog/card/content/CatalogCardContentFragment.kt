@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
+import nktns.todo.catalog.card.options.CatalogOptionsFragment
 import nktns.todo.databinding.CatalogCardContentFragmentBinding
 import nktns.todo.main.MainFragment
 import nktns.todo.task.list.TaskListFragment
@@ -45,6 +46,10 @@ class CatalogCardContentFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         } // TODO - правильно обработать back
+        optionsBtn.setOnClickListener {
+            CatalogOptionsFragment.newInstance(requireArguments().getInt(CATALOG_ID))
+                .show(childFragmentManager, "ShowOptionsFragment")
+        }
         root
     }
 

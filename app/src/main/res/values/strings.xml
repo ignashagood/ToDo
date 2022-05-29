@@ -19,4 +19,7 @@
     <string name="hide_function_name">Скрыть выполненные задачи</string>
     <string name="highlight_function_name">Выделить просроченные задачи</string>
     <string name="save_button">Сохранить список</string>
+    <string name="change_catalog_text">Изменить список</string>
+    <string name="archive_catalog_text">Архив</string>
+    <string name="delete_text">Удалить</string>
 </resources>

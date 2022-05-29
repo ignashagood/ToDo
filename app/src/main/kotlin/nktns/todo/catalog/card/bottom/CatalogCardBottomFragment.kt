@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -61,6 +62,8 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
                         if (inputNameCatalog.text.toString() != state.name) {
                             inputNameCatalog.setText(state.name)
                         }
+                        catalogCardBottomTitle.text = state.actionName
+                        deleteButton.isVisible = state.canDelete
                     }
                     is CatalogCardBottomState.InitialLoading -> Unit // TODO
                 }
