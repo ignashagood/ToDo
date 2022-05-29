@@ -16,6 +16,8 @@ import nktns.todo.task.list.TaskListMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
+private const val SHOW_OPTIONS_TAG = "show_options_tag"
+
 class CatalogCardContentFragment : Fragment() {
 
     companion object {
@@ -48,7 +50,7 @@ class CatalogCardContentFragment : Fragment() {
         } // TODO - правильно обработать back
         optionsBtn.setOnClickListener {
             CatalogOptionsFragment.newInstance(requireArguments().getInt(CATALOG_ID))
-                .show(childFragmentManager, "ShowOptionsFragment")
+                .show(childFragmentManager, SHOW_OPTIONS_TAG)
         }
         root
     }

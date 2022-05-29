@@ -9,6 +9,8 @@ import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
 import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
 import nktns.todo.databinding.FragmentCatalogOptionsBinding
 
+const val SHOW_CATALOG_CHANGER_TAG = "show_catalog_changer_tag"
+
 class CatalogOptionsFragment : BottomSheetDialogFragment() {
 
     companion object {
@@ -29,7 +31,7 @@ class CatalogOptionsFragment : BottomSheetDialogFragment() {
             binding = this
             changeCatalogBtn.setOnClickListener {
                 CatalogCardBottomFragment.newInstance(CatalogCardBottomMode.View(requireArguments().getInt(CATALOG_ID)))
-                    .show(childFragmentManager, "ShowBottomSheet")
+                    .show(childFragmentManager, SHOW_CATALOG_CHANGER_TAG)
             }
             root
         }

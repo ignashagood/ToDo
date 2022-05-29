@@ -15,6 +15,8 @@ import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val SHOW_CATALOG_CREATOR = "show_catalog_creator"
+
 class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
 
     private val viewModel by viewModel<CatalogListVM>()
@@ -32,7 +34,7 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
             recyclerViewCatalogs.adapter = adapter
             addButton.setOnClickListener {
                 CatalogCardBottomFragment.newInstance(CatalogCardBottomMode.Create)
-                    .show(childFragmentManager, "ShowBottomSheet")
+                    .show(childFragmentManager, SHOW_CATALOG_CREATOR)
             }
             root
         }
