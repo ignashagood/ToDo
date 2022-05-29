@@ -15,17 +15,15 @@ import nktns.todo.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
-    private val myAdapter: ViewPagerFragmentAdapter by lazy {
-        ViewPagerFragmentAdapter(childFragmentManager, lifecycle)
-    }
     private var binding: FragmentMainBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentMainBinding.inflate(inflater, container, false).run {
         binding = this
-        pager.adapter = myAdapter
+        pager.adapter = ViewPagerFragmentAdapter(childFragmentManager, lifecycle)
         pager.isUserInputEnabled = false
         root
     }
@@ -58,6 +56,14 @@ class MainFragment : Fragment() {
     private fun TabLayout.Tab.setTextStyle(style: Int) {
         this.view.children.find { it is TextView }?.let { it ->
             (it as TextView).setTypeface(null, style)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding?.run {
+            pager.adapter = null
+            binding = null
         }
     }
 }

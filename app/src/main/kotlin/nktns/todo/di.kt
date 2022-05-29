@@ -2,9 +2,9 @@ package nktns.todo
 
 import androidx.room.Room
 import nktns.todo.base.ResourceProvider
-import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
-import nktns.todo.catalog.card.bottom.CatalogCardBottomVM
-import nktns.todo.catalog.card.content.CatalogCardContentVM
+import nktns.todo.catalog.card.CatalogCardContentVM
+import nktns.todo.catalog.editor.CatalogEditorMode
+import nktns.todo.catalog.editor.CatalogEditorVM
 import nktns.todo.catalog.list.CatalogListVM
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
@@ -28,7 +28,7 @@ val diModule = module {
     single { CatalogRepository(catalogDAO = get()) }
 
     viewModel { (taskListMode: TaskListMode) ->
-        TaskListVM(application = get(), taskRepository = get(), catalogRepository = get(), taskListMode = taskListMode)
+        TaskListVM(application = get(), taskRepository = get(), taskListMode = taskListMode)
     }
     viewModel { (taskCardMode: TaskCardMode) ->
         TaskCardVM(
@@ -38,8 +38,8 @@ val diModule = module {
             taskCardMode = taskCardMode
         )
     }
-    viewModel { (catalogCardBottomMode: CatalogCardBottomMode) ->
-        CatalogCardBottomVM(resourceProvider = get(), repository = get(), mode = catalogCardBottomMode)
+    viewModel { (catalogEditorMode: CatalogEditorMode) ->
+        CatalogEditorVM(resourceProvider = get(), repository = get(), mode = catalogEditorMode)
     }
     viewModel { CatalogListVM(application = get(), repository = get()) }
     viewModel { CatalogCardContentVM(repository = get(), catalogId = get()) }

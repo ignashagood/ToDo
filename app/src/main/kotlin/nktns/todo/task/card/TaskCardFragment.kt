@@ -119,7 +119,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                         checkText.text = state.actionName
                         checkButton.isVisible = true
                         val catalogName = state.catalogName
-                        if (catalogName == "") {
+                        if (catalogName == null) {
                             catalogText.text = getString(R.string.catalog_name_string_bottom_sheet)
                         } else {
                             catalogText.text = state.catalogName

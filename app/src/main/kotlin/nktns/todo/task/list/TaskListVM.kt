@@ -12,14 +12,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.base.diff.calculateDiff
-import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
 import nktns.todo.data.database.entity.TaskEntity
 
 class TaskListVM(
     application: Application,
     private val taskRepository: TaskRepository,
-    private val catalogRepository: CatalogRepository,
     private val taskListMode: TaskListMode,
 ) : AndroidViewModel(application), TaskListFragment.TaskActionHandler {
     private var _action = MutableSharedFlow<TaskListAction>(extraBufferCapacity = 1)
@@ -47,12 +45,11 @@ class TaskListVM(
 
     private fun onCatalogMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.Main) {
-            val newTaskList = catalogRepository.getWithTasks(catalogId).let {
-                it?.tasks ?: emptyList() // TODO
+            taskRepository.getCatalogTasks(catalogId).collect { newTaskList ->
+                val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
+                val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
+                _state.value = TaskListState.Content(newTaskList, result)
             }
-            val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
-            val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
-            _state.value = TaskListState.Content(newTaskList, result)
         }
     }
 

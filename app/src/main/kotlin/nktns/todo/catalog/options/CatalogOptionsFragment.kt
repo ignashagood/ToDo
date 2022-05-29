@@ -1,12 +1,12 @@
-package nktns.todo.catalog.card.options
+package nktns.todo.catalog.options
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
-import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
+import nktns.todo.catalog.editor.CatalogEditorFragment
+import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.databinding.FragmentCatalogOptionsBinding
 
 const val SHOW_CATALOG_CHANGER_TAG = "show_catalog_changer_tag"
@@ -30,7 +30,7 @@ class CatalogOptionsFragment : BottomSheetDialogFragment() {
         FragmentCatalogOptionsBinding.inflate(inflater, container, false).run {
             binding = this
             changeCatalogBtn.setOnClickListener {
-                CatalogCardBottomFragment.newInstance(CatalogCardBottomMode.View(requireArguments().getInt(CATALOG_ID)))
+                CatalogEditorFragment.newInstance(CatalogEditorMode.View(requireArguments().getInt(CATALOG_ID)))
                     .show(childFragmentManager, SHOW_CATALOG_CHANGER_TAG)
             }
             root

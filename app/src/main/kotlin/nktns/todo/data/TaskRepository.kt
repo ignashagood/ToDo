@@ -5,7 +5,6 @@ import nktns.todo.data.database.dao.CatalogDAO
 import nktns.todo.data.database.dao.TaskDAO
 import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.entity.TaskEntity
-import nktns.todo.data.database.relations.CatalogWithTasks
 import java.util.Date
 
 class TaskRepository(private val taskDAO: TaskDAO, private val catalogDAO: CatalogDAO) {
@@ -18,7 +17,7 @@ class TaskRepository(private val taskDAO: TaskDAO, private val catalogDAO: Catal
 
     fun getTodayTasks(): Flow<List<TaskEntity>> = taskDAO.getAllByCompletionDate(Date())
 
-    suspend fun getCatalogTasks(catalogId: Int): CatalogWithTasks? = catalogDAO.getWithTasks(catalogId)
+    fun getCatalogTasks(catalogId: Int): Flow<List<TaskEntity>> = taskDAO.getAllWithCatalogId(catalogId)
 
     suspend fun add(task: TaskEntity) {
         taskDAO.add(task)

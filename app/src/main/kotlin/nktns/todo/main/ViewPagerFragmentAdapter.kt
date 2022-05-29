@@ -12,9 +12,7 @@ import nktns.todo.task.list.today.TodayFragment
 class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount(): Int {
-        return 3
-    }
+    override fun getItemCount() = 3
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {

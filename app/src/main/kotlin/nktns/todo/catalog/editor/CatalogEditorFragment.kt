@@ -1,4 +1,4 @@
-package nktns.todo.catalog.card.bottom
+package nktns.todo.catalog.editor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,12 +13,12 @@ import nktns.todo.databinding.CatalogCardBottomFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CatalogCardBottomFragment : BottomSheetDialogFragment() {
+class CatalogEditorFragment : BottomSheetDialogFragment() {
 
     companion object {
         private const val CATALOG_CARD_MODE_KEY = "catalog_card_mode_key"
-        fun newInstance(catalogCardMode: CatalogCardBottomMode): CatalogCardBottomFragment {
-            return CatalogCardBottomFragment().apply {
+        fun newInstance(catalogCardMode: CatalogEditorMode): CatalogEditorFragment {
+            return CatalogEditorFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(CATALOG_CARD_MODE_KEY, catalogCardMode)
                 }
@@ -26,8 +26,8 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private val viewModel: CatalogCardBottomVM by viewModel {
-        parametersOf(requireArguments().getParcelable(CatalogCardBottomFragment.CATALOG_CARD_MODE_KEY))
+    private val viewModel: CatalogEditorVM by viewModel {
+        parametersOf(requireArguments().getParcelable(CATALOG_CARD_MODE_KEY))
     }
 
     private var binding: CatalogCardBottomFragmentBinding? = null
@@ -37,7 +37,7 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.action.collect {
                 when (it) {
-                    CatalogCardBottomAction.DISMISS -> dismiss()
+                    CatalogEditorAction.DISMISS -> dismiss()
                 }
             }
         }
@@ -49,7 +49,7 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View = CatalogCardBottomFragmentBinding.inflate(inflater, container, false).run {
         binding = this
-        saveButton.setOnClickListener { viewModel.onSaveButtonClicked() }
+        saveButton.setOnClickListener { viewModel.onCompleteButtonClicked() }
         inputNameCatalog.addTextChangedListener { viewModel.onCatalogNameChanged(it?.toString().orEmpty()) }
         root
     }
@@ -58,14 +58,14 @@ class CatalogCardBottomFragment : BottomSheetDialogFragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.state.collect { state ->
                 when (state) {
-                    is CatalogCardBottomState.Content -> binding?.run {
-                        if (inputNameCatalog.text.toString() != state.name) {
-                            inputNameCatalog.setText(state.name)
+                    is CatalogEditorState.Content -> binding?.run {
+                        if (inputNameCatalog.text.toString() != state.catalogName) {
+                            inputNameCatalog.setText(state.catalogName)
                         }
-                        catalogCardBottomTitle.text = state.actionName
+                        catalogCardBottomTitle.text = state.completedActionName
                         deleteButton.isVisible = state.canDelete
                     }
-                    is CatalogCardBottomState.InitialLoading -> Unit // TODO
+                    is CatalogEditorState.InitialLoading -> Unit
                 }
             }
         }
