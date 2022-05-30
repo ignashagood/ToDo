@@ -1,4 +1,4 @@
-package nktns.todo.catalog.card.content
+package nktns.todo.catalog.card
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
-import nktns.todo.catalog.card.options.CatalogOptionsFragment
+import nktns.todo.catalog.options.CatalogOptionsFragment
 import nktns.todo.databinding.CatalogCardContentFragmentBinding
-import nktns.todo.main.MainFragment
 import nktns.todo.task.list.TaskListFragment
 import nktns.todo.task.list.TaskListMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +24,7 @@ class CatalogCardContentFragment : Fragment() {
         fun newInstance(catalogId: Int): CatalogCardContentFragment {
             return CatalogCardContentFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(CatalogCardContentFragment.CATALOG_ID, catalogId)
+                    putInt(CATALOG_ID, catalogId)
                 }
             }
         }
@@ -43,11 +42,8 @@ class CatalogCardContentFragment : Fragment() {
     ): View = CatalogCardContentFragmentBinding.inflate(inflater, container, false).run {
         binding = this
         backButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view, MainFragment())
-                .addToBackStack(null)
-                .commit()
-        } // TODO - правильно обработать back
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         optionsBtn.setOnClickListener {
             CatalogOptionsFragment.newInstance(requireArguments().getInt(CATALOG_ID))
                 .show(childFragmentManager, SHOW_OPTIONS_TAG)
@@ -70,6 +66,6 @@ class CatalogCardContentFragment : Fragment() {
                 binding?.catalogName?.text = catalogName
             }
         }
-// TODO
+// TODO отображение количества задач
     }
 }

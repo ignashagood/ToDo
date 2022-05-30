@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
-import nktns.todo.catalog.card.bottom.CatalogCardBottomFragment
-import nktns.todo.catalog.card.bottom.CatalogCardBottomMode
-import nktns.todo.catalog.card.content.CatalogCardContentFragment
+import nktns.todo.catalog.card.CatalogCardContentFragment
+import nktns.todo.catalog.editor.CatalogEditorFragment
+import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +33,7 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
             binding = this
             recyclerViewCatalogs.adapter = adapter
             addButton.setOnClickListener {
-                CatalogCardBottomFragment.newInstance(CatalogCardBottomMode.Create)
+                CatalogEditorFragment.newInstance(CatalogEditorMode.Create)
                     .show(childFragmentManager, SHOW_CATALOG_CREATOR)
             }
             root

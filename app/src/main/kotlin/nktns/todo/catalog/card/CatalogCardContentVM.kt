@@ -1,4 +1,4 @@
-package nktns.todo.catalog.card.content
+package nktns.todo.catalog.card
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import nktns.todo.base.illegalState
 import nktns.todo.data.CatalogRepository
 
 class CatalogCardContentVM(
@@ -21,9 +22,13 @@ class CatalogCardContentVM(
 
     private fun getCatalogName(catalogId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.get(catalogId)?.let {
-                _catalogName.emit(it.name)
-            } // TODO
+            repository.get(catalogId).let {
+                if (it != null) {
+                    _catalogName.emit(it.name)
+                } else {
+                    illegalState("Unexpected catalog id")
+                }
+            }
         }
     }
 }
