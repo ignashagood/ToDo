@@ -1,23 +1,28 @@
 <resources>
     <string name="app_name">NktnsToDo</string>
-    <string name="task_card_add_btn">добавить</string>
-    <string name="task_card_save_btn">сохранить</string>
+
     <string name="tab_item_all">все</string>
     <string name="tab_item_today">сегодня</string>
     <string name="tab_item_catalogs">списки дел</string>
+
     <string name="create_task_name_default">Новая задача</string>
     <string name="create_task_description_default">Описание</string>
     <string name="task_card_date">дата</string>
     <string name="task_card_time">время</string>
     <string name="task_card_catalog">список</string>
     <string name="task_card_delete">удалить</string>
-    <string name="catalog_editor_title_add">Создать список</string>
-    <string name="catalog_editor_title_change">Изменить список</string>
-    <string name="create_catalog_name_default">Название списка</string>
+    <string name="task_card_add_btn">добавить</string>
+    <string name="task_card_save_btn">сохранить</string>
+
     <string name="hide_function">Скрыть выполненные задачи</string>
     <string name="catalog_editor_add_btn">Сохранить список</string>
     <string name="catalog_editor_save_btn">Изменить список</string>
-    <string name="catalog_options_archive">Архив</string>
     <string name="catalog_editor_delete">Удалить</string>
+    <string name="create_catalog_name_default">Название списка</string>
+    <string name="catalog_editor_title_add">Создать список</string>
+    <string name="catalog_editor_title_change">Изменить список</string>
+
+    <string name="catalog_options_archive">Архив</string>
+
     <string name="catalog_tasks_count">%d задач | %d задач</string>
 </resources>
