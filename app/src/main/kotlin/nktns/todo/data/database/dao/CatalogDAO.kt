@@ -34,8 +34,8 @@ interface CatalogDAO {
             COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount
         FROM catalogs
         LEFT OUTER JOIN tasks ON catalogId = taskCatalogId
-        GROUP BY taskCatalogId
-        ORDER BY taskCatalogId DESC
+        GROUP BY catalogId
+        ORDER BY catalogId DESC
         """
     )
     fun getAllWithCounts(): Flow<List<CatalogWithCounts>>

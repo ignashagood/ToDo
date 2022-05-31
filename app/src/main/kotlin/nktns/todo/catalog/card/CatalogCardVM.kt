@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import nktns.todo.base.illegalState
 import nktns.todo.data.CatalogRepository
 
-class CatalogCardContentVM(
+class CatalogCardVM(
     private val repository: CatalogRepository,
     catalogId: Int
 ) : ViewModel() {

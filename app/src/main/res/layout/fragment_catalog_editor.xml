@@ -9,9 +9,9 @@
         android:id="@+id/catalog_card_bottom_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/catalog_card_bottom_title_add"
+        android:text="@string/catalog_editor_title_add"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
             android:background="@null"
-            android:hint="@string/input_name_catalog"
+            android:hint="@string/create_catalog_name_default"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -44,18 +44,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/hide_function_name"
+                android:layout_gravity="center"
+                android:text="@string/hide_function"
                 android:textSize="12sp" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:theme="@style/ColorSwitchStyle"/>
 
         </LinearLayout>
 
@@ -65,9 +69,10 @@
             android:paddingEnd="16dp"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/delete_text"/>
+            android:text="@string/catalog_editor_delete"/>
 
 
     </LinearLayout>
@@ -79,7 +84,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginBottom="15dp"
         android:gravity="center"
-        android:text="@string/save_button"
+        android:text="@string/catalog_editor_add_btn"
         android:textColor="@color/green"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"

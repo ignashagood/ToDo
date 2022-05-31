@@ -16,8 +16,8 @@ class ViewPagerFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TaskListFragment.newInstance(TaskListMode.All)
-            1 -> TodayFragment()
+            0 -> TodayFragment()
+            1 -> TaskListFragment.newInstance(TaskListMode.All)
             2 -> CatalogListFragment()
             else -> error("Unexpected position $position")
         }

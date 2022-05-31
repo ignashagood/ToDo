@@ -10,17 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
+import nktns.todo.base.format
 import nktns.todo.base.illegalState
 import nktns.todo.base.pickers.DatePickerFragment
 import nktns.todo.base.pickers.PickedDate
 import nktns.todo.base.pickers.PickedTime
 import nktns.todo.base.pickers.TimePickerFragment
-import nktns.todo.databinding.TaskCardFragmentBinding
+import nktns.todo.databinding.FragmentTaskCardBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.text.DateFormat
-import java.util.Date
-import java.util.Locale
 
 const val LOCALE = "ru"
 const val DATE_PICKER_FRAGMENT_TAG = "date_picker_fragment_tag"
@@ -43,7 +41,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         parametersOf(requireArguments().getParcelable(TASK_CARD_MODE_KEY))
     }
 
-    private var binding: TaskCardFragmentBinding? = null
+    private var binding: FragmentTaskCardBinding? = null
 
     override fun getTheme(): Int = R.style.BottomSheetDialogTheme
 
@@ -89,7 +87,7 @@ class TaskCardFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View =
-        TaskCardFragmentBinding.inflate(inflater, container, false).run {
+        FragmentTaskCardBinding.inflate(inflater, container, false).run {
             binding = this
             saveAddButton.setOnClickListener { viewModel.onSaveAddButtonClicked() }
             deleteButton.setOnClickListener { viewModel.onDeleteButtonClicked() }
@@ -113,27 +111,15 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                         }
                         deleteButton.isVisible = state.canDelete
                         name.isVisible = true
-                        dateText.text = formatDate(state.completionDate)
-                        timeText.text =
-                            DateFormat.getTimeInstance(DateFormat.SHORT, Locale(LOCALE)).format(state.completionDate)
+                        dateText.text = state.completionDate.format("d MMMM")
+                        timeText.text = state.completionDate.format("HH:mm")
                         checkText.text = state.actionName
                         checkButton.isVisible = true
-                        val catalogName = state.catalogName
-                        if (catalogName == null) {
-                            catalogText.text = getString(R.string.catalog_name_string_bottom_sheet)
-                        } else {
-                            catalogText.text = state.catalogName
-                        }
+                        catalogText.text = state.catalogName
                     }
                 }
             }
         }
-    }
-
-    private fun formatDate(date: Date): String {
-        val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale(LOCALE)).format(date)
-        val splitDate = formattedDate.split(" ")
-        return "${splitDate[0]} ${splitDate[1]}"
     }
 
     private fun showDatePicker(date: PickedDate) {

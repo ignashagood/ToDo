@@ -43,17 +43,22 @@ class TaskCardVM(
 
     private fun onCreateMode(catalogId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val catalogName = catalogRepository.get(catalogId)?.name
-            _state.emit(
-                TaskCardState.Content(
-                    name = "",
-                    isCompleted = false,
-                    taskCardMode.actionName,
-                    canDelete = false,
-                    Date(),
-                    catalogName
+            val catalog = catalogRepository.get(catalogId)
+            if (catalog != null) {
+                _state.emit(
+                    TaskCardState.Content(
+                        name = "",
+                        isCompleted = false,
+                        taskCardMode.actionName,
+                        canDelete = false,
+                        Date(),
+                        catalog.name,
+                        catalog.id
+                    )
                 )
-            )
+            } else {
+                _action.emit(TaskCardAction.Dismiss)
+            }
         }
     }
 
@@ -90,10 +95,6 @@ class TaskCardVM(
         }
     }
 
-    // Так правильней, чем прокидывать новое имя в onButtonClicked
-    // Т.к. кнопку пользователь нажимает позже, а модель данных нужно зафиксировать сразу после изменения
-    // Самая очевидная нужда в этом - при повороте экрана последнее
-    // значение будет у нас на руках, а не только в EditText
     fun onTaskNameChanged(newName: String) {
         runOnContentState { _state.value = copy(name = newName) }
     }
@@ -111,7 +112,7 @@ class TaskCardVM(
         runOnContentState {
             when (taskCardMode) {
                 is TaskCardMode.View -> deleteTask(toEntity(taskCardMode.taskId))
-                is TaskCardMode.Create -> illegalState("Delete button is visible")
+                is TaskCardMode.Create -> illegalState("Delete button cannot be visible")
             }
         }
     }
@@ -164,7 +165,8 @@ class TaskCardVM(
         taskCardMode.actionName,
         true,
         completionDate,
-        ""
+        "", // TODO извлечь имя из каталога
+        catalogId
     )
 
     private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(
@@ -174,6 +176,6 @@ class TaskCardVM(
         Date(),
         completionDate,
         isCompleted,
-        id
+        catalogId
     )
 }

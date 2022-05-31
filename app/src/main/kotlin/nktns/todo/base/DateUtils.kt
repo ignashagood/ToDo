@@ -2,8 +2,11 @@ package nktns.todo.base
 
 import nktns.todo.base.pickers.PickedDate
 import nktns.todo.base.pickers.PickedTime
+import nktns.todo.task.card.LOCALE
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 fun Date.withoutTime(): Date =
     Calendar.getInstance().run {
@@ -50,3 +53,9 @@ fun Date.applyPickedTime(pickedTime: PickedTime): Date =
         set(Calendar.MINUTE, pickedTime.minute)
         this.time
     }
+
+fun Date.format(pattern: String): String = SimpleDateFormat(pattern, Locale(LOCALE)).format(this)
+
+
+
+

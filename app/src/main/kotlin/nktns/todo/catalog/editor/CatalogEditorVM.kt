@@ -68,11 +68,27 @@ class CatalogEditorVM(
         }
     }
 
+    private fun deleteTask(catalog: CatalogEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(catalog)
+            _action.emit(CatalogEditorAction.DISMISS)
+        }
+    }
+
     fun onCompleteButtonClicked() {
         runOnContentState {
             when (mode) {
                 is CatalogEditorMode.Create -> addCatalog(toEntity())
                 is CatalogEditorMode.View -> updateCatalog(toEntity(mode.catalogId))
+            }
+        }
+    }
+
+    fun onDeleteButtonClicked() {
+        runOnContentState {
+            when (mode) {
+                is CatalogEditorMode.Create -> illegalState("Delete button cannot be visible")
+                is CatalogEditorMode.View -> deleteTask(toEntity(mode.catalogId))
             }
         }
     }
@@ -98,8 +114,8 @@ class CatalogEditorVM(
         get() =
             resourceProvider.getString(
                 when (this) {
-                    is CatalogEditorMode.Create -> R.string.catalog_card_bottom_title_add
-                    is CatalogEditorMode.View -> R.string.catalog_card_bottom_title_change
+                    is CatalogEditorMode.Create -> R.string.catalog_editor_title_add
+                    is CatalogEditorMode.View -> R.string.catalog_editor_title_change
                 }
             )
 

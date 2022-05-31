@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/change_catalog_text"
+                android:text="@string/catalog_editor_save_btn"
                 android:layout_weight="1"/>
 
             <ImageView
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/archive_catalog_text"
+                android:text="@string/catalog_options_archive"
                 android:layout_weight="1"/>
 
             <ImageView

@@ -4,12 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/light_grey">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_catalogs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_default_margin_horiz"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/list_default_margin_horiz"
+        android:background="@drawable/task_lists_background"
         android:scrollbars="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
