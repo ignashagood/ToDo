@@ -57,17 +57,7 @@ class TaskCardVM(
                     )
                 )
             } else {
-                _state.emit(
-                    TaskCardState.Content(
-                        name = "",
-                        isCompleted = false,
-                        taskCardMode.actionName,
-                        canDelete = false,
-                        Date(),
-                        "список",
-                        null
-                    )
-                )
+                _action.emit(TaskCardAction.Dismiss)
             }
         }
     }
@@ -122,7 +112,7 @@ class TaskCardVM(
         runOnContentState {
             when (taskCardMode) {
                 is TaskCardMode.View -> deleteTask(toEntity(taskCardMode.taskId))
-                is TaskCardMode.Create -> illegalState("Delete button is visible")
+                is TaskCardMode.Create -> illegalState("Delete button cannot be visible")
             }
         }
     }

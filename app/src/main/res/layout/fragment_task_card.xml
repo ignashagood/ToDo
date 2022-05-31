@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:background="@null"
-            android:hint="@string/create_task_string"
+            android:hint="@string/create_task_name_default"
             android:textSize="16sp" />
 
         <EditText
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             android:background="@null"
-            android:hint="@string/create_task_description"
+            android:hint="@string/create_task_description_default"
             android:textSize="14sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +77,7 @@ taskcardaction -> sealed class
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="@string/date_string_bottom_sheet"
+                    android:text="@string/task_card_date"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -106,7 +106,7 @@ taskcardaction -> sealed class
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="@string/time_string_bottom_sheet"
+                    android:text="@string/task_card_time"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -135,7 +135,7 @@ taskcardaction -> sealed class
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="@string/catalog_name_string_bottom_sheet"
+                    android:text="@string/task_card_catalog"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -164,7 +164,7 @@ taskcardaction -> sealed class
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="@string/delete_string_bottom_sheet"
+                    android:text="@string/task_card_delete"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -193,7 +193,7 @@ taskcardaction -> sealed class
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="@string/save_string_bottom_sheet"
+                    android:text="@string/task_card_save_btn"
                     android:textColor="@color/green"
                     android:textSize="12sp" />
 

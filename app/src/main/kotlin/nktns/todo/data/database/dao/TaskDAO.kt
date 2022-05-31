@@ -21,10 +21,12 @@ interface TaskDAO {
     @Query("SELECT * from tasks WHERE taskCatalogId = :catalogId ORDER BY taskIsCompleted, taskCreationDate")
     fun getAllWithCatalogId(catalogId: Int): Flow<List<TaskEntity>>
 
+/** Дата - 13 цифр, деление на 1000 происходит для избавления от микросекунд, а модификатор unixepoch
+интерпретирует дату как время Unix - количество секунд с 1970 года **/
     @Query(
         """
             SELECT * FROM tasks 
-            WHERE date(taskCompletionDate / 1000, 'unixepoch') = date(:date / 1000, 'unixepoch') 
+            WHERE date(taskCompletionDate / 1000) = date(:date / 1000, 'unixepoch') 
             ORDER BY taskIsCompleted, taskCreationDate
             """
     )

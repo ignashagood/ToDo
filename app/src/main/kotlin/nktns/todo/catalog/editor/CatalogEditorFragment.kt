@@ -53,6 +53,7 @@ class CatalogEditorFragment : BottomSheetDialogFragment() {
     ): View = FragmentCatalogEditorBinding.inflate(inflater, container, false).run {
         binding = this
         saveButton.setOnClickListener { viewModel.onCompleteButtonClicked() }
+        deleteButton.setOnClickListener { viewModel.onDeleteButtonClicked() }
         inputNameCatalog.addTextChangedListener { viewModel.onCatalogNameChanged(it?.toString().orEmpty()) }
         root
     }

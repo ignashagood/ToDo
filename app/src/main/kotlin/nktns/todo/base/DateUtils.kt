@@ -3,7 +3,7 @@ package nktns.todo.base
 import nktns.todo.base.pickers.PickedDate
 import nktns.todo.base.pickers.PickedTime
 import nktns.todo.task.card.LOCALE
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -54,8 +54,7 @@ fun Date.applyPickedTime(pickedTime: PickedTime): Date =
         this.time
     }
 
-fun formatDate(date: Date): String {
-    val formattedDate = DateFormat.getDateInstance(DateFormat.LONG, Locale(LOCALE)).format(date)
-    val splitDate = formattedDate.split(" ")
-    return "${splitDate[0]} ${splitDate[1]}"
-}
+fun formatDate(pattern: String, date: Date): String = SimpleDateFormat(pattern, Locale(LOCALE)).format(date)
+
+
+

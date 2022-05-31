@@ -13,6 +13,7 @@ import nktns.todo.catalog.editor.CatalogEditorFragment
 import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.data.database.subset.CatalogWithCounts
 import nktns.todo.databinding.FragmentCatalogListBinding
+import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val SHOW_CATALOG_CREATOR = "show_catalog_creator"
@@ -20,7 +21,9 @@ private const val SHOW_CATALOG_CREATOR = "show_catalog_creator"
 class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
 
     private val viewModel by viewModel<CatalogListVM>()
-    private val adapter: CatalogListAdapter by lazy { CatalogListAdapter(this) }
+    private val adapter: CatalogListAdapter by lazy {
+        CatalogListAdapter(getKoin().get(), this)
+    }
     private var binding: FragmentCatalogListBinding? = null
     private var contentStateApplied: Boolean = false
 

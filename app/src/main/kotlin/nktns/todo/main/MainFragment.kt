@@ -32,9 +32,9 @@ class MainFragment : Fragment() {
         binding?.run {
             TabLayoutMediator(tab, pager) { tab, position ->
                 when (position) {
-                    0 -> tab.text = getString(R.string.tab_item_1)
-                    1 -> tab.text = getString(R.string.tab_item_2)
-                    2 -> tab.text = getString(R.string.tab_item_3)
+                    0 -> tab.text = getString(R.string.tab_item_today)
+                    1 -> tab.text = getString(R.string.tab_item_all)
+                    2 -> tab.text = getString(R.string.tab_item_catalogs)
                 }
             }.attach()
             tab.getTabAt(tab.selectedTabPosition)?.setTextStyle(Typeface.BOLD)

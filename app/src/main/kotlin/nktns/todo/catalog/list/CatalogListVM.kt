@@ -23,7 +23,7 @@ class CatalogListVM(application: Application, private val repository: CatalogRep
             repository.getAllWithCounts().collect { newCatalogList ->
                 val currentCatalogList: List<CatalogWithCounts> =
                     (state.value as? CatalogListState.Content)?.catalogList ?: emptyList()
-                val result: DiffUtil.DiffResult = calculateDiff(currentCatalogList, newCatalogList) { this.catalog::id }
+                val result: DiffUtil.DiffResult = calculateDiff(currentCatalogList, newCatalogList) { this.catalog.id }
                 _state.value = CatalogListState.Content(newCatalogList, result)
             }
         }

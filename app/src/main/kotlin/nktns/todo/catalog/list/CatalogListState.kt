@@ -6,6 +6,8 @@ import nktns.todo.data.database.subset.CatalogWithCounts
 sealed class CatalogListState {
     object InitialLoading : CatalogListState()
 
-    data class Content(val catalogList: List<CatalogWithCounts>, val diffResult: DiffUtil.DiffResult) :
-        CatalogListState()
+    data class Content(
+        val catalogList: List<CatalogWithCounts>,
+        val diffResult: DiffUtil.DiffResult
+    ) : CatalogListState()
 }
