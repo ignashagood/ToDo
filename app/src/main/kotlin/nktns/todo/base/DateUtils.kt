@@ -54,7 +54,8 @@ fun Date.applyPickedTime(pickedTime: PickedTime): Date =
         this.time
     }
 
-fun formatDate(pattern: String, date: Date): String = SimpleDateFormat(pattern, Locale(LOCALE)).format(date)
+fun Date.format(pattern: String): String = SimpleDateFormat(pattern, Locale(LOCALE)).format(this)
+
 
 
 

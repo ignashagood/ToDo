@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
-import nktns.todo.base.formatDate
+import nktns.todo.base.format
 import nktns.todo.base.illegalState
 import nktns.todo.base.pickers.DatePickerFragment
 import nktns.todo.base.pickers.PickedDate
@@ -111,8 +111,8 @@ class TaskCardFragment : BottomSheetDialogFragment() {
                         }
                         deleteButton.isVisible = state.canDelete
                         name.isVisible = true
-                        dateText.text = formatDate("d MMMM", state.completionDate)
-                        timeText.text = formatDate("HH:mm", state.completionDate)
+                        dateText.text = state.completionDate.format("d MMMM")
+                        timeText.text = state.completionDate.format("HH:mm")
                         checkText.text = state.actionName
                         checkButton.isVisible = true
                         catalogText.text = state.catalogName
