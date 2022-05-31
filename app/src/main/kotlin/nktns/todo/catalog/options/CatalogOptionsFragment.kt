@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import nktns.todo.R
 import nktns.todo.catalog.editor.CatalogEditorFragment
 import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.databinding.FragmentCatalogOptionsBinding
@@ -18,11 +19,13 @@ class CatalogOptionsFragment : BottomSheetDialogFragment() {
         fun newInstance(catalogId: Int): CatalogOptionsFragment {
             return CatalogOptionsFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(CatalogOptionsFragment.CATALOG_ID, catalogId)
+                    putInt(CATALOG_ID, catalogId)
                 }
             }
         }
     }
+
+    override fun getTheme(): Int = R.style.BottomSheetDialogTheme
 
     private var binding: FragmentCatalogOptionsBinding? = null
 

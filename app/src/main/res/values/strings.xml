@@ -3,8 +3,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task_card_add_btn">добавить</string>
     <string name="task_card_save_btn">сохранить</string>
-    <string name="tab_item_1">все</string>
-    <string name="tab_item_2">сегодня</string>
+    <string name="tab_item_2">все</string>
+    <string name="tab_item_1">сегодня</string>
     <string name="tab_item_3">списки дел</string>
     <string name="create_task_string">Новая задача</string>
     <string name="create_task_description">Описание</string>

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.data.database.entity.TaskEntity
-import nktns.todo.databinding.FragmentListBinding
+import nktns.todo.databinding.FragmentTaskListBinding
 import nktns.todo.task.card.TaskCardFragment
 import nktns.todo.task.card.TaskCardMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,7 +37,7 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
         )
     }
     private val adapter: TaskAdapter by lazy { TaskAdapter(viewModel, this) }
-    private var binding: FragmentListBinding? = null
+    private var binding: FragmentTaskListBinding? = null
     private var contentStateApplied: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentListBinding.inflate(inflater, container, false).run {
+    ): View = FragmentTaskListBinding.inflate(inflater, container, false).run {
         binding = this
         recyclerViewTasks.adapter = adapter
         addButton.setOnClickListener {

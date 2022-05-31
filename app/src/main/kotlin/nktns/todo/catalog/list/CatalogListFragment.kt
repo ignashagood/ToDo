@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
-import nktns.todo.catalog.card.CatalogCardContentFragment
+import nktns.todo.catalog.card.CatalogCardFragment
 import nktns.todo.catalog.editor.CatalogEditorFragment
 import nktns.todo.catalog.editor.CatalogEditorMode
-import nktns.todo.data.database.entity.CatalogEntity
+import nktns.todo.data.database.subset.CatalogWithCounts
 import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -50,9 +50,9 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClick(catalog: CatalogEntity) {
+    override fun onItemClick(catalog: CatalogWithCounts) {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, CatalogCardContentFragment.newInstance(catalog.id))
+            .replace(R.id.fragment_container_view, CatalogCardFragment.newInstance(catalog.catalog.id))
             .addToBackStack(null)
             .commit()
     }

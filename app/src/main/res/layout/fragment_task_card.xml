@@ -47,12 +47,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="28dp"
+                android:background="?attr/selectableItemBackground"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/time_pick_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"
-                android:background="?attr/selectableItemBackground">
+                tools:ignore="MissingConstraints">
                 <!--background clickable
 передать событие клика в vm
 положить completDate в taskCardState.content
@@ -69,16 +69,16 @@ taskcardaction -> sealed class
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_calendar_today_24"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:src="@drawable/ic_baseline_calendar_today_24" />
 
                 <TextView
                     android:id="@+id/date_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/date_string_bottom_sheet"
-                    android:textSize="12sp"
-                    android:clickable="false"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -98,16 +98,16 @@ taskcardaction -> sealed class
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_access_time_24"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:src="@drawable/ic_baseline_access_time_24" />
 
                 <TextView
                     android:id="@+id/time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/time_string_bottom_sheet"
-                    android:textSize="12sp"
-                    android:clickable="false"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -115,7 +115,7 @@ taskcardaction -> sealed class
                 android:id="@+id/catalog_pick_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="29dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/delete_button"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -127,16 +127,16 @@ taskcardaction -> sealed class
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_view_headline_24"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:src="@drawable/ic_baseline_view_headline_24" />
 
                 <TextView
                     android:id="@+id/catalog_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/catalog_name_string_bottom_sheet"
-                    android:textSize="12sp"
-                    android:clickable="false"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -149,24 +149,23 @@ taskcardaction -> sealed class
                 app:layout_constraintEnd_toStartOf="@+id/save_add_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/catalog_pick_button"
-                tools:ignore="MissingConstraints"
-                android:visibility="gone">
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_delete_24"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:src="@drawable/ic_baseline_delete_24" />
 
                 <TextView
                     android:id="@+id/delete_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/delete_string_bottom_sheet"
-                    android:textSize="12sp"
-                    android:clickable="false"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -186,17 +185,17 @@ taskcardaction -> sealed class
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@null"
-                    android:src="@drawable/ic_baseline_check_circle_24"
-                    android:clickable="false"/>
+                    android:clickable="false"
+                    android:src="@drawable/ic_baseline_check_circle_24" />
 
                 <TextView
                     android:id="@+id/checkText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/save_string_bottom_sheet"
                     android:textColor="@color/green"
-                    android:textSize="12sp"
-                    android:clickable="false"/>
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

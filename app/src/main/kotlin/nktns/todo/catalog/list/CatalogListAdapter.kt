@@ -6,19 +6,26 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import nktns.todo.R
-import nktns.todo.data.database.entity.CatalogEntity
+import nktns.todo.data.database.subset.CatalogWithCounts
 import nktns.todo.databinding.CatalogItemBinding
 
 class CatalogListAdapter(private val itemClickListener: CatalogListAdapter.OnItemClickListener) :
     RecyclerView.Adapter<CatalogListAdapter.CatalogHolder>() {
     interface OnItemClickListener {
-        fun onItemClick(catalog: CatalogEntity)
+        fun onItemClick(catalog: CatalogWithCounts)
     }
 
     class CatalogHolder(private val binding: CatalogItemBinding, clickHandler: (position: Int) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(catalog: CatalogEntity) = with(binding) {
-            catalogName.text = catalog.name
+        @SuppressLint("SetTextI18n")
+        fun bind(catalog: CatalogWithCounts) = with(binding) {
+            catalogName.text = catalog.catalog.name
+            val outdatedTasks = catalog.outdatedTaskCount
+            if (outdatedTasks == 0) {
+                taskCount.text = catalog.taskCount.toString()
+            } else {
+                taskCount.text = "${catalog.taskCount} задач | ${catalog.outdatedTaskCount} задач"
+            }
         }
 
         init {
@@ -28,7 +35,7 @@ class CatalogListAdapter(private val itemClickListener: CatalogListAdapter.OnIte
         }
     }
 
-    private var catalogs: List<CatalogEntity> = emptyList()
+    private var catalogs: List<CatalogWithCounts> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.catalog_item, parent, false)
@@ -43,12 +50,12 @@ class CatalogListAdapter(private val itemClickListener: CatalogListAdapter.OnIte
     override fun getItemCount(): Int = catalogs.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initList(newCatalogList: List<CatalogEntity>) {
+    fun initList(newCatalogList: List<CatalogWithCounts>) {
         catalogs = newCatalogList
         notifyDataSetChanged()
     }
 
-    fun updateList(newCatalogList: List<CatalogEntity>, diffResult: DiffUtil.DiffResult) {
+    fun updateList(newCatalogList: List<CatalogWithCounts>, diffResult: DiffUtil.DiffResult) {
         catalogs = newCatalogList
         diffResult.dispatchUpdatesTo(this)
     }

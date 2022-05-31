@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.base.diff.calculateDiff
 import nktns.todo.data.CatalogRepository
-import nktns.todo.data.database.entity.CatalogEntity
+import nktns.todo.data.database.subset.CatalogWithCounts
 
 class CatalogListVM(application: Application, private val repository: CatalogRepository) :
     AndroidViewModel(application) {
@@ -20,10 +20,10 @@ class CatalogListVM(application: Application, private val repository: CatalogRep
 
     init {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.getAll().collect { newCatalogList ->
-                val currentCatalogList: List<CatalogEntity> =
+            repository.getAllWithCounts().collect { newCatalogList ->
+                val currentCatalogList: List<CatalogWithCounts> =
                     (state.value as? CatalogListState.Content)?.catalogList ?: emptyList()
-                val result: DiffUtil.DiffResult = calculateDiff(currentCatalogList, newCatalogList, CatalogEntity::id)
+                val result: DiffUtil.DiffResult = calculateDiff(currentCatalogList, newCatalogList) { this.catalog::id }
                 _state.value = CatalogListState.Content(newCatalogList, result)
             }
         }

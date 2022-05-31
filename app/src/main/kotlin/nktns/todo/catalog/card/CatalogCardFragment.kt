@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
 import nktns.todo.catalog.options.CatalogOptionsFragment
-import nktns.todo.databinding.CatalogCardContentFragmentBinding
+import nktns.todo.databinding.FragmentCatalogCardBinding
 import nktns.todo.task.list.TaskListFragment
 import nktns.todo.task.list.TaskListMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,12 +17,12 @@ import org.koin.core.parameter.parametersOf
 
 private const val SHOW_OPTIONS_TAG = "show_options_tag"
 
-class CatalogCardContentFragment : Fragment() {
+class CatalogCardFragment : Fragment() {
 
     companion object {
         private const val CATALOG_ID = "catalog_id"
-        fun newInstance(catalogId: Int): CatalogCardContentFragment {
-            return CatalogCardContentFragment().apply {
+        fun newInstance(catalogId: Int): CatalogCardFragment {
+            return CatalogCardFragment().apply {
                 arguments = Bundle().apply {
                     putInt(CATALOG_ID, catalogId)
                 }
@@ -30,16 +30,16 @@ class CatalogCardContentFragment : Fragment() {
         }
     }
 
-    private val viewModel: CatalogCardContentVM by viewModel {
+    private val viewModel: CatalogCardVM by viewModel {
         parametersOf(requireArguments().getInt(CATALOG_ID))
     }
-    private var binding: CatalogCardContentFragmentBinding? = null
+    private var binding: FragmentCatalogCardBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = CatalogCardContentFragmentBinding.inflate(inflater, container, false).run {
+    ): View = FragmentCatalogCardBinding.inflate(inflater, container, false).run {
         binding = this
         backButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -66,6 +66,5 @@ class CatalogCardContentFragment : Fragment() {
                 binding?.catalogName?.text = catalogName
             }
         }
-// TODO отображение количества задач
     }
 }

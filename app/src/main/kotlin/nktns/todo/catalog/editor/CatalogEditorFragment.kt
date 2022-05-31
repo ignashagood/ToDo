@@ -9,7 +9,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
-import nktns.todo.databinding.CatalogCardBottomFragmentBinding
+import nktns.todo.R
+import nktns.todo.databinding.FragmentCatalogEditorBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -26,11 +27,13 @@ class CatalogEditorFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun getTheme(): Int = R.style.BottomSheetDialogTheme
+
     private val viewModel: CatalogEditorVM by viewModel {
         parametersOf(requireArguments().getParcelable(CATALOG_CARD_MODE_KEY))
     }
 
-    private var binding: CatalogCardBottomFragmentBinding? = null
+    private var binding: FragmentCatalogEditorBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +50,7 @@ class CatalogEditorFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = CatalogCardBottomFragmentBinding.inflate(inflater, container, false).run {
+    ): View = FragmentCatalogEditorBinding.inflate(inflater, container, false).run {
         binding = this
         saveButton.setOnClickListener { viewModel.onCompleteButtonClicked() }
         inputNameCatalog.addTextChangedListener { viewModel.onCatalogNameChanged(it?.toString().orEmpty()) }

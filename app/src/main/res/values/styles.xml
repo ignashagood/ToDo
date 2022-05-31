@@ -28,4 +28,8 @@
         <item name="colorControlActivated">@color/green</item>
     </style>
 
+    <style name="ColorSwitchStyle">
+        <item name="colorControlActivated">@color/green</item>
+    </style>
+
 </resources>
