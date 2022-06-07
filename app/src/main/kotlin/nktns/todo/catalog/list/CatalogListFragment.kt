@@ -55,7 +55,7 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
 
     override fun onItemClick(catalog: CatalogWithCounts) {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, CatalogCardFragment.newInstance(catalog.catalog.id))
+            .replace(R.id.fragment_container_view, CatalogCardFragment.newInstance(catalog.catalog))
             .addToBackStack(null)
             .commit()
     }

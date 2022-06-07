@@ -24,5 +24,17 @@
 
     <string name="catalog_options_archive">Архив</string>
 
-    <string name="catalog_tasks_count">%d задач | %d задач</string>
+    <plurals name="catalog_tasks_count">
+        <item quantity="one">%d задача</item>
+        <item quantity="few">%d задачи</item>
+        <item quantity="many">%d задач</item>
+        <item quantity="other">%d задач</item>
+    </plurals>
+
+    <plurals name="catalog_outdated_tasks_count">
+        <item quantity="one">| %d просроченная</item>
+        <item quantity="few">| %d просроченные</item>
+        <item quantity="many">| %d просроченных</item>
+        <item quantity="other">| %d просроченных</item>
+    </plurals>
 </resources>

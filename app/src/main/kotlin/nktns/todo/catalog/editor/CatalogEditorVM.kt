@@ -29,7 +29,7 @@ class CatalogEditorVM(
     init {
         when (mode) {
             is CatalogEditorMode.Create -> onCreateMode()
-            is CatalogEditorMode.View -> onViewMode(mode.catalogId)
+            is CatalogEditorMode.View -> onViewMode(mode.catalog)
         }
     }
 
@@ -42,15 +42,9 @@ class CatalogEditorVM(
         )
     }
 
-    private fun onViewMode(catalogId: Int) {
+    private fun onViewMode(catalog: CatalogEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            val catalog: CatalogEntity? = repository.get(catalogId)
-            if (catalog != null) {
-                _state.emit(catalog.toContentState())
-            } else {
-                illegalState("Unexpected catalog id")
-                _action.emit(CatalogEditorAction.DISMISS)
-            }
+            _state.emit(catalog.toContentState())
         }
     }
 
@@ -68,7 +62,7 @@ class CatalogEditorVM(
         }
     }
 
-    private fun deleteTask(catalog: CatalogEntity) {
+    private fun deleteCatalog(catalog: CatalogEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.delete(catalog)
             _action.emit(CatalogEditorAction.DISMISS)
@@ -79,7 +73,7 @@ class CatalogEditorVM(
         runOnContentState {
             when (mode) {
                 is CatalogEditorMode.Create -> addCatalog(toEntity())
-                is CatalogEditorMode.View -> updateCatalog(toEntity(mode.catalogId))
+                is CatalogEditorMode.View -> updateCatalog(toEntity(mode.catalog.id))
             }
         }
     }
@@ -88,7 +82,7 @@ class CatalogEditorVM(
         runOnContentState {
             when (mode) {
                 is CatalogEditorMode.Create -> illegalState("Delete button cannot be visible")
-                is CatalogEditorMode.View -> deleteTask(toEntity(mode.catalogId))
+                is CatalogEditorMode.View -> deleteCatalog(mode.catalog)
             }
         }
     }

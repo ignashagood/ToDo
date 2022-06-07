@@ -1,6 +1,10 @@
 package nktns.todo.catalog.list
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,10 +28,38 @@ class CatalogListAdapter(
         clickHandler: (position: Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(catalog: CatalogWithCounts) = with(binding) {
+            val tasksCountStringSize = resourceProvider.getQuantityString(
+                R.plurals.catalog_tasks_count,
+                catalog.taskCount,
+                catalog.taskCount
+            ).length + 2
+            val tasks = SpannableString(
+                "${
+                resourceProvider
+                    .getQuantityString(
+                        R.plurals.catalog_tasks_count,
+                        catalog.taskCount,
+                        catalog.taskCount
+                    )
+                } ${
+                resourceProvider
+                    .getQuantityString(
+                        R.plurals.catalog_outdated_tasks_count,
+                        catalog.outdatedTaskCount,
+                        catalog.outdatedTaskCount
+                    )
+                }"
+            )
+            tasks.setSpan(
+                ForegroundColorSpan(Color.RED),
+                tasksCountStringSize,
+                tasks.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             catalogName.text = catalog.catalog.name
-            taskCount.text = resourceProvider
-                .getString(R.string.catalog_tasks_count, catalog.taskCount, catalog.outdatedTaskCount)
+            taskCount.text = tasks
         }
 
         init {

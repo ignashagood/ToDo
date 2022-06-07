@@ -25,7 +25,8 @@
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/button_background"
         android:src="@drawable/ic_vector_add" />
 

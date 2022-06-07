@@ -46,8 +46,8 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
             viewModel.action.collect {
                 when (it) {
                     is TaskListAction.ShowCreateBottomSheet ->
-                        TaskCardFragment.newInstance(TaskCardMode.Create(it.catalogId))
-                            .show(childFragmentManager, "ChangeSheetDialog")
+                        TaskCardFragment.newInstance(TaskCardMode.Create(it.catalog))
+                            .show(childFragmentManager, "CreateSheetDialog")
                     is TaskListAction.ShowViewBottomSheet ->
                         TaskCardFragment.newInstance(TaskCardMode.View(it.taskId))
                             .show(childFragmentManager, "ChangeSheetDialog")

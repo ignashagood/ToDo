@@ -2,6 +2,7 @@ package nktns.todo.task.list
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nktns.todo.data.database.entity.CatalogEntity
 
 sealed class TaskListMode : Parcelable {
     @Parcelize
@@ -11,5 +12,5 @@ sealed class TaskListMode : Parcelable {
     object Today : TaskListMode()
 
     @Parcelize
-    data class Catalog(val catalogId: Int) : TaskListMode()
+    data class Catalog(val catalog: CatalogEntity) : TaskListMode()
 }

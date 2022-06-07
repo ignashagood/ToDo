@@ -5,6 +5,7 @@ import nktns.todo.data.database.dao.CatalogDAO
 import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.relations.CatalogWithTasks
 import nktns.todo.data.database.subset.CatalogWithCounts
+import java.util.Date
 
 class CatalogRepository(private val catalogDAO: CatalogDAO) {
 
@@ -14,7 +15,7 @@ class CatalogRepository(private val catalogDAO: CatalogDAO) {
 
     fun getAll(): Flow<List<CatalogEntity>> = catalogDAO.getAll()
 
-    fun getAllWithCounts(): Flow<List<CatalogWithCounts>> = catalogDAO.getAllWithCounts()
+    fun getAllWithCounts(): Flow<List<CatalogWithCounts>> = catalogDAO.getAllWithCounts(Date())
 
     suspend fun add(catalog: CatalogEntity) {
         catalogDAO.add(catalog)

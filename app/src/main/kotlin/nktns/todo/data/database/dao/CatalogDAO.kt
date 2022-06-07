@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.relations.CatalogWithTasks
 import nktns.todo.data.database.subset.CatalogWithCounts
+import java.util.Date
 
 @Dao
 interface CatalogDAO {
@@ -30,15 +31,16 @@ interface CatalogDAO {
             catalogId, 
             catalogName, 
             catalogCreationDate,
-            COUNT(taskId) AS taskCount,
-            COUNT(case when taskCompletionDate < DATE('now') then taskId else null end) AS outdatedTaskCount
+            COUNT(taskId) AS taskCount, 
+            COUNT(CASE WHEN (datetime(taskCompletionDate / 1000, 'unixepoch') < datetime(:date / 1000, 'unixepoch'))
+            THEN taskId ELSE null END) AS outdatedTaskCount
         FROM catalogs
         LEFT OUTER JOIN tasks ON catalogId = taskCatalogId
         GROUP BY catalogId
         ORDER BY catalogId DESC
         """
     )
-    fun getAllWithCounts(): Flow<List<CatalogWithCounts>>
+    fun getAllWithCounts(date: Date): Flow<List<CatalogWithCounts>>
 
     @Insert
     suspend fun add(catalog: CatalogEntity)
