@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.base.diff.calculateDiff
 import nktns.todo.data.TaskRepository
+import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.entity.TaskEntity
 
 class TaskListVM(
@@ -28,7 +29,7 @@ class TaskListVM(
     init {
         when (taskListMode) {
             is TaskListMode.All -> onAllMode()
-            is TaskListMode.Catalog -> onCatalogMode(taskListMode.catalogId)
+            is TaskListMode.Catalog -> onCatalogMode(taskListMode.catalog)
             is TaskListMode.Today -> onTodayMode()
         }
     }
@@ -43,9 +44,9 @@ class TaskListVM(
         }
     }
 
-    private fun onCatalogMode(catalogId: Int) {
+    private fun onCatalogMode(catalog: CatalogEntity) {
         viewModelScope.launch(Dispatchers.Main) {
-            taskRepository.getCatalogTasks(catalogId).collect { newTaskList ->
+            taskRepository.getCatalogTasks(catalog.id).collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
                 val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
                 _state.value = TaskListState.Content(newTaskList, result)
@@ -71,9 +72,9 @@ class TaskListVM(
 
     fun onAddButtonClicked() {
         when (taskListMode) {
-            is TaskListMode.Catalog -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(taskListMode.catalogId))
-            is TaskListMode.All -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(0))
-            is TaskListMode.Today -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(0))
+            is TaskListMode.Catalog -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(taskListMode.catalog))
+            is TaskListMode.All -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(null))
+            is TaskListMode.Today -> _action.tryEmit(TaskListAction.ShowCreateBottomSheet(null))
         }
     }
 

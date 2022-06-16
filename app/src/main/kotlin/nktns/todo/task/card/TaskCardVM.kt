@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nktns.todo.R
 import nktns.todo.base.applyPickedDate
@@ -18,6 +19,7 @@ import nktns.todo.base.toPickedDate
 import nktns.todo.base.toPickedTime
 import nktns.todo.data.CatalogRepository
 import nktns.todo.data.TaskRepository
+import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.entity.TaskEntity
 import java.util.Date
 
@@ -36,14 +38,13 @@ class TaskCardVM(
 
     init {
         when (taskCardMode) {
-            is TaskCardMode.Create -> onCreateMode(taskCardMode.catalogId)
+            is TaskCardMode.Create -> onCreateMode(taskCardMode.catalog)
             is TaskCardMode.View -> onViewMode(taskCardMode.taskId)
         }
     }
 
-    private fun onCreateMode(catalogId: Int) {
+    private fun onCreateMode(catalog: CatalogEntity?) {
         viewModelScope.launch(Dispatchers.IO) {
-            val catalog = catalogRepository.get(catalogId)
             if (catalog != null) {
                 _state.emit(
                     TaskCardState.Content(
@@ -57,18 +58,30 @@ class TaskCardVM(
                     )
                 )
             } else {
-                _action.emit(TaskCardAction.Dismiss)
+                _state.emit(
+                    TaskCardState.Content(
+                        name = "",
+                        isCompleted = false,
+                        taskCardMode.actionName,
+                        canDelete = false,
+                        Date(),
+                        "список",
+                        null
+                    )
+                )
             }
         }
     }
 
     private fun onViewMode(taskId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            taskRepository.get(taskId).let {
-                if (it != null) {
-                    _state.emit(it.toContentState())
-                } else {
-                    illegalState("Unexpected task id")
+            taskRepository.get(taskId)?.let { task ->
+                task.catalogId.let { catalogId ->
+                    if (catalogId != null) {
+                        _state.emit(task.toContentState(catalogRepository.get(catalogId)))
+                    } else {
+                        _state.emit(task.toContentState(null))
+                    }
                 }
             }
         }
@@ -143,6 +156,22 @@ class TaskCardVM(
         }
     }
 
+    fun onCatalogButtonClicked() {
+        runOnContentState {
+            viewModelScope.launch(Dispatchers.Main) {
+                catalogRepository.getAll().collect {
+                    _action.tryEmit(TaskCardAction.ShowCatalogPicker(it))
+                }
+            }
+        }
+    }
+
+    fun onCatalogPicked(catalog: CatalogEntity) {
+        runOnContentState {
+            _state.value = copy(catalogName = catalog.name, catalogId = catalog.id)
+        }
+    }
+
     private inline fun runOnContentState(block: TaskCardState.Content.() -> Unit) {
         val contentState: TaskCardState.Content? = _state.value as? TaskCardState.Content
         if (contentState != null) {
@@ -159,15 +188,29 @@ class TaskCardVM(
                 }
             )
 
-    private fun TaskEntity.toContentState() = TaskCardState.Content(
-        name,
-        isCompleted,
-        taskCardMode.actionName,
-        true,
-        completionDate,
-        "", // TODO извлечь имя из каталога
-        catalogId
-    )
+    private fun TaskEntity.toContentState(catalog: CatalogEntity?): TaskCardState {
+        if (catalog != null) {
+            return TaskCardState.Content(
+                name,
+                isCompleted,
+                taskCardMode.actionName,
+                true,
+                completionDate,
+                catalog.name,
+                catalog.id
+            )
+        } else {
+            return TaskCardState.Content(
+                name,
+                isCompleted,
+                taskCardMode.actionName,
+                true,
+                completionDate,
+                "список",
+                null
+            )
+        }
+    }
 
     private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(
         id,

@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nktns.todo.R
 import nktns.todo.catalog.editor.CatalogEditorFragment
 import nktns.todo.catalog.editor.CatalogEditorMode
+import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.databinding.FragmentCatalogOptionsBinding
 
 const val SHOW_CATALOG_CHANGER_TAG = "show_catalog_changer_tag"
@@ -15,11 +16,11 @@ const val SHOW_CATALOG_CHANGER_TAG = "show_catalog_changer_tag"
 class CatalogOptionsFragment : BottomSheetDialogFragment() {
 
     companion object {
-        private const val CATALOG_ID = "catalog_id"
-        fun newInstance(catalogId: Int): CatalogOptionsFragment {
+        private const val CATALOG = "catalog"
+        fun newInstance(catalog: CatalogEntity): CatalogOptionsFragment {
             return CatalogOptionsFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(CATALOG_ID, catalogId)
+                    putParcelable(CATALOG, catalog)
                 }
             }
         }
@@ -33,8 +34,11 @@ class CatalogOptionsFragment : BottomSheetDialogFragment() {
         FragmentCatalogOptionsBinding.inflate(inflater, container, false).run {
             binding = this
             changeCatalogBtn.setOnClickListener {
-                CatalogEditorFragment.newInstance(CatalogEditorMode.View(requireArguments().getInt(CATALOG_ID)))
-                    .show(childFragmentManager, SHOW_CATALOG_CHANGER_TAG)
+                requireArguments().getParcelable<CatalogEntity>(CATALOG)?.let {
+                    CatalogEditorFragment.newInstance(CatalogEditorMode.View(it))
+                        .show(parentFragmentManager, SHOW_CATALOG_CHANGER_TAG)
+                }
+                dismiss()
             }
             root
         }

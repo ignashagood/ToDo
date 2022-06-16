@@ -14,5 +14,5 @@ data class TaskEntity(
     @ColumnInfo(name = "taskCreationDate") val creationDate: Date,
     @ColumnInfo(name = "taskCompletionDate") val completionDate: Date,
     @ColumnInfo(name = "taskIsCompleted") val isCompleted: Boolean,
-    @ColumnInfo(name = "taskCatalogId") val catalogId: Int
+    @ColumnInfo(name = "taskCatalogId") val catalogId: Int?
 )

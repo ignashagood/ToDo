@@ -2,7 +2,6 @@ package nktns.todo
 
 import androidx.room.Room
 import nktns.todo.base.ResourceProvider
-import nktns.todo.catalog.card.CatalogCardVM
 import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.catalog.editor.CatalogEditorVM
 import nktns.todo.catalog.list.CatalogListVM
@@ -42,5 +41,4 @@ val diModule = module {
         CatalogEditorVM(resourceProvider = get(), repository = get(), mode = catalogEditorMode)
     }
     viewModel { CatalogListVM(application = get(), repository = get()) }
-    viewModel { CatalogCardVM(repository = get(), catalogId = get()) }
 }

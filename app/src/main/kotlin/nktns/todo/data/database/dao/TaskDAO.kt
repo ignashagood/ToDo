@@ -26,7 +26,7 @@ interface TaskDAO {
     @Query(
         """
             SELECT * FROM tasks 
-            WHERE date(taskCompletionDate / 1000) = date(:date / 1000, 'unixepoch') 
+            WHERE date(taskCompletionDate / 1000, 'unixepoch') = date(:date / 1000, 'unixepoch') 
             ORDER BY taskIsCompleted, taskCreationDate
             """
     )
