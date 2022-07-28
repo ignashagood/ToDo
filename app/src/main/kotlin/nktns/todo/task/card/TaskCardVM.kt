@@ -115,7 +115,10 @@ class TaskCardVM(
     fun onSaveAddButtonClicked() {
         runOnContentState {
             when (taskCardMode) {
-                is TaskCardMode.Create -> addTask(toEntity())
+                is TaskCardMode.Create -> {
+                    addTask(toEntity())
+                    _action.tryEmit(TaskCardAction.ScheduleNotification(toEntity()))
+                }
                 is TaskCardMode.View -> updateTask(toEntity(taskCardMode.taskId))
             }
         }

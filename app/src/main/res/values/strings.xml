@@ -24,6 +24,9 @@
 
     <string name="catalog_options_archive">Архив</string>
 
+    <string name="notification_title">Тест уведомление</string>
+    <string name="notification_subtitle">Текст уведомления</string>
+
     <plurals name="catalog_tasks_count">
         <item quantity="one">%d задача</item>
         <item quantity="few">%d задачи</item>

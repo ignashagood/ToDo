@@ -11,9 +11,18 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
+import nktns.todo.base.NotifyWorker
+import nktns.todo.base.NotifyWorker.Companion.NOTIFICATION_ID
+import nktns.todo.base.NotifyWorker.Companion.NOTIFICATION_SUBTITLE
+import nktns.todo.base.NotifyWorker.Companion.NOTIFICATION_TITLE
+import nktns.todo.base.NotifyWorker.Companion.NOTIFICATION_WORK
 import nktns.todo.base.format
 import nktns.todo.base.illegalState
 import nktns.todo.base.pickers.DatePickerFragment
@@ -22,9 +31,12 @@ import nktns.todo.base.pickers.PickedTime
 import nktns.todo.base.pickers.TimePickerFragment
 import nktns.todo.catalog.picker.CatalogPickerAdapter
 import nktns.todo.data.database.entity.CatalogEntity
+import nktns.todo.data.database.entity.TaskEntity
 import nktns.todo.databinding.FragmentTaskCardBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.System.currentTimeMillis
+import java.util.concurrent.TimeUnit
 
 const val LOCALE = "ru"
 const val DATE_PICKER_FRAGMENT_TAG = "date_picker_fragment_tag"
@@ -63,6 +75,7 @@ class TaskCardFragment :
                     is TaskCardAction.ShowDatePicker -> showDatePicker(it.date)
                     is TaskCardAction.ShowTimePicker -> showTimePicker(it.time)
                     is TaskCardAction.ShowCatalogPicker -> showCatalogPicker(it.catalogs)
+                    is TaskCardAction.ScheduleNotification -> prepareNotification(it.task)
                 }
             }
         }
@@ -164,5 +177,24 @@ class TaskCardFragment :
     override fun onItemClick(catalog: CatalogEntity) {
         viewModel.onCatalogPicked(catalog)
         catalogPicker?.dismiss()
+    }
+
+    private fun prepareNotification(task: TaskEntity) {
+        val currentTime = currentTimeMillis()
+        val data = Data.Builder()
+            .putInt(NOTIFICATION_ID, 0)
+            .putString(NOTIFICATION_TITLE, task.name)
+            .putString(NOTIFICATION_SUBTITLE, "Task deadline is ${task.completionDate}")
+            .build()
+        val delay = task.completionDate.time - currentTime
+        scheduleNotification(delay, data)
+    }
+
+    private fun scheduleNotification(delay: Long, data: Data) {
+        val notificationWork = OneTimeWorkRequest.Builder(NotifyWorker::class.java)
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS).setInputData(data).build()
+
+        val instanceWorkManager = WorkManager.getInstance(requireContext())
+        instanceWorkManager.beginUniqueWork(NOTIFICATION_WORK, ExistingWorkPolicy.REPLACE, notificationWork).enqueue()
     }
 }
