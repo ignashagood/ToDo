@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
@@ -74,7 +75,20 @@ class TaskListFragment : Fragment(), TaskAdapter.OnItemClickListener {
             viewModel.state.collect {
                 when (it) {
                     is TaskListState.InitialLoading -> {}
-                    is TaskListState.Content -> applyState(it)
+                    is TaskListState.Content -> {
+                        applyState(it)
+                        if (it.taskList.isEmpty()) {
+                            binding?.apply {
+                                recyclerViewTasks.isVisible = false
+                                zaglushka.isVisible = true
+                            }
+                        } else {
+                            binding?.apply {
+                                recyclerViewTasks.isVisible = true
+                                zaglushka.isVisible = false
+                            }
+                        }
+                    }
                 }
             }
         }

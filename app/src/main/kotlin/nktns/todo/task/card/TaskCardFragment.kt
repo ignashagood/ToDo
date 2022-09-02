@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -29,6 +30,9 @@ import nktns.todo.base.pickers.DatePickerFragment
 import nktns.todo.base.pickers.PickedDate
 import nktns.todo.base.pickers.PickedTime
 import nktns.todo.base.pickers.TimePickerFragment
+import nktns.todo.catalog.editor.CatalogEditorFragment
+import nktns.todo.catalog.editor.CatalogEditorMode
+import nktns.todo.catalog.list.SHOW_CATALOG_CREATOR
 import nktns.todo.catalog.picker.CatalogPickerAdapter
 import nktns.todo.data.database.entity.CatalogEntity
 import nktns.todo.data.database.entity.TaskEntity
@@ -118,6 +122,7 @@ class TaskCardFragment :
             timePickButton.setOnClickListener { viewModel.onTimeButtonClicked() }
             catalogPickButton.setOnClickListener { viewModel.onCatalogButtonClicked() }
             name.addTextChangedListener { viewModel.onTaskNameChanged(it?.toString().orEmpty()) }
+            description.addTextChangedListener { viewModel.onTaskDescriptionChanged(it?.toString().orEmpty()) }
             root
         }
 
@@ -132,6 +137,9 @@ class TaskCardFragment :
                     is TaskCardState.Content -> binding?.run {
                         if (name.text.toString() != state.name) {
                             name.setText(state.name)
+                        }
+                        if (description.text.toString() != state.description) {
+                            description.setText(state.description)
                         }
                         deleteButton.isVisible = state.canDelete
                         name.isVisible = true
@@ -151,6 +159,11 @@ class TaskCardFragment :
         val popupInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = popupInflater.inflate(R.layout.fragment_catalog_picker, null)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_catalogs)
+        view.findViewById<LinearLayout>(R.id.add_catalog).setOnClickListener {
+            CatalogEditorFragment.newInstance(CatalogEditorMode.Create)
+                .show(childFragmentManager, SHOW_CATALOG_CREATOR)
+            catalogPicker?.dismiss()
+        }
         val adapter = CatalogPickerAdapter(catalogs, this)
         recyclerView.adapter = adapter
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
@@ -182,12 +195,14 @@ class TaskCardFragment :
     private fun prepareNotification(task: TaskEntity) {
         val currentTime = currentTimeMillis()
         val data = Data.Builder()
-            .putInt(NOTIFICATION_ID, 0)
+            .putInt(NOTIFICATION_ID, task.id)
             .putString(NOTIFICATION_TITLE, task.name)
-            .putString(NOTIFICATION_SUBTITLE, "Task deadline is ${task.completionDate}")
+            .putString(NOTIFICATION_SUBTITLE, "Задача посрана - ${task.completionDate.format("d MMMM HH:mm")}")
             .build()
-        val delay = task.completionDate.time - currentTime
-        scheduleNotification(delay, data)
+        if (task.completionDate.time > currentTime) {
+            val delay = task.completionDate.time - currentTime
+            scheduleNotification(delay, data)
+        }
     }
 
     private fun scheduleNotification(delay: Long, data: Data) {

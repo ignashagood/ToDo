@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
@@ -16,7 +17,7 @@ import nktns.todo.databinding.FragmentCatalogListBinding
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private const val SHOW_CATALOG_CREATOR = "show_catalog_creator"
+const val SHOW_CATALOG_CREATOR = "show_catalog_creator"
 
 class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
 
@@ -47,7 +48,20 @@ class CatalogListFragment : Fragment(), CatalogListAdapter.OnItemClickListener {
             viewModel.state.collect {
                 when (it) {
                     is CatalogListState.InitialLoading -> {}
-                    is CatalogListState.Content -> applyState(it)
+                    is CatalogListState.Content -> {
+                        applyState(it)
+                        if (it.catalogList.isEmpty()) {
+                            binding?.apply {
+                                recyclerViewCatalogs.isVisible = false
+                                zaglushka.isVisible = true
+                            }
+                        } else {
+                            binding?.apply {
+                                recyclerViewCatalogs.isVisible = true
+                                zaglushka.isVisible = false
+                            }
+                        }
+                    }
                 }
             }
         }

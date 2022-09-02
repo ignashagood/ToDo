@@ -15,6 +15,10 @@ class TaskRepository(private val taskDAO: TaskDAO) {
 
     fun getCatalogTasks(catalogId: Int): Flow<List<TaskEntity>> = taskDAO.getAllWithCatalogId(catalogId)
 
+    fun getArchivedTasks(): Flow<List<TaskEntity>> = taskDAO.getArchived()
+
+    suspend fun deleteArchived() = taskDAO.deleteArchived()
+
     suspend fun add(task: TaskEntity) {
         taskDAO.add(task)
     }

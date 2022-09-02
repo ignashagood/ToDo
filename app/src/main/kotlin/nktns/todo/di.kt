@@ -1,6 +1,7 @@
 package nktns.todo
 
 import androidx.room.Room
+import nktns.todo.base.EventBus
 import nktns.todo.base.ResourceProvider
 import nktns.todo.catalog.editor.CatalogEditorMode
 import nktns.todo.catalog.editor.CatalogEditorVM
@@ -19,6 +20,8 @@ import org.koin.dsl.module
 val diModule = module {
     single { ResourceProvider(application = get()) }
 
+    single { EventBus() }
+
     single { Room.databaseBuilder(androidApplication(), TasksDatabase::class.java, "database").build() }
     single { get<TasksDatabase>().taskDAO() }
     single { get<TasksDatabase>().catalogDAO() }
@@ -27,7 +30,7 @@ val diModule = module {
     single { CatalogRepository(catalogDAO = get()) }
 
     viewModel { (taskListMode: TaskListMode) ->
-        TaskListVM(application = get(), taskRepository = get(), taskListMode = taskListMode)
+        TaskListVM(application = get(), taskRepository = get(), taskListMode = taskListMode, eventBus = get())
     }
     viewModel { (taskCardMode: TaskCardMode) ->
         TaskCardVM(

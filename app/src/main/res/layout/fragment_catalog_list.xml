@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="false"
-    android:orientation="vertical"
-    android:background="@color/light_grey">
+    android:background="@color/light_grey"
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_catalogs"
@@ -28,5 +28,36 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/button_background"
         android:src="@drawable/ic_vector_add" />
+
+    <LinearLayout
+        android:id="@+id/zaglushka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/no_catalogs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Нет списков."
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Нажмите + и создайте новый" />
+    </LinearLayout>
 
 </RelativeLayout>

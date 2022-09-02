@@ -12,5 +12,8 @@ sealed class TaskListMode : Parcelable {
     object Today : TaskListMode()
 
     @Parcelize
+    object Archive : TaskListMode()
+
+    @Parcelize
     data class Catalog(val catalog: CatalogEntity) : TaskListMode()
 }

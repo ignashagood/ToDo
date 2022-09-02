@@ -1,12 +1,14 @@
 package nktns.todo.task.list
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import nktns.todo.R
+import nktns.todo.base.format
 import nktns.todo.data.database.entity.TaskEntity
 import nktns.todo.databinding.TaskItemBinding
 
@@ -23,8 +25,12 @@ class TaskAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(task: TaskEntity) = with(binding) {
             taskName.text = task.name
+            outdateText.text = task.completionDate.format("d MMMM HH:mm")
+            if (task.isOutdated) {
+                outdateText.setTextColor(Color.RED)
+            }
             taskName.setTextColor(
-                ContextCompat.getColor(
+                ContextCompat.getColor( // TODO
                     root.context,
                     if (task.isCompleted) R.color.grey else R.color.black
                 )

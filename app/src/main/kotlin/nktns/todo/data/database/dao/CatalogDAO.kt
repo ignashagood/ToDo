@@ -32,7 +32,7 @@ interface CatalogDAO {
             catalogName, 
             catalogCreationDate,
             COUNT(taskId) AS taskCount, 
-            COUNT(CASE WHEN (datetime(taskCompletionDate / 1000, 'unixepoch') < datetime(:date / 1000, 'unixepoch'))
+            COUNT(CASE WHEN (datetime(taskCompletionDate / 1000, 'unixepoch') <= datetime(:date / 1000, 'unixepoch'))
             THEN taskId ELSE null END) AS outdatedTaskCount
         FROM catalogs
         LEFT OUTER JOIN tasks ON catalogId = taskCatalogId

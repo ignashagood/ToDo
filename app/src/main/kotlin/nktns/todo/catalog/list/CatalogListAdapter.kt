@@ -35,31 +35,42 @@ class CatalogListAdapter(
                 catalog.taskCount,
                 catalog.taskCount
             ).length + 2
-            val tasks = SpannableString(
-                "${
-                resourceProvider
-                    .getQuantityString(
-                        R.plurals.catalog_tasks_count,
-                        catalog.taskCount,
-                        catalog.taskCount
-                    )
-                } ${
-                resourceProvider
-                    .getQuantityString(
-                        R.plurals.catalog_outdated_tasks_count,
-                        catalog.outdatedTaskCount,
-                        catalog.outdatedTaskCount
-                    )
-                }"
-            )
-            tasks.setSpan(
-                ForegroundColorSpan(Color.RED),
-                tasksCountStringSize,
-                tasks.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+            if (catalog.outdatedTaskCount != 0) {
+                val tasks = SpannableString(
+                    "${
+                    resourceProvider
+                        .getQuantityString(
+                            R.plurals.catalog_tasks_count,
+                            catalog.taskCount,
+                            catalog.taskCount
+                        )
+                    } ${
+                    resourceProvider
+                        .getQuantityString(
+                            R.plurals.catalog_outdated_tasks_count,
+                            catalog.outdatedTaskCount,
+                            catalog.outdatedTaskCount
+                        )
+                    }"
+                )
+                tasks.setSpan(
+                    ForegroundColorSpan(Color.RED),
+                    tasksCountStringSize,
+                    tasks.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                taskCount.text = tasks
+            } else {
+                taskCount.text = SpannableString(
+                    resourceProvider
+                        .getQuantityString(
+                            R.plurals.catalog_tasks_count,
+                            catalog.taskCount,
+                            catalog.taskCount
+                        )
+                )
+            }
             catalogName.text = catalog.catalog.name
-            taskCount.text = tasks
         }
 
         init {

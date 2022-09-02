@@ -8,15 +8,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_catalogs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:scrollbars="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <LinearLayout
+        android:id="@+id/add_catalog"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="13dp"
         android:layout_marginEnd="16dp"
@@ -27,14 +28,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_vector__5_"
+            android:src="@drawable/ic_plus_catalog"
             android:layout_gravity="center"/>
 
         <TextView
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Создать список"/>
+            android:text="Создать список"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 

@@ -49,6 +49,7 @@ class TaskCardVM(
                 _state.emit(
                     TaskCardState.Content(
                         name = "",
+                        description = "",
                         isCompleted = false,
                         taskCardMode.actionName,
                         canDelete = false,
@@ -61,6 +62,7 @@ class TaskCardVM(
                 _state.emit(
                     TaskCardState.Content(
                         name = "",
+                        description = "",
                         isCompleted = false,
                         taskCardMode.actionName,
                         canDelete = false,
@@ -112,6 +114,10 @@ class TaskCardVM(
         runOnContentState { _state.value = copy(name = newName) }
     }
 
+    fun onTaskDescriptionChanged(newDescription: String) {
+        runOnContentState { _state.value = copy(description = newDescription) }
+    }
+
     fun onSaveAddButtonClicked() {
         runOnContentState {
             when (taskCardMode) {
@@ -119,7 +125,10 @@ class TaskCardVM(
                     addTask(toEntity())
                     _action.tryEmit(TaskCardAction.ScheduleNotification(toEntity()))
                 }
-                is TaskCardMode.View -> updateTask(toEntity(taskCardMode.taskId))
+                is TaskCardMode.View -> {
+                    updateTask(toEntity(taskCardMode.taskId))
+                    _action.tryEmit(TaskCardAction.ScheduleNotification(toEntity(taskCardMode.taskId)))
+                }
             }
         }
     }
@@ -163,7 +172,7 @@ class TaskCardVM(
         runOnContentState {
             viewModelScope.launch(Dispatchers.Main) {
                 catalogRepository.getAll().collect {
-                    _action.tryEmit(TaskCardAction.ShowCatalogPicker(it))
+                    _action.emit(TaskCardAction.ShowCatalogPicker(it))
                 }
             }
         }
@@ -195,6 +204,7 @@ class TaskCardVM(
         if (catalog != null) {
             return TaskCardState.Content(
                 name,
+                description,
                 isCompleted,
                 taskCardMode.actionName,
                 true,
@@ -205,6 +215,7 @@ class TaskCardVM(
         } else {
             return TaskCardState.Content(
                 name,
+                description,
                 isCompleted,
                 taskCardMode.actionName,
                 true,
@@ -218,7 +229,7 @@ class TaskCardVM(
     private fun TaskCardState.Content.toEntity(id: Int = 0) = TaskEntity(
         id,
         name,
-        "",
+        description,
         Date(),
         completionDate,
         isCompleted,

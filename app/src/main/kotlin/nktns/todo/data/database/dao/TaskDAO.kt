@@ -21,8 +21,8 @@ interface TaskDAO {
     @Query("SELECT * from tasks WHERE taskCatalogId = :catalogId ORDER BY taskIsCompleted, taskCreationDate")
     fun getAllWithCatalogId(catalogId: Int): Flow<List<TaskEntity>>
 
-/** Дата - 13 цифр, деление на 1000 происходит для избавления от микросекунд, а модификатор unixepoch
-интерпретирует дату как время Unix - количество секунд с 1970 года **/
+    /** Дата - 13 цифр, деление на 1000 происходит для избавления от микросекунд, а модификатор unixepoch
+     интерпретирует дату как время Unix - количество секунд с 1970 года **/
     @Query(
         """
             SELECT * FROM tasks 
@@ -31,6 +31,12 @@ interface TaskDAO {
             """
     )
     fun getAllByCompletionDate(date: Date): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM tasks WHERE taskIsCompleted = 1")
+    fun getArchived(): Flow<List<TaskEntity>>
+
+    @Query("DELETE FROM tasks WHERE taskIsCompleted = 1")
+    suspend fun deleteArchived()
 
     @Insert
     suspend fun add(task: TaskEntity)
