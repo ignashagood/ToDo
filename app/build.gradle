@@ -34,6 +34,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     kotlinOptions {
         jvmTarget = '11'
     }

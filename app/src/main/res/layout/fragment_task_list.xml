@@ -1,63 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentBottom="false"
-    android:background="@color/light_grey"
-    android:orientation="vertical">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_tasks"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/list_default_margin_horiz"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="@dimen/list_default_margin_horiz"
-        android:background="@drawable/task_lists_background"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <ImageButton
-        android:id="@+id/addButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/button_background"
-        android:src="@drawable/ic_vector_add" />
-
-    <LinearLayout
-        android:id="@+id/zaglushka"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:translationY="-40dp"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_gravity="center"
-            android:src="@drawable/no_task" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/list_default_margin_horiz"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/list_default_margin_horiz"
+            android:background="@drawable/task_lists_background"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/task_item" />
 
-        <TextView
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/button_background"
+            android:src="@drawable/ic_vector_add" />
+
+        <LinearLayout
+            android:id="@+id/zaglushka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Нет задач."
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:translationY="-40dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Нажмите + и запишите новые" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_task" />
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Нет задач."
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Нажмите + и запишите новые" />
+        </LinearLayout>
+
+    </RelativeLayout>
