@@ -30,7 +30,7 @@ class TaskCardVM(
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
-    private val _action = MutableSharedFlow<TaskCardAction>(extraBufferCapacity = 1)
+    private val _action = MutableSharedFlow<TaskCardAction>()
     private var _state = MutableStateFlow<TaskCardState>(TaskCardState.InitialLoading)
 
     val action: Flow<TaskCardAction> by ::_action
@@ -172,6 +172,7 @@ class TaskCardVM(
         runOnContentState {
             viewModelScope.launch(Dispatchers.Main) {
                 catalogRepository.getAll().collect {
+                    _action.emit(TaskCardAction.DismissCatalogPicker)
                     _action.emit(TaskCardAction.ShowCatalogPicker(it))
                 }
             }

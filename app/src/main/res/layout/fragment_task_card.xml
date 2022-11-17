@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:paddingStart="@dimen/create_edit_task_padding_horiz"
     android:paddingTop="@dimen/create_edit_task_padding_vert"
@@ -53,17 +53,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints">
-                <!--background clickable
-передать событие клика в vm
-положить completDate в taskCardState.content
-вытащить текущие данные из
-android date picker - android time picker
-taskcardaction -> sealed class
-    ShowDatePicker(date) как action
-    ShowDatePicker(time) как action
-получить результат от пикеров и передать в vm
-в vm обновить контент
--->
+
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

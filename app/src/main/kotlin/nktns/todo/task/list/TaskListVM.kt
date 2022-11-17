@@ -1,8 +1,6 @@
 package nktns.todo.task.list
 
 import android.app.Application
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
@@ -37,10 +35,7 @@ class TaskListVM(
         viewModelScope.launch(Dispatchers.IO) {
             eventBus.events.collectLatest {
                 when (it) {
-                    is AppEvent.UpdateTaskList -> {
-                        Log.d(TAG, "Collect event - ")
-                        updateList()
-                    }
+                    is AppEvent.UpdateTaskList -> updateList()
                     is AppEvent.ClearArchive -> deleteArchivedTasks()
                 }
             }
@@ -87,7 +82,7 @@ class TaskListVM(
     }
 
     private fun onArchiveMode() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             taskRepository.getArchivedTasks().collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
                 val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
