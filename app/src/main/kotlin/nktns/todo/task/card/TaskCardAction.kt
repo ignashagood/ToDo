@@ -8,6 +8,8 @@ import nktns.todo.data.database.entity.TaskEntity
 sealed class TaskCardAction {
     object Dismiss : TaskCardAction()
 
+    object DismissCatalogPicker : TaskCardAction()
+
     class ShowDatePicker(val date: PickedDate) : TaskCardAction()
 
     class ShowTimePicker(val time: PickedTime) : TaskCardAction()

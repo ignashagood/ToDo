@@ -172,6 +172,7 @@ class TaskCardVM(
         runOnContentState {
             viewModelScope.launch(Dispatchers.Main) {
                 catalogRepository.getAll().collect {
+                    _action.emit(TaskCardAction.DismissCatalogPicker)
                     _action.emit(TaskCardAction.ShowCatalogPicker(it))
                 }
             }

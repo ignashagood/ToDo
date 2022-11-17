@@ -16,6 +16,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
 import nktns.todo.R
@@ -80,6 +81,7 @@ class TaskCardFragment :
                     is TaskCardAction.ShowTimePicker -> showTimePicker(it.time)
                     is TaskCardAction.ShowCatalogPicker -> showCatalogPicker(it.catalogs)
                     is TaskCardAction.ScheduleNotification -> prepareNotification(it.task)
+                    is TaskCardAction.DismissCatalogPicker -> catalogPicker?.dismiss()
                 }
             }
         }
@@ -127,6 +129,11 @@ class TaskCardFragment :
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dialog?.let { it ->
+            val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.state.collect { state ->
                 when (state) {
