@@ -30,7 +30,7 @@ class TaskCardVM(
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
-    private val _action = MutableSharedFlow<TaskCardAction>()
+    private val _action = MutableSharedFlow<TaskCardAction>(extraBufferCapacity = 1)
     private var _state = MutableStateFlow<TaskCardState>(TaskCardState.InitialLoading)
 
     val action: Flow<TaskCardAction> by ::_action
