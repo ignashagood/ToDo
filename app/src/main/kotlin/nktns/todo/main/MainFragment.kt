@@ -38,7 +38,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.run {
             optionsBtn.setOnClickListener {
-                showCatalogPicker()
+                showOptionsWindow()
             }
             TabLayoutMediator(tab, pager) { tab, position ->
                 when (position) {
@@ -90,7 +90,7 @@ class MainFragment : Fragment() {
         return PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun showCatalogPicker() {
+    private fun showOptionsWindow() {
         optionsWindow = prepareOptionsWindow()
         val yOffset = requireContext().resources.getDimensionPixelSize(R.dimen.menu_y_offset)
         val xOffset = requireContext().resources.getDimensionPixelSize(R.dimen.menu_x_offset)

@@ -26,6 +26,9 @@
 
     <string name="notification_title">Тест уведомление</string>
     <string name="notification_subtitle">Текст уведомления</string>
+    <string name="button_next_splash">Пропустить</string>
+    <string name="desc_splash_second">Включите напоминания, и приложение не даст забыть о самом важном</string>
+    <string name="desc_splash_first">Запишите всё, что нужно: \n дела, задачи, списки покупок</string>
 
     <plurals name="catalog_tasks_count">
         <item quantity="one">%d задача</item>

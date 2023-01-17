@@ -203,8 +203,8 @@ class TaskCardFragment :
         val currentTime = currentTimeMillis()
         val data = Data.Builder()
             .putInt(NOTIFICATION_ID, task.id)
-            .putString(NOTIFICATION_TITLE, task.name)
-            .putString(NOTIFICATION_SUBTITLE, "Задача посрана - ${task.completionDate.format("d MMMM HH:mm")}")
+            .putString(NOTIFICATION_TITLE, "Задача ${task.name}")
+            .putString(NOTIFICATION_SUBTITLE, "Напоминаю ${task.completionDate.format("d MMMM HH:mm")}")
             .build()
         if (task.completionDate.time > currentTime) {
             val delay = task.completionDate.time - currentTime
@@ -220,3 +220,5 @@ class TaskCardFragment :
         instanceWorkManager.beginUniqueWork(NOTIFICATION_WORK, ExistingWorkPolicy.REPLACE, notificationWork).enqueue()
     }
 }
+
+

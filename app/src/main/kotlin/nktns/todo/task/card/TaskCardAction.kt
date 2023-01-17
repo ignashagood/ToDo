@@ -18,3 +18,4 @@ sealed class TaskCardAction {
 
     class ScheduleNotification(val task: TaskEntity) : TaskCardAction()
 }
+
