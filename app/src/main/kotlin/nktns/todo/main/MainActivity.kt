@@ -53,4 +53,14 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_container_view, SplashFragmentSecond())
             .commit()
     }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("Activity", "Stop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("Activity", "Destroy")
+    }
 }

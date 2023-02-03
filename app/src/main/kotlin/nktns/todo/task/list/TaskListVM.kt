@@ -1,10 +1,10 @@
 package nktns.todo.task.list
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,8 @@ class TaskListVM(
 
     init {
         updateList()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
+            Log.d("Viewmodel", Thread.currentThread().name)
             eventBus.events.collectLatest {
                 when (it) {
                     is AppEvent.UpdateTaskList -> updateList()
@@ -52,7 +53,7 @@ class TaskListVM(
     }
 
     private fun onAllMode() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             taskRepository.getTasks().collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
                 val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
@@ -62,7 +63,7 @@ class TaskListVM(
     }
 
     private fun onCatalogMode(catalog: CatalogEntity) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             taskRepository.getCatalogTasks(catalog.id).collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
                 val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
@@ -72,7 +73,7 @@ class TaskListVM(
     }
 
     private fun onTodayMode() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             taskRepository.getTodayTasks().collect { newTaskList ->
                 val currentTaskList: List<TaskEntity> = (state.value as? TaskListState.Content)?.taskList ?: emptyList()
                 val result: DiffUtil.DiffResult = calculateDiff(currentTaskList, newTaskList, TaskEntity::id)
@@ -92,13 +93,13 @@ class TaskListVM(
     }
 
     private fun deleteArchivedTasks() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             taskRepository.deleteArchived()
         }
     }
 
     override fun onTaskCompleted(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.update(task)
         }
     }

@@ -47,6 +47,10 @@ class TaskAdapter(
 
     private var tasks: List<TaskEntity> = emptyList()
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
         val binding = TaskItemBinding.bind(view)

@@ -90,21 +90,21 @@ class TaskCardVM(
     }
 
     private fun addTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.add(task)
             _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun updateTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.update(task)
             _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun deleteTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.delete(task)
             _action.emit(TaskCardAction.Dismiss)
         }

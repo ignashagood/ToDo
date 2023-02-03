@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -19,7 +18,7 @@ class CatalogListVM(application: Application, private val repository: CatalogRep
     val state: StateFlow<CatalogListState> by ::_state
 
     init {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             repository.getAllWithCounts().collect { newCatalogList ->
                 val currentCatalogList: List<CatalogWithCounts> =
                     (state.value as? CatalogListState.Content)?.catalogList ?: emptyList()

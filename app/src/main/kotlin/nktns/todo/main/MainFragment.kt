@@ -31,7 +31,7 @@ class MainFragment : Fragment() {
     ): View = FragmentMainBinding.inflate(inflater, container, false).run {
         binding = this
         pager.adapter = ViewPagerFragmentAdapter(childFragmentManager, lifecycle)
-        pager.isUserInputEnabled = false
+        pager.isUserInputEnabled = true
         root
     }
 
@@ -98,4 +98,5 @@ class MainFragment : Fragment() {
         optionsWindow?.isFocusable = true
         optionsWindow?.showAsDropDown(view, xOffset, yOffset, Gravity.TOP)
     }
+
 }
