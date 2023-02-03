@@ -2,7 +2,6 @@ package nktns.todo.catalog.editor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,27 +42,27 @@ class CatalogEditorVM(
     }
 
     private fun onViewMode(catalog: CatalogEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _state.emit(catalog.toContentState())
         }
     }
 
     private fun addCatalog(catalog: CatalogEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.add(catalog)
             _action.emit(CatalogEditorAction.DISMISS)
         }
     }
 
     private fun updateCatalog(catalog: CatalogEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.update(catalog)
             _action.emit(CatalogEditorAction.DISMISS)
         }
     }
 
     private fun deleteCatalog(catalog: CatalogEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.delete(catalog)
             _action.emit(CatalogEditorAction.DISMISS)
         }

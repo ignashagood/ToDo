@@ -8,16 +8,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-fun Date.withoutTime(): Date =
-    Calendar.getInstance().run {
-        time = this@withoutTime
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-        time
-    }
-
 fun Date.toPickedDate(): PickedDate =
     Calendar.getInstance().run {
         time = this@toPickedDate

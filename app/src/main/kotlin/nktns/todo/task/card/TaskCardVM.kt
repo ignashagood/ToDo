@@ -30,7 +30,7 @@ class TaskCardVM(
     private val taskCardMode: TaskCardMode,
 ) : ViewModel() {
 
-    private val _action = MutableSharedFlow<TaskCardAction>(extraBufferCapacity = 1)
+    private val _action = MutableSharedFlow<TaskCardAction>()
     private var _state = MutableStateFlow<TaskCardState>(TaskCardState.InitialLoading)
 
     val action: Flow<TaskCardAction> by ::_action
@@ -90,21 +90,21 @@ class TaskCardVM(
     }
 
     private fun addTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.add(task)
             _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun updateTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.update(task)
             _action.emit(TaskCardAction.Dismiss)
         }
     }
 
     private fun deleteTask(task: TaskEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             taskRepository.delete(task)
             _action.emit(TaskCardAction.Dismiss)
         }
@@ -119,15 +119,17 @@ class TaskCardVM(
     }
 
     fun onSaveAddButtonClicked() {
-        runOnContentState {
-            when (taskCardMode) {
-                is TaskCardMode.Create -> {
-                    addTask(toEntity())
-                    _action.tryEmit(TaskCardAction.ScheduleNotification(toEntity()))
-                }
-                is TaskCardMode.View -> {
-                    updateTask(toEntity(taskCardMode.taskId))
-                    _action.tryEmit(TaskCardAction.ScheduleNotification(toEntity(taskCardMode.taskId)))
+        viewModelScope.launch {
+            runOnContentState {
+                when (taskCardMode) {
+                    is TaskCardMode.Create -> {
+                        addTask(toEntity())
+                        _action.emit(TaskCardAction.ScheduleNotification(toEntity()))
+                    }
+                    is TaskCardMode.View -> {
+                        updateTask(toEntity(taskCardMode.taskId))
+                        _action.emit(TaskCardAction.ScheduleNotification(toEntity(taskCardMode.taskId)))
+                    }
                 }
             }
         }
@@ -143,8 +145,10 @@ class TaskCardVM(
     }
 
     fun onDateButtonClicked() {
-        runOnContentState {
-            _action.tryEmit(TaskCardAction.ShowDatePicker(completionDate.toPickedDate()))
+        viewModelScope.launch {
+            runOnContentState {
+                _action.emit(TaskCardAction.ShowDatePicker(completionDate.toPickedDate()))
+            }
         }
     }
 
@@ -156,8 +160,10 @@ class TaskCardVM(
     }
 
     fun onTimeButtonClicked() {
-        runOnContentState {
-            _action.tryEmit(TaskCardAction.ShowTimePicker(completionDate.toPickedTime()))
+        viewModelScope.launch {
+            runOnContentState {
+                _action.emit(TaskCardAction.ShowTimePicker(completionDate.toPickedTime()))
+            }
         }
     }
 

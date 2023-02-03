@@ -15,3 +15,5 @@ data class CatalogEntity(
     @ColumnInfo(name = "catalogName") val name: String,
     @ColumnInfo(name = "catalogCreationDate") val creationDate: Date
 ) : Parcelable
+
+

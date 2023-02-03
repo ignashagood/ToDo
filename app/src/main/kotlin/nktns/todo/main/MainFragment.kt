@@ -31,14 +31,14 @@ class MainFragment : Fragment() {
     ): View = FragmentMainBinding.inflate(inflater, container, false).run {
         binding = this
         pager.adapter = ViewPagerFragmentAdapter(childFragmentManager, lifecycle)
-        pager.isUserInputEnabled = false
+        pager.isUserInputEnabled = true
         root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding?.run {
             optionsBtn.setOnClickListener {
-                showCatalogPicker()
+                showOptionsWindow()
             }
             TabLayoutMediator(tab, pager) { tab, position ->
                 when (position) {
@@ -90,7 +90,7 @@ class MainFragment : Fragment() {
         return PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun showCatalogPicker() {
+    private fun showOptionsWindow() {
         optionsWindow = prepareOptionsWindow()
         val yOffset = requireContext().resources.getDimensionPixelSize(R.dimen.menu_y_offset)
         val xOffset = requireContext().resources.getDimensionPixelSize(R.dimen.menu_x_offset)
@@ -98,4 +98,5 @@ class MainFragment : Fragment() {
         optionsWindow?.isFocusable = true
         optionsWindow?.showAsDropDown(view, xOffset, yOffset, Gravity.TOP)
     }
+
 }

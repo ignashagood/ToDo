@@ -19,6 +19,7 @@
         app:layout_anchorGravity="center">
 
         <EditText
+            android:paddingHorizontal="10dp"
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +29,8 @@
             android:textSize="16sp" />
 
         <EditText
+            android:padding="10dp"
+            android:inputType="textMultiLine"
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

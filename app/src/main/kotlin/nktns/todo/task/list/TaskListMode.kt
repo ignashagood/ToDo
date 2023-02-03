@@ -17,3 +17,4 @@ sealed class TaskListMode : Parcelable {
     @Parcelize
     data class Catalog(val catalog: CatalogEntity) : TaskListMode()
 }
+
